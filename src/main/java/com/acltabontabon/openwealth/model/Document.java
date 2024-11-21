@@ -1,10 +1,13 @@
 package com.acltabontabon.openwealth.model;
 
 import java.time.LocalDate;
+import java.util.Map;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@NoArgsConstructor
 public class Document {
 
     /**
@@ -22,7 +25,7 @@ public class Document {
      * Indicates the document category. The document category and type shall help to classify the
      * document.
      */
-    private TypeCategory typeCategory;
+    private String typeCategory;
 
     /**
      * Indicates the specific document type e.g. Passport, ebanking contract, Form A etc.
@@ -68,5 +71,10 @@ public class Document {
      */
     private String fileName;
 
-    private Object digitalSignature;
+    private DigitalSignature digitalSignature;
+
+    /**
+     * Content of the document binary coded (base64-encoded file contents)
+     */
+    private String enclosure;
 }

@@ -1,5 +1,7 @@
 package com.acltabontabon.openwealth.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum DocumentType {
 
     ID("id"),
@@ -30,10 +32,21 @@ public enum DocumentType {
     CHANGE_OF_ADDRESS("changeOfAddress"),
     OTHER("other");
 
-    private String value;
+    private final String value;
 
     DocumentType(String value) {
         this.value = value;
+    }
+
+    @JsonCreator
+    public static DocumentType forValue(String value) {
+        for (DocumentType documentType : DocumentType.values()) {
+            if (documentType.value.equalsIgnoreCase(value)) {
+                return documentType;
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid document type: " + value);
     }
 
     @Override

@@ -1,15 +1,17 @@
 package com.acltabontabon.openwealth.service;
 
-import com.acltabontabon.openwealth.model.Customer;
 import com.acltabontabon.openwealth.dto.CustomerResponse;
+import com.acltabontabon.openwealth.model.Customer;
 import com.acltabontabon.openwealth.properties.OpenWealthProperties;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 
 @Slf4j
 public class CustomerManager {
+
+    private final static String HEADER_CORRELATION_ID = "X-Correlation-ID";
 
     private final RestClient restClient;
 
@@ -20,50 +22,69 @@ public class CustomerManager {
             .build();
     }
 
-    public CustomerFinder customers() {
-        return new CustomerFinder();
+    public CustomerQuery customers() {
+        return new CustomerQuery();
     }
 
-    public class CustomerFinder {
+    public CustomerCreator createCustomer() {
+        return new CustomerCreator();
+    }
+
+    public class CustomerCreator {
+
+    }
+
+    public class CustomerQuery {
 
         private String correlationId;
-        private String customerId;
 
-        public CustomerFinder withCorrelationId(String correlationId) {
+        public CustomerQuery withCorrelationId(String correlationId) {
             this.correlationId = correlationId;
             return this;
         }
 
-        public CustomerFinder withCustomerId(String customerId) {
-            this.customerId = customerId;
+        public SpecificCustomerQuery withCustomerId(String customerId) {
+            return new SpecificCustomerQuery(customerId, this.correlationId);
+        }
+
+        public CustomerResponse fetch() {
+            return restClient.get()
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HEADER_CORRELATION_ID, this.correlationId)
+                .retrieve()
+                .body(CustomerResponse.class);
+        }
+    }
+
+    @RequiredArgsConstructor
+    public class SpecificCustomerQuery {
+        private final String customerId;
+        private final String correlationId;
+
+        private boolean fullRecord;
+
+        public SpecificCustomerQuery fullRecord() {
+            this.fullRecord = true;
             return this;
         }
 
         public CustomerResponse fetch() {
-            return StringUtils.hasText(this.customerId)
-                ? fetchSingleCustomer()
-                : fetchAllCustomers();
-        }
-
-        private CustomerResponse fetchSingleCustomer() {
             Customer customer = restClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/{customerId}").build(this.customerId))
+                .uri(uriBuilder -> {
+                    if (this.fullRecord) {
+                        return uriBuilder.path("/{customerId}/customer-details").build(this.customerId);
+                    } else {
+                        return uriBuilder.path("/{customerId}").build(this.customerId);
+                    }
+                })
                 .accept(MediaType.APPLICATION_JSON)
-                .header("X-Correlation-ID", this.correlationId)
+                .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
                 .body(Customer.class);
 
             return CustomerResponse.builder()
                 .customer(customer)
                 .build();
-        }
-
-        private CustomerResponse fetchAllCustomers() {
-            return restClient.get()
-                .accept(MediaType.APPLICATION_JSON)
-                .header("X-Correlation-ID", this.correlationId)
-                .retrieve()
-                .body(CustomerResponse.class);
         }
     }
 }

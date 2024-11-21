@@ -1,12 +1,15 @@
 package com.acltabontabon.openwealth.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Customer {
 
     /**
@@ -68,4 +71,11 @@ public class Customer {
      * bank.
      */
     private String bankPreviousAdvisor;
+
+    /**
+     * List of documents belonging to this customer relationship.
+     */
+    private List<Document> documentList;
+
+    private List<PersonToCustomerRelation> person2customerRelationList;
 }
