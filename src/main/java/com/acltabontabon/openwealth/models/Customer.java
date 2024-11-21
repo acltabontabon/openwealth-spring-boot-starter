@@ -1,5 +1,6 @@
-package com.acltabontabon.openwealth.model;
+package com.acltabontabon.openwealth.models;
 
+import com.acltabontabon.openwealth.enums.RelationshipStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDate;
 import java.util.List;

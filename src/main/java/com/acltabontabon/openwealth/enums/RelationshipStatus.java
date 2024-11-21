@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.model;
+package com.acltabontabon.openwealth.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

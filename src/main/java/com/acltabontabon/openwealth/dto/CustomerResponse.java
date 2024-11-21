@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.dto;
 
-import com.acltabontabon.openwealth.model.Customer;
+import com.acltabontabon.openwealth.models.Customer;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

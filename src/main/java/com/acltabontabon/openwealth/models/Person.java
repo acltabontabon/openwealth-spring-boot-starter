@@ -1,11 +1,18 @@
-package com.acltabontabon.openwealth.model;
+package com.acltabontabon.openwealth.models;
 
+import com.acltabontabon.openwealth.enums.CivilStatus;
+import com.acltabontabon.openwealth.enums.PersonType;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
 
 @Data
 public class Person {
+
+    private List<Address> addressList;
+// TODO:
+//    private List<Contact> contactList;
+//    private List<Kyc> kycList;
 
     /**
      * Unique person ID assigned by the custody bank.
@@ -42,6 +49,9 @@ public class Person {
      * Indicates the person type (e.g. Natural Person) of the person object.
      */
     private PersonType personType;
+
+
+    //--------------------------------- Natural Person --------------------------------- //
 
     /**
      * Given name of the person. The primary name according to the passport should be indicated in
@@ -106,4 +116,41 @@ public class Person {
      * Country where person was born.
      */
     private String countryOfBirth;
+
+    //--------------------------------- Legal Person --------------------------------- //
+
+    /**
+     * Name by which the organisation is known and which is usually used to identify that
+     * organisation.
+     */
+    private String organisationName;
+
+    /**
+     * Legal form of the company.
+     */
+    private String legalForm;
+
+    /**
+     * Legal entity identifier. The LEI code is a twenty-digit alphanumeric company identifier that
+     * is established as an international standard for companies in the financial market. Each LEI
+     * code is assigned once and enables worldwide assignment to a specific company.
+     */
+    private String LEI;
+
+    /**
+     * Indicates whether the company is a domiciliary company.
+     */
+    private boolean domicilaryCompany;
+
+    //--------------------------------- Person Association --------------------------------- //
+
+    /**
+     * Name of the association object.
+     */
+    private String personAssociationName;
+
+    /**
+     * Type of association.
+     */
+    private String personAssociationType;
 }
