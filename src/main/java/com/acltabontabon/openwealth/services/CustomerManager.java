@@ -1,7 +1,7 @@
-package com.acltabontabon.openwealth.service;
+package com.acltabontabon.openwealth.services;
 
 import com.acltabontabon.openwealth.dto.CustomerResponse;
-import com.acltabontabon.openwealth.model.Customer;
+import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.properties.OpenWealthProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

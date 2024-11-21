@@ -1,7 +1,7 @@
-package com.acltabontabon.openwealth.config;
+package com.acltabontabon.openwealth.configs;
 
 import com.acltabontabon.openwealth.properties.OpenWealthProperties;
-import com.acltabontabon.openwealth.service.CustomerManager;
+import com.acltabontabon.openwealth.services.CustomerManager;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

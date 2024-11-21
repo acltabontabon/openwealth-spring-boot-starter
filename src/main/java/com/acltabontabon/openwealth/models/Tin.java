@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.model;
+package com.acltabontabon.openwealth.models;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package com.acltabontabon.openwealth.model;
+package com.acltabontabon.openwealth.models;
 
+import com.acltabontabon.openwealth.enums.DocumentType;
 import java.time.LocalDate;
-import java.util.Map;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
