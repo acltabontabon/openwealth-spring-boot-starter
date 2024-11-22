@@ -9,10 +9,20 @@ import lombok.Data;
 @Data
 public class Person {
 
+    /**
+     * List of addresses associated with this person.
+     */
     private List<Address> addressList;
-// TODO:
-//    private List<Contact> contactList;
-//    private List<Kyc> kycList;
+
+    /**
+     * List of contact details associated with this person.
+     */
+    private List<Contact> contactList;
+
+    /**
+     * List of KYC objects associated with this person.
+     */
+    private List<Kyc> kycList;
 
     /**
      * Unique person ID assigned by the custody bank.
@@ -77,6 +87,16 @@ public class Person {
     private String title;
 
     /**
+     * Gender of the person.
+     */
+    private String gender;
+
+    /**
+     * Country where person was born.
+     */
+    private String countryOfBirth;
+
+    /**
      * Birthdate of the person.
      */
     private LocalDate dateOfBirth;
@@ -92,20 +112,10 @@ public class Person {
     private LocalDate dateOfDeath;
 
     /**
-     * Gender of the person.
-     */
-    private String gender;
-
-    /**
      * Country/Countries where a person was born or is legally accepted as belonging to the country.
      * The first country in the list represents the main nationality.
      */
     private List<String> nationalityList;
-
-    /**
-     * Civil status of the person.
-     */
-    private CivilStatus civilStatus;
 
     /**
      * List with tax identification numbers of a person.
@@ -113,9 +123,9 @@ public class Person {
     private List<Tin> tinList;
 
     /**
-     * Country where person was born.
+     * Civil status of the person.
      */
-    private String countryOfBirth;
+    private CivilStatus civilStatus;
 
     //--------------------------------- Legal Person --------------------------------- //
 
@@ -140,7 +150,7 @@ public class Person {
     /**
      * Indicates whether the company is a domiciliary company.
      */
-    private boolean domicilaryCompany;
+    private Boolean domicilaryCompany;
 
     //--------------------------------- Person Association --------------------------------- //
 
