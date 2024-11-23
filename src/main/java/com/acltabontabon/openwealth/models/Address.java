@@ -23,7 +23,7 @@ public class Address {
     /**
      * Indicates if this address is the domicile address.
      */
-    private boolean isDomicile;
+    private Boolean isDomicile;
 
     /**
      * 2-letter ISO 639-1 Language Code.
@@ -33,7 +33,7 @@ public class Address {
     /**
      * Indicates if this address is used for mailing purposes.
      */
-    private boolean isMailingAddress;
+    private Boolean isMailingAddress;
 
     private SalutationDetails salutationDetails;
 
