@@ -12,6 +12,7 @@ public class Kyc {
     private Boolean soleBeneficialOwner;
     private FundFlows fundFlows;
     private List<SourceOfWealth> sourceOfWealthList;
+    private TotalWealth totalWealth;
 
     // TODO:
 }

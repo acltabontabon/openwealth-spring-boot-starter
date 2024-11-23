@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 
 @Data
-public class AssetDetails {
+public class FurtherDetailsAsset {
 
     /**
      * Name of the object e.g. Customer, Person, Company, Document etc..
@@ -55,5 +55,6 @@ public class AssetDetails {
     /**
      * Free text field to provide additional information.
      */
+    @JsonAlias("additonalInformation") // This is a typo in the OpenWealth API
     private String additionalInformation;
 }
