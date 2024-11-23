@@ -15,6 +15,6 @@ public class OpenWealthProperties {
     public static class CustomerManagement {
         private String baseUrl;
         private String customersEndpoint;
+        private String customerDetailsEndpoint;
     }
-
 }
