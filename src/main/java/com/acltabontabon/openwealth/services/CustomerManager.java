@@ -22,8 +22,8 @@ public class CustomerManager {
             .build();
     }
 
-    public CustomerQuery customers() {
-        return new CustomerQuery();
+    public AllCustomerQuery customers() {
+        return new AllCustomerQuery();
     }
 
     public CustomerCreator createCustomer() {
@@ -34,11 +34,11 @@ public class CustomerManager {
 
     }
 
-    public class CustomerQuery {
+    public class AllCustomerQuery extends AsyncQuery<CustomerResponse> {
 
         private String correlationId;
 
-        public CustomerQuery withCorrelationId(String correlationId) {
+        public AllCustomerQuery withCorrelationId(String correlationId) {
             this.correlationId = correlationId;
             return this;
         }
@@ -48,16 +48,26 @@ public class CustomerManager {
         }
 
         public CustomerResponse fetch() {
-            return restClient.get()
-                .accept(MediaType.APPLICATION_JSON)
-                .header(HEADER_CORRELATION_ID, this.correlationId)
-                .retrieve()
-                .body(CustomerResponse.class);
+            return execute();
+        }
+
+        @Override
+        protected CustomerResponse execute() {
+            try {
+                return restClient.get()
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header(HEADER_CORRELATION_ID, this.correlationId)
+                    .retrieve()
+                    .body(CustomerResponse.class);
+            } catch (Exception e) {
+                log.error("Failed to fetch customers", e);
+                throw new RuntimeException("Failed to fetch customers", e);
+            }
         }
     }
 
     @RequiredArgsConstructor
-    public class SpecificCustomerQuery {
+    public class SpecificCustomerQuery extends AsyncQuery<CustomerResponse> {
         private final String customerId;
         private final String correlationId;
 
@@ -69,22 +79,29 @@ public class CustomerManager {
         }
 
         public CustomerResponse fetch() {
-            Customer customer = restClient.get()
-                .uri(uriBuilder -> {
-                    if (this.fullRecord) {
-                        return uriBuilder.path("/{customerId}/customer-details").build(this.customerId);
-                    } else {
-                        return uriBuilder.path("/{customerId}").build(this.customerId);
-                    }
-                })
-                .accept(MediaType.APPLICATION_JSON)
-                .header(HEADER_CORRELATION_ID, this.correlationId)
-                .retrieve()
-                .body(Customer.class);
+            return execute();
+        }
 
-            return CustomerResponse.builder()
-                .customer(customer)
-                .build();
+        protected CustomerResponse execute() {
+            try {
+                Customer customer = restClient.get()
+                    .uri(uriBuilder -> {
+                        if (this.fullRecord) {
+                            return uriBuilder.path("/{customerId}/customer-details").build(this.customerId);
+                        } else {
+                            return uriBuilder.path("/{customerId}").build(this.customerId);
+                        }
+                    })
+                    .accept(MediaType.APPLICATION_JSON)
+                    .header(HEADER_CORRELATION_ID, this.correlationId)
+                    .retrieve()
+                    .body(Customer.class);
+                return CustomerResponse.builder()
+                    .customer(customer)
+                    .build();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to fetch customer",e);
+            }
         }
     }
 }
