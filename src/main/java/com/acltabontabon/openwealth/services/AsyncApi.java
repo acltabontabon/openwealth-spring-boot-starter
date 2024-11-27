@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public abstract class AsyncQuery<T> {
+public abstract class AsyncApi<T> {
 
     public void fetchAsync(Consumer<T> success, Consumer<Throwable> error) {
         CompletableFuture.supplyAsync(this::execute)
