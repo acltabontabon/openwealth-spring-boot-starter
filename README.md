@@ -6,40 +6,67 @@ OpenWealth Starter is a lightweight and developer-friendly Spring Boot library t
 # Features
 - Fully compatible with OpenWealth API v2
 - Supports both synchronous and asynchronous requests
-- Provides a Fluent API for seamless integration with OpenWealth backend services
+- Provides a Fluent interface for seamless integration with OpenWealth backend services
 
 # Usage
 ## Customer Management API
 
-### Using `CustomerManager`
+### Using `CustomerService`
 ```java
 public class Example {
     
     @Autowired
-    private CustomerManager customerManager;
-
+    private customerService customerService;
+    
     // --- Synchronous examples ---
+    public void createCustomer() {
+        customerService.newCustomer()
+            .withExternalReference("extRef123")
+            .named("Joselito Balagbag")
+            .withStatus("active")
+            .openedOn("2022-01-01")
+            .speakingLanguage("EN")
+            .inSegment("WealthManagementEMEA")
+            .advisedBy("Jose Rizal")
+            .withDeputyAdvisor("Juan Luna")
+            .withPreviousAdvisor("Emilio Aguinaldo")
+            .withRelations(relations)
+            .withDocuments(documents)
+            .submit();
+    }
+    
+    public void updateCustomerContacts() {
+        customerService.updateCustomerContactDetails(customerId, personId)
+            .externalReference("extRef123")
+            .medium("email")
+            .type("work")
+            .content("1234")
+            .priority("Preferred phone number")
+            .additionalInfo("Additional information")
+            .submit();
+    }
+    
     public void fetchAllCustomers() {
-        customerManager.customers()
+        customerService.customers()
             .fetch();
     }
     
     public void fetchSingleCustomer() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
             .fetch();
     }
     
     public void fetchSingleCustomerDetails() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
-            .fullDetails()
+                .fullDetails()
             .fetch();
     }
     
     // --- Asynchronous examples ---
     public void fetchAsyncAllCustomers() {
-        customerManager.customers()
+        customerService.customers()
             .fetchAsync(
                 customers -> log.info("Customers: {}", customers), 
                 error -> log.error("Error: {}", error)
@@ -47,7 +74,7 @@ public class Example {
     }
 
     public void fetchAsyncSingleCustomer() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
             .fetchAsync(
                 customer -> log.info("Customer: {}", customer),
@@ -56,9 +83,9 @@ public class Example {
     }
 
     public void fetchAsyncSingleCustomerDetails() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
-            .fullDetails()
+                .fullDetails()
             .fetchAsync(
                 customer -> log.info("Customer: {}", customer),
                 error -> log.error("Error: {}", error)
@@ -67,21 +94,35 @@ public class Example {
 }
 ```
 
-### Using `PreCheckManager`
+### Using `ProspectService`
+
 ```java
 public class Example {
-    
+
     @Autowired
-    private PreCheckManager preCheckManager;
+    private ProspectService prospectService;
+
+    public void conductPreCheck() {
+        prospectService.preCheck()
+            .withCorrelationId(correlationId)
+            .prospect(Prospect.builder()
+                .firstName("Anthony")
+                .lastName("Stark")
+                .nationality("CH")
+                .domicile("CH")
+                .birthdate(LocalDate.of(2018, 4, 13))
+                .build())
+            .submit();
+    }
 
     public void fetchProspectStatus() {
-        preCheckManager.prospectStatus()
+        prospectService.prospectStatus()
             .withTemporaryId("tempId123")
             .fetch();
     }
 
     public void fetchAsyncProspectStatus() {
-        preCheckManager.prospectStatus()
+        prospectService.prospectStatus()
             .withTemporaryId("tempId123")
             .fetchAsync(
                 status -> log.info("Status: {}", status),

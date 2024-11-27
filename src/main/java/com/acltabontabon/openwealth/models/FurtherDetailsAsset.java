@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.models;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
@@ -49,12 +49,12 @@ public class FurtherDetailsAsset {
     /**
      * Type of non-tradable assets.
      */
-    @JsonAlias("typeOfNon-tradableAsset")
+    @JsonProperty("typeOfNon-tradableAsset")
     private String typeOfNonTradableAsset;
 
     /**
      * Free text field to provide additional information.
      */
-    @JsonAlias("additonalInformation") // This is a typo in the OpenWealth API
+    @JsonProperty("additonalInformation") // This is a typo in the OpenWealth API
     private String additionalInformation;
 }
