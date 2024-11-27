@@ -9,6 +9,22 @@ OpenWealth Starter is a lightweight and developer-friendly Spring Boot library t
 - Provides a Fluent interface for seamless integration with OpenWealth backend services
 
 # Usage
+
+## Configuration Properties
+
+The following table lists the configuration properties for the OpenWealth API, including their descriptions and default values.
+
+| **Property**                                                   | **Description**                                             | **Default Value**                                                        |
+|----------------------------------------------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------|
+| `openwealth.api.base-url`                                      | Base URL for all OpenWealth API requests                    | `https://api.openwealth.synpulse8.com/api`                               |
+| `openwealth.api.access-token`                                  | Access token for authenticating API requests                |                                                                          |
+| `openwealth.api.customer-management`                           | Base path for Customer Management API                       | `/customer-management/v2`                                                |
+| `openwealth.api.customer-management.customers`                 | Resource path for the retrieval of customers                | `${openwealth.api.customer-management}/customers`                        |
+| `openwealth.api.customer-management.customer`                  | Resource path for the retrieval of a specific customer      | `${openwealth.api.customer-management.customers}/{customerId}`           |
+| `openwealth.api.customer-management.customer-details`          | Resource path the retrieval of a specific customer details  | `${openwealth.api.customer-management.customer}/customer-details`        |
+| `openwealth.api.customer-management.prospect-pre-check`        | Resource path for prospect pre-check                        | `${openwealth.api.customer-management}/prospect-precheck`                |
+| `openwealth.api.customer-management.prospect-pre-check-status` | Resource path for prospect pre-check status                 | `${openwealth.api.customer-management.prospect-pre-check}/{temporaryId}` |
+
 ## Customer Management API
 
 ### Using `CustomerService`
