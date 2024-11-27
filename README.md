@@ -11,16 +11,16 @@ OpenWealth Starter is a lightweight and developer-friendly Spring Boot library t
 # Usage
 ## Customer Management API
 
-### Using `CustomerManager`
+### Using `CustomerService`
 ```java
 public class Example {
     
     @Autowired
-    private CustomerManager customerManager;
+    private customerService customerService;
     
     // --- Synchronous examples ---
     public void createCustomer() {
-        customerManager.newCustomer()
+        customerService.newCustomer()
             .withExternalReference("extRef123")
             .named("Joselito Balagbag")
             .withStatus("active")
@@ -36,7 +36,7 @@ public class Example {
     }
     
     public void updateCustomerContacts() {
-        customerManager.updateCustomerContactDetails(customerId, personId)
+        customerService.updateCustomerContactDetails(customerId, personId)
             .externalReference("extRef123")
             .medium("email")
             .type("work")
@@ -47,18 +47,18 @@ public class Example {
     }
     
     public void fetchAllCustomers() {
-        customerManager.customers()
+        customerService.customers()
             .fetch();
     }
     
     public void fetchSingleCustomer() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
             .fetch();
     }
     
     public void fetchSingleCustomerDetails() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
                 .fullDetails()
             .fetch();
@@ -66,7 +66,7 @@ public class Example {
     
     // --- Asynchronous examples ---
     public void fetchAsyncAllCustomers() {
-        customerManager.customers()
+        customerService.customers()
             .fetchAsync(
                 customers -> log.info("Customers: {}", customers), 
                 error -> log.error("Error: {}", error)
@@ -74,7 +74,7 @@ public class Example {
     }
 
     public void fetchAsyncSingleCustomer() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
             .fetchAsync(
                 customer -> log.info("Customer: {}", customer),
@@ -83,7 +83,7 @@ public class Example {
     }
 
     public void fetchAsyncSingleCustomerDetails() {
-        customerManager.customers()
+        customerService.customers()
             .withCustomerId("12345")
                 .fullDetails()
             .fetchAsync(
@@ -94,28 +94,35 @@ public class Example {
 }
 ```
 
-### Using `ProspectManager`
+### Using `ProspectService`
 
 ```java
 public class Example {
 
     @Autowired
-    private ProspectManager prospectManager;
+    private ProspectService prospectService;
 
     public void conductPreCheck() {
-        prospectManager.preCheck()
-            .addProspect(prospect)
+        prospectService.preCheck()
+            .withCorrelationId(correlationId)
+            .prospect(Prospect.builder()
+                .firstName("Anthony")
+                .lastName("Stark")
+                .nationality("CH")
+                .domicile("CH")
+                .birthdate(LocalDate.of(2018, 4, 13))
+                .build())
             .submit();
     }
 
     public void fetchProspectStatus() {
-        prospectManager.prospectStatus()
+        prospectService.prospectStatus()
             .withTemporaryId("tempId123")
             .fetch();
     }
 
     public void fetchAsyncProspectStatus() {
-        prospectManager.prospectStatus()
+        prospectService.prospectStatus()
             .withTemporaryId("tempId123")
             .fetchAsync(
                 status -> log.info("Status: {}", status),
