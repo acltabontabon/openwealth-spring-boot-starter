@@ -1,7 +1,10 @@
 # OpenWealth Starter
 
+OpenWealth Starter is a lightweight and developer-friendly Spring Boot library that simplifies integration with [OpenWealth API](https://openwealth.synpulse8.com/).
 
-OpenWealth Starter is a lightweight and developer-friendly Spring Boot library that simplifies integration with OpenWealth APIs.
+>**Disclaimer**: This project is not affiliated with or endorsed by OpenWealth or Synpulse. It is an independent effort to provide a convenient library for developers working with OpenWealth APIs.
+> 
+> For more information about OpenWealth, visit their [official website](https://openwealth.synpulse8.com/).
 
 # Features
 - Fully compatible with OpenWealth API v2
