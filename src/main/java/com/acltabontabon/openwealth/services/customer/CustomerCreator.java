@@ -2,9 +2,10 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.config.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.dto.CustomerResponse;
+import com.acltabontabon.openwealth.dto.CustomerCreateResponse;
+import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.services.AsyncApi;
+import com.acltabontabon.openwealth.services.CreateAsyncCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -12,38 +13,31 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerListRequest extends AsyncApi<CustomerResponse> {
+public class CustomerCreator implements CreateAsyncCommand<CustomerCreateResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
 
-    private String correlationId;
+    private final Customer customer;
+    private final String correlationId;
 
-    public CustomerListRequest withCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
-    }
-
-    public SingleCustomerRequest withCustomerId(String customerId) {
-        return new SingleCustomerRequest(restClient, apiProperties, customerId, this.correlationId);
-    }
-
-    public CustomerResponse fetch() {
+    public CustomerCreateResponse submit() {
         return execute();
     }
 
     @Override
-    protected CustomerResponse execute() {
+    public CustomerCreateResponse execute() {
         try {
-            return restClient.get()
+            return restClient.post()
                 .uri(apiProperties.getCustomers())
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .header(HEADER_CORRELATION_ID, this.correlationId)
+                .body(this.customer)
                 .retrieve()
-                .body(CustomerResponse.class);
+                .body(CustomerCreateResponse.class);
         } catch (Exception e) {
             log.error("Failed to fetch customers", e);
-            throw new RuntimeException("Failed to fetch customers", e);
+            throw new RuntimeException("Failed to create customer", e);
         }
     }
 }

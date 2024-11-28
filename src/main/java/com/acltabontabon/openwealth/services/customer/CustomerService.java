@@ -12,15 +12,7 @@ public class CustomerService {
     private final RestClient openWealthRestClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
 
-    public CustomerListRequest customers() {
-        return new CustomerListRequest(openWealthRestClient, apiProperties);
-    }
-
-    public CustomerCreator createCustomer() {
-        return new CustomerCreator();
-    }
-
-    public class CustomerCreator {
-        // TODO; Implement this
+    public CustomerQuery customers() {
+        return new CustomerQuery(openWealthRestClient, apiProperties);
     }
 }

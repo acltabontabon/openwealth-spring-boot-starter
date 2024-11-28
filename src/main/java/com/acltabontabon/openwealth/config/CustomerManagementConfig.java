@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestClient;
 
@@ -26,6 +27,7 @@ public class CustomerManagementConfig {
     public RestClient openWealthRestClient(RestClient.Builder builder, OpenWealthApiProperties openWealthApiProperties) {
         return builder
             .baseUrl(openWealthApiProperties.getBaseUrl())
+            .defaultHeaders(header -> header.add("Accept", MediaType.APPLICATION_JSON_VALUE))
             .defaultHeader("Authorization", "Bearer " + openWealthApiProperties.getAccessToken())
             .build();
     }

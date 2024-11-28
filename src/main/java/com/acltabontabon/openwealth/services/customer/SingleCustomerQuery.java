@@ -5,13 +5,12 @@ import static com.acltabontabon.openwealth.config.Constants.HEADER_CORRELATION_I
 import com.acltabontabon.openwealth.dto.CustomerResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.services.AsyncApi;
+import com.acltabontabon.openwealth.services.QueryAsyncCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleCustomerRequest extends AsyncApi<CustomerResponse> {
+public class SingleCustomerQuery implements QueryAsyncCommand<CustomerResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -21,7 +20,7 @@ public class SingleCustomerRequest extends AsyncApi<CustomerResponse> {
 
     private boolean fullRecord;
 
-    public SingleCustomerRequest fullRecord() {
+    public SingleCustomerQuery fullRecord() {
         this.fullRecord = true;
         return this;
     }
@@ -30,7 +29,8 @@ public class SingleCustomerRequest extends AsyncApi<CustomerResponse> {
         return execute();
     }
 
-    protected CustomerResponse execute() {
+    @Override
+    public CustomerResponse execute() {
         try {
             Customer customer = restClient.get()
                 .uri(builder -> {
@@ -40,7 +40,6 @@ public class SingleCustomerRequest extends AsyncApi<CustomerResponse> {
                         return builder.path(apiProperties.getCustomer()).build(this.customerId);
                     }
                 })
-                .accept(MediaType.APPLICATION_JSON)
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
                 .body(Customer.class);

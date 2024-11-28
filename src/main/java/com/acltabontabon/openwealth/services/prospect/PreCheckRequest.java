@@ -31,7 +31,6 @@ public class PreCheckRequest {
     public PreCheckResponse submit() {
         return restClient.post()
             .uri(apiProperties.getProspectPreCheck())
-            .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .header(HEADER_CORRELATION_ID, this.correlationId)
             .body(prospect)

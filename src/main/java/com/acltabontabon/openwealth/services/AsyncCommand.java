@@ -3,9 +3,9 @@ package com.acltabontabon.openwealth.services;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public abstract class AsyncApi<T> {
+public interface AsyncCommand<T> {
 
-    public void fetchAsync(Consumer<T> success, Consumer<Throwable> error) {
+    default void executeAsync(Consumer<T> success, Consumer<Throwable> error) {
         CompletableFuture.supplyAsync(this::execute)
             .thenAcceptAsync(success)
             .exceptionally(ex -> {
@@ -14,5 +14,5 @@ public abstract class AsyncApi<T> {
             });
     }
 
-    protected abstract T execute();
+    T execute();
 }
