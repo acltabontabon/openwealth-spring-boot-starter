@@ -9,7 +9,7 @@ OpenWealth Starter is a lightweight and developer-friendly Spring Boot library t
 # Features
 - Fully compatible with OpenWealth API v2
 - Supports both synchronous and asynchronous requests
-- Provides a Fluent interface for seamless integration with OpenWealth backend services
+- Provides a Fluent API for seamless integration with OpenWealth backend services
 
 # Usage
 
@@ -37,21 +37,17 @@ public class Example {
     @Autowired
     private customerService customerService;
     
-    // --- Synchronous examples ---
     public void createCustomer() {
-        customerService.newCustomer()
-            .withExternalReference("extRef123")
-            .named("Joselito Balagbag")
-            .withStatus("active")
-            .openedOn("2022-01-01")
-            .speakingLanguage("EN")
-            .inSegment("WealthManagementEMEA")
-            .advisedBy("Jose Rizal")
-            .withDeputyAdvisor("Juan Luna")
-            .withPreviousAdvisor("Emilio Aguinaldo")
-            .withRelations(relations)
-            .withDocuments(documents)
-            .submit();
+        customerService.customers().createNew(c).submit();
+        
+        // or
+
+        customerService.customers()
+            .createNew(c)
+            .submitAsync(
+                customer -> log.info("Customer: {}", customer),
+                error -> log.error("Error: {}", error)
+            );
     }
     
     public void updateCustomerContacts() {
@@ -83,7 +79,15 @@ public class Example {
             .fetch();
     }
     
-    // --- Asynchronous examples ---
+    public void createCustomerAsync() {
+        customerService.customers()
+            .createNew(c)
+            .submitAsync(
+                customer -> log.info("Customer: {}", customer), 
+                error -> log.error("Error: {}", error)
+            );
+    }
+    
     public void fetchAsyncAllCustomers() {
         customerService.customers()
             .fetchAsync(
