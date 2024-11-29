@@ -37,9 +37,17 @@ public class Example {
     @Autowired
     private customerService customerService;
     
-    // --- Synchronous examples ---
     public void createCustomer() {
         customerService.customers().createNew(c).submit();
+        
+        // or
+
+        customerService.customers()
+            .createNew(c)
+            .submitAsync(
+                customer -> log.info("Customer: {}", customer),
+                error -> log.error("Error: {}", error)
+            );
     }
     
     public void updateCustomerContacts() {
@@ -71,7 +79,15 @@ public class Example {
             .fetch();
     }
     
-    // --- Asynchronous examples ---
+    public void createCustomerAsync() {
+        customerService.customers()
+            .createNew(c)
+            .submitAsync(
+                customer -> log.info("Customer: {}", customer), 
+                error -> log.error("Error: {}", error)
+            );
+    }
+    
     public void fetchAsyncAllCustomers() {
         customerService.customers()
             .fetchAsync(

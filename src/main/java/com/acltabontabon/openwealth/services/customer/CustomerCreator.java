@@ -13,7 +13,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerCreator implements CreateAsyncCommand<CustomerCreateResponse> {
+public class CustomerCreator extends CreateAsyncCommand<CustomerCreateResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -26,7 +26,7 @@ public class CustomerCreator implements CreateAsyncCommand<CustomerCreateRespons
     }
 
     @Override
-    public CustomerCreateResponse execute() {
+    protected CustomerCreateResponse execute() {
         try {
             return restClient.post()
                 .uri(apiProperties.getCustomers())

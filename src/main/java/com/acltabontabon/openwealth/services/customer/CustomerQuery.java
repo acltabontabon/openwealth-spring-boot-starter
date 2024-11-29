@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerQuery implements QueryAsyncCommand<CustomerResponse> {
+public class CustomerQuery extends QueryAsyncCommand<CustomerResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;

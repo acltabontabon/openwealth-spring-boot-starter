@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleCustomerQuery implements QueryAsyncCommand<CustomerResponse> {
+public class SingleCustomerQuery extends QueryAsyncCommand<CustomerResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
