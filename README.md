@@ -28,7 +28,17 @@ The following table lists the configuration properties for the OpenWealth API, i
 | `openwealth.api.customer-management.prospect-pre-check`        | Resource path for prospect pre-check                        | `${openwealth.api.customer-management}/prospect-precheck`                |
 | `openwealth.api.customer-management.prospect-pre-check-status` | Resource path for prospect pre-check status                 | `${openwealth.api.customer-management.prospect-pre-check}/{temporaryId}` |
 
-## Customer Management API
+## Supported Operations
+
+- Customer Service
+  - Create a new customer
+  - Retrieve customer details
+  - Update customer details
+- Prospect Service
+  - Conduct pre-check
+  - Check prospect status
+
+## Examples
 
 ### Using `CustomerService`
 ```java
