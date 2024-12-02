@@ -2,15 +2,16 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.config.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.dto.CustomerResponse;
+import com.acltabontabon.openwealth.dto.CustomerOperationResponse;
 import com.acltabontabon.openwealth.models.Customer;
+import com.acltabontabon.openwealth.models.Person;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.QueryAsyncCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleCustomerQuery extends QueryAsyncCommand<CustomerResponse> {
+public class SingleCustomerQuery extends QueryAsyncCommand<CustomerOperationResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -25,12 +26,12 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerResponse> {
         return this;
     }
 
-    public CustomerResponse fetch() {
-        return execute();
+    public PersonCreator addPerson(Person personToAssociate) {
+        return new PersonCreator(restClient, apiProperties, personToAssociate, customerId, correlationId);
     }
 
     @Override
-    public CustomerResponse execute() {
+    public CustomerOperationResponse execute() {
         try {
             Customer customer = restClient.get()
                 .uri(builder -> {
@@ -44,7 +45,7 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerResponse> {
                 .retrieve()
                 .body(Customer.class);
 
-            return CustomerResponse.builder()
+            return CustomerOperationResponse.builder()
                 .customer(customer)
                 .build();
         } catch (Exception e) {
