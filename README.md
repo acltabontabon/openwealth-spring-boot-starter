@@ -1,9 +1,11 @@
 # Overview
 
-OpenWealth Starter is a lightweight and developer-friendly Spring Boot library that simplifies integration with [OpenWealth API](https://openwealth.ch).
+OpenWealth Starter is a lightweight and developer-friendly Spring Boot library that simplifies 
+integration with [OpenWealth API](https://openwealth.ch).
 
->**Disclaimer**: This project is not affiliated with or endorsed by OpenWealth or Synpulse. It is an independent effort to provide a convenient library for developers working with OpenWealth APIs.
-> 
+>**Disclaimer**: This project is not affiliated with or endorsed by OpenWealth or Synpulse. It is an 
+> independent effort to provide a convenient library for developers working with OpenWealth APIs.
+>
 > For more information about OpenWealth, visit their [official website](https://openwealth.ch).
 
 # Features
@@ -11,11 +13,18 @@ OpenWealth Starter is a lightweight and developer-friendly Spring Boot library t
 - Supports both synchronous and asynchronous requests
 - Provides a Fluent API for seamless integration with OpenWealth backend services
 
+# Motivation
+Created this library for fun and learning. If you somehow find this helpful and/or useful, I'd be 
+grateful for a cup of coffee. :grin: :coffee:
+
+<a href='https://ko-fi.com/acltabontabon' target='_blank'><img style='height:30px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=1' border='0' alt='Buy Me a Coffee at ko-fi.com'></a>
+
 # Usage
 
 ## Configuration Properties
 
-The following table lists the configuration properties for the OpenWealth API, including their descriptions and default values.
+The following table lists the configuration properties for the OpenWealth API, including their 
+descriptions and default values.
 
 | **Property**                                                   | **Description**                                             | **Default Value**                                                        |
 |----------------------------------------------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------|
@@ -31,99 +40,83 @@ The following table lists the configuration properties for the OpenWealth API, i
 ## Supported Operations
 
 - Customer Service
-  - Create a new customer
-  - Retrieve customer details
-  - Update customer details
+    - Create a new customer
+    - Retrieve customer details
+    - Update customer details
 - Prospect Service
-  - Conduct pre-check
-  - Check prospect status
+    - Conduct pre-check
+    - Check prospect status
 
 ## Examples
 
 ### Using `CustomerService`
 ```java
-public class Example {
-    
-    @Autowired
-    private customerService customerService;
-    
-    public void createCustomer() {
-        customerService.customers().createNew(c).submit();
-        
-        // or
+@Autowrired
+private CustomerService customerService;
+```
 
-        customerService.customers()
-            .createNew(c)
-            .submitAsync(
-                customer -> log.info("Customer: {}", customer),
-                error -> log.error("Error: {}", error)
-            );
-    }
+#### Get customer information
+```java
+public void fetchAllCustomers() {
+    // all customers
+    customerService.customers()
+        .fetch();
     
-    public void updateCustomerContacts() {
-        customerService.updateCustomerContactDetails(customerId, personId)
-            .externalReference("extRef123")
-            .medium("email")
-            .type("work")
-            .content("1234")
-            .priority("Preferred phone number")
-            .additionalInfo("Additional information")
-            .submit();
-    }
+    // single customer basic details
+    customerService.customers()
+        .withCustomerId(customerId)
+        .fetch();
     
-    public void fetchAllCustomers() {
-        customerService.customers()
-            .fetch();
-    }
+    // single customer with full details
+    customerService.customers()
+        .withCustomerId(customerId)
+        .fullDetails()
+        .fetch();
     
-    public void fetchSingleCustomer() {
-        customerService.customers()
-            .withCustomerId("12345")
-            .fetch();
-    }
-    
-    public void fetchSingleCustomerDetails() {
-        customerService.customers()
-            .withCustomerId("12345")
-                .fullDetails()
-            .fetch();
-    }
-    
-    public void createCustomerAsync() {
-        customerService.customers()
-            .createNew(c)
-            .submitAsync(
-                customer -> log.info("Customer: {}", customer), 
-                error -> log.error("Error: {}", error)
-            );
-    }
-    
-    public void fetchAsyncAllCustomers() {
-        customerService.customers()
-            .fetchAsync(
-                customers -> log.info("Customers: {}", customers), 
-                error -> log.error("Error: {}", error)
-            );
-    }
+    // asynchronous request
+    customerService.customers()
+        .fetchAsync(
+            customers -> log.info("List of customers: {}", customers.getCustomers()),
+            error -> log.error("Error: {}", error)
+        );
+}
+```
 
-    public void fetchAsyncSingleCustomer() {
-        customerService.customers()
-            .withCustomerId("12345")
-            .fetchAsync(
-                customer -> log.info("Customer: {}", customer),
-                error -> log.error("Error: {}", error)
-            );
-    }
+#### Create a new customer
+```java
+public void createCustomer() {
+    // synchronous
+    customerService.customers()
+        .createNew(c)
+        .submit();
 
-    public void fetchAsyncSingleCustomerDetails() {
-        customerService.customers()
-            .withCustomerId("12345")
-                .fullDetails()
-            .fetchAsync(
-                customer -> log.info("Customer: {}", customer),
-                error -> log.error("Error: {}", error)
-            );
-    }
+    // asynchronous request
+    customerService.customers()
+        .createNew(c)
+        .submitAsync(
+            response -> log.info("CustomerOperationResponse: {}", response),
+            error -> log.error("Error: {}", error)
+        );
+}
+```
+
+#### Update customer information
+```java
+public void updateCustomer() {
+    // add a person object to an existing customer
+    customerService.customers()
+        .withCustomerId(customerId)
+        .addPerson(person)
+        .submit();
+
+    // asynchronous request
+    customerService.customers()
+        .withCustomerId(customerId)
+        .addPerson(person)
+        .submitAsync(
+            response -> log.info("CustomerOperationResponse: {}", customer),
+            error -> log.error("Error: {}", error)
+        );
 }
 ```
 
@@ -164,9 +157,3 @@ public class Example {
     }
 }
 ```
-
-
-# Motivation
-Created this library for fun and learning. If you somehow find this helpful and/or useful, I'd be grateful for a cup of coffee. :grin: :coffee:
-
-<a href='https://ko-fi.com/acltabontabon' target='_blank'><img style='height:30px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=1' border='0' alt='Buy Me a Coffee at ko-fi.com'></a>
