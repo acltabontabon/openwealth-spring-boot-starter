@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.config.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.dto.CustomerResponse;
+import com.acltabontabon.openwealth.dto.CustomerOperationResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.QueryAsyncCommand;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerQuery extends QueryAsyncCommand<CustomerResponse> {
+public class CustomerQuery extends QueryAsyncCommand<CustomerOperationResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -32,18 +32,14 @@ public class CustomerQuery extends QueryAsyncCommand<CustomerResponse> {
         return new CustomerCreator(restClient, apiProperties, customer, this.correlationId);
     }
 
-    public CustomerResponse fetch() {
-        return execute();
-    }
-
     @Override
-    public CustomerResponse execute() {
+    public CustomerOperationResponse execute() {
         try {
             return restClient.get()
                 .uri(apiProperties.getCustomers())
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
-                .body(CustomerResponse.class);
+                .body(CustomerOperationResponse.class);
         } catch (Exception e) {
             log.error("Failed to fetch customers", e);
             throw new RuntimeException("Failed to fetch customers", e);

@@ -2,8 +2,7 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.config.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.dto.CustomerOperationResponse;
-import com.acltabontabon.openwealth.models.Customer;
+import com.acltabontabon.openwealth.models.Person;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.CreateAsyncCommand;
 import lombok.RequiredArgsConstructor;
@@ -13,27 +12,31 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerCreator extends CreateAsyncCommand<CustomerOperationResponse> {
+public class PersonCreator extends CreateAsyncCommand<Person> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
 
-    private final Customer customer;
+    private final Person personToAssociate;
+
+    private final String customerId;
     private final String correlationId;
 
+    // FIXME: Think of a way to standardized the response of this method at the moment, it returns
+    //  the person that was associated to the customer which is coming from the API as well
     @Override
-    protected CustomerOperationResponse execute() {
+    protected Person execute() {
         try {
             return restClient.post()
-                .uri(apiProperties.getCustomers())
+                .uri(apiProperties.getPersonDetails())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HEADER_CORRELATION_ID, this.correlationId)
-                .body(this.customer)
+                .body(this.personToAssociate)
                 .retrieve()
-                .body(CustomerOperationResponse.class);
+                .body(Person.class);
         } catch (Exception e) {
-            log.error("Failed to create customer", e);
-            throw new RuntimeException("Failed to create customer", e);
+            log.error("Failed to associate person to customer: {}", this.customerId, e);
+            throw new RuntimeException("Failed to associate person to customer: " + this.customerId, e);
         }
     }
 }
