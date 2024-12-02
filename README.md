@@ -8,8 +8,16 @@ integration with [OpenWealth API](https://openwealth.ch).
 >
 > For more information about OpenWealth, visit their [official website](https://openwealth.ch).
 
+> 🚧 **Under Construction!** 🚧
+>
+> Heads up! This project is a living work-in-progress 🛠️. Things might break, move, or spontaneously transform (like a caterpillar turning into a butterfly).
+>
+> Want to join the fun? Fork it, star it, or just hang out in the issue tracker. Your ideas are welcome, even if they're a bit wild!
+
 # Features
+
 - Fully compatible with OpenWealth API v2
+  - Customer Management API v2.0.6
 - Supports both synchronous and asynchronous requests
 - Provides a Fluent API for seamless integration with OpenWealth backend services
 
