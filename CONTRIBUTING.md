@@ -17,7 +17,7 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 5. Make sure your code lints.
 6. Issue that pull request!
 
-## Report bugs using Github's [issues](https://github.com/acltabontabon/isalin/issues)
+## Report bugs using Github's [issues](https://github.com/acltabontabon/openwealth-spring-starter/issues)
 We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/acltabontabon/openwealth-spring-starter/issues/new); it's that easy!
 
 ## License
