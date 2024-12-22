@@ -1,26 +1,29 @@
 # Overview
 
-OpenWealth Starter is a lightweight and developer-friendly Spring Boot library that simplifies 
+OpenWealth Starter is a lightweight and developer-friendly Spring Boot library that simplifies
 integration with [OpenWealth API](https://openwealth.ch).
 
->**Disclaimer**: This project is not affiliated with or endorsed by OpenWealth or Synpulse. It is an 
+> **Disclaimer**: This project is not affiliated with or endorsed by OpenWealth or Synpulse. It is
+> an
 > independent effort to provide a convenient library for developers working with OpenWealth APIs.
 >
 > For more information about OpenWealth, visit their [official website](https://openwealth.ch).
 
 > 🚧 **Under Construction!** 🚧
 >
-> Heads up! This project is a living work-in-progress 🛠️. Things might break, move, or spontaneously transform.
+> Heads up! This project is a living work-in-progress 🛠️. Things might break, move, or spontaneously
+> transform.
 
 # Features
 
 - Fully compatible with OpenWealth API v2
-  - Customer Management API v2.0.6
+    - Customer Management API v2.0.6
 - Supports both synchronous and asynchronous requests
 - Provides a Fluent API for seamless integration with OpenWealth backend services
 
 # Motivation
-Created this library for fun and learning. If you somehow find this helpful and/or useful, I'd be 
+
+Created this library for fun and learning. If you somehow find this helpful and/or useful, I'd be
 grateful for a cup of coffee. :grin: :coffee:
 
 <a href='https://ko-fi.com/acltabontabon' target='_blank'><img style='height:30px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=1' border='0' alt='Buy Me a Coffee at ko-fi.com'></a>
@@ -29,25 +32,26 @@ grateful for a cup of coffee. :grin: :coffee:
 
 ## Configuration Properties
 
-The following table lists the configuration properties for the OpenWealth API, including their 
+The following table lists the configuration properties for the OpenWealth API, including their
 descriptions and default values.
 
-| **Property**                                                   | **Description**                                                                               | **Default Value**                                                            |
-|----------------------------------------------------------------|-----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| `openwealth.api.base-url`                                      | Base URL for all OpenWealth API requests                                                      | `https://api.openwealth.synpulse8.com/api`                                   |
-| `openwealth.api.access-token`                                  | Access token used to authenticate API requests                                                |                                                                              |
-| **CUSTOMER MANAGEMENT**                                        |                                                                                               |                                                                              |
-| `openwealth.api.customer-management`                           | Base path for the Customer Management API                                                     | `/customer-management/v2`                                                    |
-| `openwealth.api.customer-management.customers`                 | Resource path to retrieve a list of customers                                                 | `${openwealth.api.customer-management}/customers`                            |
-| `openwealth.api.customer-management.customer`                  | Resource path to retrieve details of a specific customer                                      | `${openwealth.api.customer-management.customers}/{customerId}`               |
-| `openwealth.api.customer-management.customer-details`          | Resource path to retrieve the complete details of a specific customer                         | `${openwealth.api.customer-management.customer}/customer-details`            |
-| `openwealth.api.customer-management.create-customer-details`   | Resource path to create new customer details                                                  | `${openwealth.api.customer-management}/customer-details`                     |
-| `openwealth.api.customer-management.persons`                   | Resource path to retrieve a list of associated persons for a customer                         | `${openwealth.api.customer-management.customer}/persons`                     |
-| `openwealth.api.customer-management.person`                    | Resource path to retrieve details of a specific associated person for a customer              | `${openwealth.api.customer-management.persons}/{personId}`                   |
-| `openwealth.api.customer-management.person-details`            | Resource path to retrieve the complete details of a specific associated person for a customer | `${openwealth.api.customer-management.customer}/person-details/{personId}`   |
-| `openwealth.api.customer-management.create-person-details`     | Resource path to create and associate person details with a customer                          | `${openwealth.api.customer-management.customer}/person-details`              |
-| `openwealth.api.customer-management.prospect-pre-check`        | Resource path to perform a prospect pre-check                                                 | `${openwealth.api.customer-management}/prospect-precheck`                    |
-| `openwealth.api.customer-management.prospect-pre-check-status` | Resource path to retrieve the status of a prospect pre-check                                  | `${openwealth.api.customer-management.prospect-pre-check}/{temporaryId}`     |
+| **Property**                                                   | **Description**                                                                               | **Default Value**                                                          |
+|----------------------------------------------------------------|-----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| `openwealth.api.base-url`                                      | Base URL for all OpenWealth API requests                                                      | `https://api.openwealth.synpulse8.com/api`                                 |
+| `openwealth.api.access-token`                                  | Access token used to authenticate API requests                                                |                                                                            |
+| **CUSTOMER MANAGEMENT**                                        |                                                                                               |                                                                            |
+| `openwealth.api.customer-management`                           | Base path for the Customer Management API                                                     | `/customer-management/v2`                                                  |
+| `openwealth.api.customer-management.customers`                 | Resource path to retrieve a list of customers                                                 | `/customer-management/v2/customers`                                        |
+| `openwealth.api.customer-management.customer`                  | Resource path to retrieve details of a specific customer                                      | `/customer-management/v2/customers/{customerId}`                           |
+| `openwealth.api.customer-management.customer-details`          | Resource path to retrieve the complete details of a specific customer                         | `/customer-management/v2/customers/{customerId}/customer-details`          |
+| `openwealth.api.customer-management.create-customer-details`   | Resource path to create new customer details                                                  | `/customer-management/v2/customer-details`                                 |
+| `openwealth.api.customer-management.persons`                   | Resource path to retrieve a list of associated persons for a customer                         | `/customer-management/v2/customers/{customerId}/persons`                   |
+| `openwealth.api.customer-management.person`                    | Resource path to retrieve details of a specific associated person for a customer              | `/customer-management/v2/customers/{customerId}/persons/{personId}`        |
+| `openwealth.api.customer-management.person-kyc`                | Resource path to retrieve kyc details of a specific associated person for a customer          | `/customer-management/v2/customers/{customerId}/persons/{personId}/kyc`    |
+| `openwealth.api.customer-management.person-details`            | Resource path to retrieve the complete details of a specific associated person for a customer | `/customer-management/v2/customers/{customerId}/person-details/{personId}` |
+| `openwealth.api.customer-management.create-person-details`     | Resource path to create and associate person details with a customer                          | `/customer-management/v2/customers/{customerId}/person-details`            |
+| `openwealth.api.customer-management.prospect-pre-check`        | Resource path to perform a prospect pre-check                                                 | `/customer-management/v2/prospect-precheck`                                |
+| `openwealth.api.customer-management.prospect-pre-check-status` | Resource path to retrieve the status of a prospect pre-check                                  | `/customer-management/v2/prospect-precheck/{temporaryId}`                  |
 
 ## Supported Operations
 
@@ -62,29 +66,32 @@ descriptions and default values.
 ## Examples
 
 ### Using `CustomerService`
+
 ```java
+
 @Autowrired
 private CustomerService customerService;
 ```
 
 #### Get customer information
+
 ```java
 public void fetchAllCustomers() {
     // all customers
     customerService.customers()
         .fetch();
-    
+
     // single customer basic details
     customerService.customers()
         .withCustomerId("customerId")
         .fetch();
-    
+
     // single customer with complete details
     customerService.customers()
         .withCustomerId("customerId")
         .completeDetails()
         .fetch();
-    
+
     // asynchronous request
     customerService.customers()
         .fetchAsync(
@@ -95,6 +102,7 @@ public void fetchAllCustomers() {
 ```
 
 #### Retrieve persons associated with a specific customer
+
 ```java
 public void fetchAssociatedPersons() {
     // all associated persons
@@ -102,25 +110,34 @@ public void fetchAssociatedPersons() {
         .withCustomerId("customerId")
         .associatedPersons()
         .fetch();
-    
-    // single associated person basic details
+
+    // single associated person with basic details
+    customerService.customers()
+        .withCustomerId("customerId")
+        .associatedPersons()
+        .withPersonId("personId")
+        .fetch();
+
+    // single associated person with complete details
     customerService.customers()
         .withCustomerId("customerId")
         .associatedPersons()
         .withPersonId("personId")
         .completeDetails()
         .fetch();
-    
-    // single associated person with complete details
+
+    // kyc details of an associated person
     customerService.customers()
         .withCustomerId("customerId")
         .associatedPersons()
         .withPersonId("personId")
+        .kyc()
         .fetch();
 }
 ```
 
 #### Create a new customer
+
 ```java
 public void createCustomer() {
     // synchronous
@@ -139,6 +156,7 @@ public void createCustomer() {
 ```
 
 #### Update customer information
+
 ```java
 public void updateCustomer() {
     // add a person object to an existing customer
