@@ -34,16 +34,17 @@ grateful for a cup of coffee. :grin: :coffee:
 The following table lists the configuration properties for the OpenWealth API, including their 
 descriptions and default values.
 
-| **Property**                                                   | **Description**                                             | **Default Value**                                                        |
-|----------------------------------------------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------|
-| `openwealth.api.base-url`                                      | Base URL for all OpenWealth API requests                    | `https://api.openwealth.synpulse8.com/api`                               |
-| `openwealth.api.access-token`                                  | Access token for authenticating API requests                |                                                                          |
-| `openwealth.api.customer-management`                           | Base path for Customer Management API                       | `/customer-management/v2`                                                |
-| `openwealth.api.customer-management.customers`                 | Resource path for the retrieval of customers                | `${openwealth.api.customer-management}/customers`                        |
-| `openwealth.api.customer-management.customer`                  | Resource path for the retrieval of a specific customer      | `${openwealth.api.customer-management.customers}/{customerId}`           |
-| `openwealth.api.customer-management.customer-details`          | Resource path the retrieval of a specific customer details  | `${openwealth.api.customer-management.customer}/customer-details`        |
-| `openwealth.api.customer-management.prospect-pre-check`        | Resource path for prospect pre-check                        | `${openwealth.api.customer-management}/prospect-precheck`                |
-| `openwealth.api.customer-management.prospect-pre-check-status` | Resource path for prospect pre-check status                 | `${openwealth.api.customer-management.prospect-pre-check}/{temporaryId}` |
+| **Property**                                                     | **Description**                                                | **Default Value**                                                        |
+|------------------------------------------------------------------|----------------------------------------------------------------|--------------------------------------------------------------------------|
+| `openwealth.api.base-url`                                        | Base URL for all OpenWealth API requests                       | `https://api.openwealth.synpulse8.com/api`                               |
+| `openwealth.api.access-token`                                    | Access token for authenticating API requests                   |                                                                          |
+| `openwealth.api.customer-management`                             | Base path for Customer Management API                          | `/customer-management/v2`                                                |
+| `openwealth.api.customer-management.customers`                   | Resource path for the retrieval of customers                   | `${openwealth.api.customer-management}/customers`                        |
+| `openwealth.api.customer-management.customer`                    | Resource path for the retrieval of a specific customer         | `${openwealth.api.customer-management.customers}/{customerId}`           |
+| `openwealth.api.customer-management.customer-details`            | Resource path for the retrieval of a specific customer details | `${openwealth.api.customer-management.customer}/customer-details`        |
+| `openwealth.api.customer-management.create-customer-details`     | Resource path for the request of customer details creation     | `${openwealth.api.customer-management}/customer-details`                 |
+| `openwealth.api.customer-management.prospect-pre-check`          | Resource path for prospect pre-check                           | `${openwealth.api.customer-management}/prospect-precheck`                |
+| `openwealth.api.customer-management.prospect-pre-check-status`   | Resource path for prospect pre-check status                    | `${openwealth.api.customer-management.prospect-pre-check}/{temporaryId}` |
 
 ## Supported Operations
 
