@@ -10,9 +10,7 @@ integration with [OpenWealth API](https://openwealth.ch).
 
 > 🚧 **Under Construction!** 🚧
 >
-> Heads up! This project is a living work-in-progress 🛠️. Things might break, move, or spontaneously transform (like a caterpillar turning into a butterfly).
->
-> Want to join the fun? Fork it, star it, or just hang out in the issue tracker. Your ideas are welcome, even if they're a bit wild!
+> Heads up! This project is a living work-in-progress 🛠️. Things might break, move, or spontaneously transform.
 
 # Features
 
