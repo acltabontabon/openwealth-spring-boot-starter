@@ -24,6 +24,8 @@ public class CustomerCreator extends CreateAsyncCommand<CustomerOperationRespons
     @Override
     protected CustomerOperationResponse execute() {
         try {
+            log.info("Creating customer: {}", this.customer);
+
             return restClient.post()
                 .uri(apiProperties.getCustomers())
                 .contentType(MediaType.APPLICATION_JSON)

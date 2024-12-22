@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 
 @Data
 @Builder
@@ -18,11 +19,13 @@ public class Person {
     /**
      * List of addresses associated with this person.
      */
+    @Singular("addAddress")
     private List<Address> addressList;
 
     /**
      * List of contact details associated with this person.
      */
+    @Singular("addContact")
     private List<Contact> contactList;
 
     /**
@@ -121,11 +124,13 @@ public class Person {
      * Country/Countries where a person was born or is legally accepted as belonging to the country.
      * The first country in the list represents the main nationality.
      */
+    @Singular("addNationality")
     private List<String> nationalityList;
 
     /**
      * List with tax identification numbers of a person.
      */
+    @Singular("addTin")
     private List<Tin> tinList;
 
     /**

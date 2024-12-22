@@ -2,12 +2,16 @@ package com.acltabontabon.openwealth.models;
 
 import com.acltabontabon.openwealth.enums.DocumentType;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Document {
 
     /**
