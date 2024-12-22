@@ -19,10 +19,10 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerOperationResp
     private final String customerId;
     private final String correlationId;
 
-    private boolean fullRecord;
+    private boolean completeDetails;
 
-    public SingleCustomerQuery fullRecord() {
-        this.fullRecord = true;
+    public SingleCustomerQuery completeDetails() {
+        this.completeDetails = true;
         return this;
     }
 
@@ -39,7 +39,7 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerOperationResp
         try {
             Customer customer = restClient.get()
                 .uri(builder -> {
-                    if (this.fullRecord) {
+                    if (this.completeDetails) {
                         return builder.path(apiProperties.getCustomerDetails()).build(this.customerId);
                     } else {
                         return builder.path(apiProperties.getCustomer()).build(this.customerId);
