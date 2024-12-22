@@ -26,6 +26,10 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerOperationResp
         return this;
     }
 
+    public PersonQuery associatedPersons() {
+        return new PersonQuery(restClient, apiProperties, customerId, correlationId);
+    }
+
     public PersonCreator addPerson(Person personToAssociate) {
         return new PersonCreator(restClient, apiProperties, personToAssociate, customerId, correlationId);
     }

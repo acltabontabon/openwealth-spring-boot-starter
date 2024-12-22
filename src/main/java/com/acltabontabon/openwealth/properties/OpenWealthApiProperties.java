@@ -16,6 +16,8 @@ public class OpenWealthApiProperties {
         private String customers;
         private String customer;
         private String customerDetails;
+
+        private String persons;
         private String personDetails;
 
         private String prospectPreCheck;

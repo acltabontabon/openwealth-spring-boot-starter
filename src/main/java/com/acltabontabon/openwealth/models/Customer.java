@@ -2,6 +2,7 @@ package com.acltabontabon.openwealth.models;
 
 import com.acltabontabon.openwealth.enums.RelationshipStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -9,12 +10,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Singular;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class Customer {
 
     /**
@@ -80,7 +82,9 @@ public class Customer {
     /**
      * List of documents belonging to this customer relationship.
      */
+    @Singular("addDocument")
     private List<Document> documentList;
 
+    @Singular("addPersonToCustomerRelation")
     private List<PersonToCustomerRelation> person2customerRelationList;
 }
