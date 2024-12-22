@@ -19,6 +19,10 @@ public class PersonQuery extends QueryAsyncCommand<List<Person>> {
     private final String customerId;
     private final String correlationId;
 
+    public SinglePersonQuery withPersonId(String personId) {
+        return new SinglePersonQuery(restClient, apiProperties, customerId, personId, this.correlationId);
+    }
+
     @Override
     protected List<Person> execute() {
         return restClient.get()

@@ -28,7 +28,7 @@ public class PersonCreator extends CreateAsyncCommand<Person> {
     protected Person execute() {
         try {
             return restClient.post()
-                .uri(apiProperties.getPersonDetails())
+                .uri(apiProperties.getCreatePersonDetails())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .body(this.personToAssociate)

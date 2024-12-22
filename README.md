@@ -73,13 +73,13 @@ public void fetchAllCustomers() {
     
     // single customer basic details
     customerService.customers()
-        .withCustomerId(customerId)
+        .withCustomerId("customerId")
         .fetch();
     
-    // single customer with full details
+    // single customer with complete details
     customerService.customers()
-        .withCustomerId(customerId)
-        .fullDetails()
+        .withCustomerId("customerId")
+        .completeDetails()
         .fetch();
     
     // asynchronous request
@@ -88,6 +88,32 @@ public void fetchAllCustomers() {
             customers -> log.info("List of customers: {}", customers.getCustomers()),
             error -> log.error("Error: {}", error)
         );
+}
+```
+
+#### Retrieve persons associated with a specific customer
+```java
+public void fetchAssociatedPersons() {
+    // all associated persons
+    customerService.customers()
+        .withCustomerId("customerId")
+        .associatedPersons()
+        .fetch();
+    
+    // single associated person basic details
+    customerService.customers()
+        .withCustomerId("customerId")
+        .associatedPersons()
+        .withPersonId("personId")
+        .completeDetails()
+        .fetch();
+    
+    // single associated person with complete details
+    customerService.customers()
+        .withCustomerId("customerId")
+        .associatedPersons()
+        .withPersonId("personId")
+        .fetch();
 }
 ```
 
