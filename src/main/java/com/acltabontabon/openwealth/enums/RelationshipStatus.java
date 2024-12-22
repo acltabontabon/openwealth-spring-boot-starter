@@ -19,8 +19,9 @@ public enum RelationshipStatus {
         return RelationshipStatus.valueOf(value.toUpperCase());
     }
 
+    @Override
     @JsonValue
-    public String toValue() {
+    public String toString() {
         return this.value;
     }
 }

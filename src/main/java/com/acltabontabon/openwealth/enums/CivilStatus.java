@@ -1,6 +1,7 @@
 package com.acltabontabon.openwealth.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum CivilStatus {
 
@@ -29,6 +30,7 @@ public enum CivilStatus {
     }
 
     @Override
+    @JsonValue
     public String toString() {
         return this.value;
     }

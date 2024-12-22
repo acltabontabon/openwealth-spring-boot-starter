@@ -1,22 +1,19 @@
 package com.acltabontabon.openwealth.config;
 
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.services.customer.CustomerService;
-import com.acltabontabon.openwealth.services.prospect.ProspectService;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
+import com.acltabontabon.openwealth.service.customer.CustomerService;
+import com.acltabontabon.openwealth.service.prospect.ProspectService;
+import java.nio.charset.StandardCharsets;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestClient;
 
+@Slf4j
 @AutoConfiguration
 @PropertySource("classpath:openwealth.properties")
 @EnableConfigurationProperties(OpenWealthApiProperties.class)
@@ -27,8 +24,15 @@ public class CustomerManagementConfig {
     public RestClient openWealthRestClient(RestClient.Builder builder, OpenWealthApiProperties openWealthApiProperties) {
         return builder
             .baseUrl(openWealthApiProperties.getBaseUrl())
+            .requestInterceptor((request, body, execution) -> {
+                log.debug("Request URI: {}", request.getURI());
+                log.debug("Request Body: {}", new String(body, StandardCharsets.UTF_8));
+
+                return execution.execute(request, body);
+            })
             .defaultHeaders(header -> header.add("Accept", MediaType.APPLICATION_JSON_VALUE))
             .defaultHeader("Authorization", "Bearer " + openWealthApiProperties.getAccessToken())
+
             .build();
     }
 
@@ -43,4 +47,6 @@ public class CustomerManagementConfig {
     public ProspectService prospectService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties) {
         return new ProspectService(openWealthRestClient, openWealthApiProperties.getCustomerManagement());
     }
+
+
 }

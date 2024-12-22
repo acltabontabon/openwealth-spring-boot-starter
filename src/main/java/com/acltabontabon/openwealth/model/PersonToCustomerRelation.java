@@ -1,6 +1,5 @@
-package com.acltabontabon.openwealth.dto;
+package com.acltabontabon.openwealth.model;
 
-import com.acltabontabon.openwealth.model.Customer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.List;
@@ -12,16 +11,14 @@ import lombok.Singular;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class CustomerOperationResponse implements ApiResponse {
+public class PersonToCustomerRelation {
 
-    private String temporaryId;
+    @Singular("addRelation")
+    private List<Relation> relationList;
 
-    private String externalReference;
-
-    @Singular
-    private List<Customer> customers;
+    private Person personDetails;
 
 }

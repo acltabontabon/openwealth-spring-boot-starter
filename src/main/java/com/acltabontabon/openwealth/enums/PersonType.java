@@ -1,6 +1,7 @@
 package com.acltabontabon.openwealth.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PersonType {
 
@@ -26,6 +27,7 @@ public enum PersonType {
     }
 
     @Override
+    @JsonValue
     public String toString() {
         return this.value;
     }
