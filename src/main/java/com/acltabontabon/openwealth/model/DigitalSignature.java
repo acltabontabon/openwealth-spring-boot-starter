@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.dto;
+package com.acltabontabon.openwealth.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class PreCheckResponse implements ApiResponse {
+public class DigitalSignature {
 
-    private String temporaryId;
-    private String status;
+    private String party;
+    private String signature;
 
 }
