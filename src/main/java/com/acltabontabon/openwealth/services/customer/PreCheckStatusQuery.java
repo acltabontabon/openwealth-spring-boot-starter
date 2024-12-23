@@ -3,37 +3,35 @@ package com.acltabontabon.openwealth.services.customer;
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.dtos.PreCheckApiResponse;
-import com.acltabontabon.openwealth.models.Prospect;
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.services.QueryAsyncCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class PreCheckRequest {
+public class PreCheckStatusQuery extends QueryAsyncCommand<PreCheckApiResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
 
+    private String temporaryId;
     private String correlationId;
-    private Prospect prospect;
 
-    public PreCheckRequest withCorrelationId(String correlationId) {
+    public PreCheckStatusQuery withTemporaryId(String temporaryId) {
+        this.temporaryId = temporaryId;
+        return this;
+    }
+
+    public PreCheckStatusQuery withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
 
-    public PreCheckRequest prospect(Prospect prospect) {
-        this.prospect = prospect;
-        return this;
-    }
-
-    public PreCheckApiResponse submit() {
-        return restClient.post()
-            .uri(apiProperties.getProspectPreCheck())
-            .contentType(MediaType.APPLICATION_JSON)
+    @Override
+    protected PreCheckApiResponse execute() {
+        return restClient.get()
+            .uri(apiProperties.getProspectPreCheckStatus(), this.temporaryId)
             .header(HEADER_CORRELATION_ID, this.correlationId)
-            .body(prospect)
             .retrieve()
             .body(PreCheckApiResponse.class);
     }
