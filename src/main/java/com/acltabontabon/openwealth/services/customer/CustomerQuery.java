@@ -33,7 +33,7 @@ public class CustomerQuery extends QueryAsyncCommand<CustomerApiResponse> {
     }
 
     @Override
-    public CustomerApiResponse execute() {
+    protected CustomerApiResponse execute() {
         try {
             return restClient.get()
                 .uri(apiProperties.getCustomers())
