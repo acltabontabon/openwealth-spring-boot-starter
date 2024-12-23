@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'org.jreleaser' version '1.15.0'
     id 'org.springframework.boot' version '3.3.5' apply false
     id 'io.spring.dependency-management' version '1.1.6'
 }
@@ -12,9 +13,13 @@ dependencyManagement {
 }
 
 group = 'com.acltabontabon'
-version = '0.0.1-dev'
+version = '1.0.0-Alpha.3'
+description = 'A lightweight and developer-friendly Spring Boot library that simplifies integration with OpenWealth APIs.'
+
 sourceCompatibility = '17'
 targetCompatibility = '17'
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
 repositories {
     mavenCentral()
@@ -36,6 +41,11 @@ test {
     useJUnitPlatform()
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -46,6 +56,66 @@ publishing {
                     fromResolutionResult()
                 }
             }
+
+            pom {
+                name = project.name
+                description = project.description.toString()
+                url = 'https://github.com/acltabontabon/openwealth-spring-starter'
+                inceptionYear = '2024'
+
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/license/mit/'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'aclt'
+                        name = 'Alvin Cris Tabontabon'
+                        email = 'me@acltabontabon.com'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/acltabontabon/openwealth-spring-starter.git'
+                    connection = 'scm:git:git://github.com/acltabontabon/openwealth-spring-starter.git'
+                    developerConnection = 'scm:git:git://github.com/acltabontabon/openwealth-spring-starter.git'
+                }
+                issueManagement {
+                    url = 'https://github.com/acltabontabon/openwealth-spring-starter/issues'
+                }
+            }
         }
+    }
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir('staging-deploy')
+        }
+    }
+}
+
+jreleaser {
+    signing {
+        active = 'ALWAYS'
+        armored = true
+        passphrase = System.getenv('JRELEASER_GPG_PASSPHRASE')
+        publicKey = System.getenv('JRELEASER_GPG_PUBLIC_KEY')
+        secretKey = System.getenv('JRELEASER_GPG_SECRET_KEY')
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository('build/staging-deploy')
+                }
+            }
+        }
+    }
+
+    upload {
+        active = 'always'
     }
 }
