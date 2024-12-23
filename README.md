@@ -131,7 +131,7 @@ public void fetchAssociatedPersons() {
         .withCustomerId("customerId")
         .associatedPersons()
         .withPersonId("personId")
-        .kyc()
+        .kycDetails()
         .fetch();
 }
 ```
