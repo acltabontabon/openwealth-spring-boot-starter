@@ -20,15 +20,31 @@ public class CustomerService {
     private final RestClient openWealthRestClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
 
+
+    /**
+     * Return the list of customers.
+     *
+     * @return CustomerQuery object
+     */
     public CustomerQuery customers() {
         return new CustomerQuery(openWealthRestClient, apiProperties);
     }
 
-    public PreCheckRequest preCheck() {
-        return new PreCheckRequest(openWealthRestClient, apiProperties);
+    /**
+     * Conducts a pre-check at the custody bank.
+     *
+     * @return PreCheckRequest object
+     */
+    public PreCheckCreator preCheck() {
+        return new PreCheckCreator(openWealthRestClient, apiProperties);
     }
 
-    public PreCheckStatusRequest preCheckStatus() {
-        return new PreCheckStatusRequest(openWealthRestClient, apiProperties);
+    /**
+     * Return the status of the pre-check.
+     *
+     * @return PreCheckStatusQuery object
+     */
+    public PreCheckStatusQuery preCheckStatus() {
+        return new PreCheckStatusQuery(openWealthRestClient, apiProperties);
     }
 }
