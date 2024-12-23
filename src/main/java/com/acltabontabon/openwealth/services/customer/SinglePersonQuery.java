@@ -39,7 +39,7 @@ public class SinglePersonQuery extends QueryAsyncCommand<Person> {
     }
 
     @Override
-    public Person execute() {
+    protected Person execute() {
         try {
             return restClient.get()
                 .uri(builder -> {

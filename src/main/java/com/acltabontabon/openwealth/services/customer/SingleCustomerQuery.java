@@ -35,7 +35,7 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerApiResponse> 
     }
 
     @Override
-    public CustomerApiResponse execute() {
+    protected CustomerApiResponse execute() {
         try {
             Customer customer = restClient.get()
                 .uri(builder -> {

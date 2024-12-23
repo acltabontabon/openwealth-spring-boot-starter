@@ -22,7 +22,7 @@ public class SingleContactQuery extends QueryAsyncCommand<Contact> {
     private final String correlationId;
 
     @Override
-    public Contact execute() {
+    protected Contact execute() {
         try {
             return restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonContact()).build(this.customerId, this.personId, this.contactId))
