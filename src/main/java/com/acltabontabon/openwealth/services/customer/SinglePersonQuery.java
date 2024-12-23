@@ -2,6 +2,7 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
+import com.acltabontabon.openwealth.models.Contact;
 import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.models.Person;
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
@@ -30,12 +31,16 @@ public class SinglePersonQuery extends QueryAsyncCommand<Person> {
         return new KycQuery(restClient, apiProperties, customerId, personId, correlationId);
     }
 
+    public KycCreator addKycDetails(Kyc newKyc) {
+        return new KycCreator(restClient, apiProperties, customerId, personId, correlationId, newKyc);
+    }
+
     public ContactQuery contactDetails() {
         return new ContactQuery(restClient, apiProperties, customerId, personId, correlationId);
     }
 
-    public KycCreator addKycDetails(Kyc kycToAdd) {
-        return new KycCreator(restClient, apiProperties, customerId, personId, correlationId, kycToAdd);
+    public ContactCreator addContactDetails(Contact newContact) {
+        return new ContactCreator(restClient, apiProperties, customerId, personId, correlationId, newContact);
     }
 
     @Override
