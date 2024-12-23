@@ -16,10 +16,12 @@ integration with [OpenWealth API](https://openwealth.ch).
 
 # Features
 
-- Fully compatible with OpenWealth API v2
-    - Customer Management API v2.0.6
-- Supports both synchronous and asynchronous requests
-- Provides a Fluent API for seamless integration with OpenWealth backend services
+- Compatible with the following OpenWealth APIs:
+    - Order Placement API `v2.0.8`
+    - Customer Management API `v2.0.6`
+    - Custody Services API `v2.0.3`
+- Simplifies integration with OpenWealth backend services using a Fluent API design
+- Supports both synchronous and asynchronous operations
 
 # Motivation
 
