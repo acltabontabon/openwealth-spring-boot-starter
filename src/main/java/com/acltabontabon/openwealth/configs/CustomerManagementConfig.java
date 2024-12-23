@@ -1,7 +1,8 @@
 package com.acltabontabon.openwealth.configs;
 
+import com.acltabontabon.openwealth.services.custody.CustodyService;
 import com.acltabontabon.openwealth.services.customer.CustomerService;
-import com.acltabontabon.openwealth.services.prospect.ProspectService;
+import com.acltabontabon.openwealth.services.order.OrderPlacementService;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -42,7 +43,13 @@ public class CustomerManagementConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public ProspectService prospectService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties) {
-        return new ProspectService(openWealthRestClient, openWealthApiProperties.getCustomerManagement());
+    public CustodyService custodyService() {
+        return new CustodyService();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OrderPlacementService orderPlacementService() {
+        return new OrderPlacementService();
     }
 }
