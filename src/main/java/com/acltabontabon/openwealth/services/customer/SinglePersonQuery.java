@@ -30,6 +30,10 @@ public class SinglePersonQuery extends QueryAsyncCommand<Person> {
         return new KycQuery(restClient, apiProperties, customerId, personId, correlationId);
     }
 
+    public ContactQuery contactDetails() {
+        return new ContactQuery(restClient, apiProperties, customerId, personId, correlationId);
+    }
+
     public KycCreator addKycDetails(Kyc kycToAdd) {
         return new KycCreator(restClient, apiProperties, customerId, personId, correlationId, kycToAdd);
     }
