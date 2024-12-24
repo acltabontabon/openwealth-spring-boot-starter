@@ -44,6 +44,10 @@ public class SinglePersonQuery extends QueryAsyncCommand<GenericResponse<Person>
         return new ContactCreator(restClient, apiProperties, customerId, personId, correlationId, newContact);
     }
 
+    public ContactUpdater updateContactDetails(String contactId, Contact updatedContact) {
+        return new ContactUpdater(restClient, apiProperties, customerId, personId, contactId, correlationId, updatedContact);
+    }
+
     @Override
     protected GenericResponse<Person> execute() {
         try {
