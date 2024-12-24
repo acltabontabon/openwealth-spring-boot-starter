@@ -2,14 +2,14 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.dtos.PreCheckApiResponse;
+import com.acltabontabon.openwealth.dtos.ProspectResponse;
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.QueryAsyncCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class PreCheckStatusQuery extends QueryAsyncCommand<PreCheckApiResponse> {
+public class PreCheckStatusQuery extends QueryAsyncCommand<ProspectResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -28,11 +28,11 @@ public class PreCheckStatusQuery extends QueryAsyncCommand<PreCheckApiResponse> 
     }
 
     @Override
-    protected PreCheckApiResponse execute() {
+    protected ProspectResponse execute() {
         return restClient.get()
             .uri(apiProperties.getProspectPreCheckStatus(), this.temporaryId)
             .header(HEADER_CORRELATION_ID, this.correlationId)
             .retrieve()
-            .body(PreCheckApiResponse.class);
+            .body(ProspectResponse.class);
     }
 }

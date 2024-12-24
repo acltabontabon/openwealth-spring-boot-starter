@@ -2,9 +2,9 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.dtos.PreCheckApiResponse;
-import com.acltabontabon.openwealth.models.Prospect;
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.dtos.ProspectResponse;
+import com.acltabontabon.openwealth.models.Prospect;
 import com.acltabontabon.openwealth.services.CreateAsyncCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -15,7 +15,7 @@ import org.springframework.web.client.RestClient;
  * bank based on base parameters like domicile / nationality etc.
  */
 @RequiredArgsConstructor
-public class PreCheckCreator extends CreateAsyncCommand<PreCheckApiResponse> {
+public class PreCheckCreator extends CreateAsyncCommand<ProspectResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -34,13 +34,13 @@ public class PreCheckCreator extends CreateAsyncCommand<PreCheckApiResponse> {
     }
 
     @Override
-    protected PreCheckApiResponse execute() {
+    protected ProspectResponse execute() {
         return restClient.post()
             .uri(apiProperties.getProspectPreCheck())
             .contentType(MediaType.APPLICATION_JSON)
             .header(HEADER_CORRELATION_ID, this.correlationId)
             .body(prospect)
             .retrieve()
-            .body(PreCheckApiResponse.class);
+            .body(ProspectResponse.class);
     }
 }

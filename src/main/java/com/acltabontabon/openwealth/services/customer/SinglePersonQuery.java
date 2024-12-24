@@ -2,6 +2,7 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
+import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Contact;
 import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.models.Person;
@@ -11,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SinglePersonQuery extends QueryAsyncCommand<Person> {
+public class SinglePersonQuery extends QueryAsyncCommand<GenericResponse<Person>> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -44,9 +45,9 @@ public class SinglePersonQuery extends QueryAsyncCommand<Person> {
     }
 
     @Override
-    protected Person execute() {
+    protected GenericResponse<Person> execute() {
         try {
-            return restClient.get()
+            Person person = restClient.get()
                 .uri(builder -> {
                     if (this.completeDetails) {
                         return builder.path(apiProperties.getPersonDetails()).build(this.customerId, this.personId);
@@ -58,6 +59,7 @@ public class SinglePersonQuery extends QueryAsyncCommand<Person> {
                 .retrieve()
                 .body(Person.class);
 
+            return new GenericResponse<>(person);
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch person details",e);
         }

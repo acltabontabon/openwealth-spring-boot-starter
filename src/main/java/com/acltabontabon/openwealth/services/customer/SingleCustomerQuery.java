@@ -2,16 +2,16 @@ package com.acltabontabon.openwealth.services.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.dtos.CustomerApiResponse;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.models.Person;
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.QueryAsyncCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleCustomerQuery extends QueryAsyncCommand<CustomerApiResponse> {
+public class SingleCustomerQuery extends QueryAsyncCommand<GenericResponse<Customer>> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -35,7 +35,7 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerApiResponse> 
     }
 
     @Override
-    protected CustomerApiResponse execute() {
+    protected GenericResponse<Customer> execute() {
         try {
             Customer customer = restClient.get()
                 .uri(builder -> {
@@ -49,9 +49,7 @@ public class SingleCustomerQuery extends QueryAsyncCommand<CustomerApiResponse> 
                 .retrieve()
                 .body(Customer.class);
 
-            return CustomerApiResponse.builder()
-                .customer(customer)
-                .build();
+            return new GenericResponse<>(customer);
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch customer",e);
         }

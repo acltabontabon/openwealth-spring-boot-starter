@@ -4,10 +4,8 @@ import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.dtos.ApiResponse;
-import com.acltabontabon.openwealth.dtos.ContactApiResponse;
-import com.acltabontabon.openwealth.dtos.CustomerApiResponse;
+import com.acltabontabon.openwealth.dtos.ContactResponse;
 import com.acltabontabon.openwealth.models.Contact;
-import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.services.CreateAsyncCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
@@ -32,7 +30,7 @@ public class ContactCreator extends CreateAsyncCommand<ApiResponse> {
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .body(newContact)
                 .retrieve()
-                .body(ContactApiResponse.class);
+                .body(ContactResponse.class);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create contact details", e);
         }

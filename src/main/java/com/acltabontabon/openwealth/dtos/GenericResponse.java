@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContactApiResponse implements ApiResponse {
+public class GenericResponse<T> implements ApiResponse {
 
-    private String contactId;
+    private T data;
 
 }
