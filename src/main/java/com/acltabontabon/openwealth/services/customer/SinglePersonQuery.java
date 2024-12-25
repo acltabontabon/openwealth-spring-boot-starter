@@ -48,6 +48,10 @@ public class SinglePersonQuery extends QueryAsyncCommand<GenericResponse<Person>
         return new ContactUpdater(restClient, apiProperties, customerId, personId, contactId, correlationId, updatedContact);
     }
 
+    public ContactDeleter deleteContactDetails(String contactId) {
+        return new ContactDeleter(restClient, apiProperties, customerId, personId, contactId, correlationId);
+    }
+
     @Override
     protected GenericResponse<Person> execute() {
         try {
