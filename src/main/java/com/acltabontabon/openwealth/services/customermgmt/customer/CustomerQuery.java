@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 

@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.person;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
@@ -8,6 +8,12 @@ import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.models.Person;
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import com.acltabontabon.openwealth.services.customermgmt.kyc.KycCreator;
+import com.acltabontabon.openwealth.services.customermgmt.kyc.KycQuery;
+import com.acltabontabon.openwealth.services.customermgmt.contact.ContactCreator;
+import com.acltabontabon.openwealth.services.customermgmt.contact.ContactDeleter;
+import com.acltabontabon.openwealth.services.customermgmt.contact.ContactQuery;
+import com.acltabontabon.openwealth.services.customermgmt.contact.ContactUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 

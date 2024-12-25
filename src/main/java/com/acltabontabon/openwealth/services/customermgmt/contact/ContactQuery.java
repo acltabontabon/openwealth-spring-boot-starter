@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.contact;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
@@ -36,7 +36,7 @@ public class ContactQuery extends QueryAsyncCommand<GenericResponse<List<Contact
 
             return new GenericResponse<>(contacts);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch person details",e);
+            throw new RuntimeException("Failed to fetch contact details",e);
         }
     }
 }
