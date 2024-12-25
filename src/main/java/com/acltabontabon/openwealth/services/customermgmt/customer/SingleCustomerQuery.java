@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
@@ -7,6 +7,8 @@ import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.models.Person;
 import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import com.acltabontabon.openwealth.services.customermgmt.person.PersonCreator;
+import com.acltabontabon.openwealth.services.customermgmt.person.PersonQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 

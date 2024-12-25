@@ -1,16 +1,18 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.kyc;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.dtos.KycResponse;
+import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Kyc;
-import com.acltabontabon.openwealth.services.CreateAsyncCommand;
+import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class KycCreator extends CreateAsyncCommand<KycResponse> {
+public class KycQuery extends QueryAsyncCommand<GenericResponse<List<Kyc>>> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -19,19 +21,18 @@ public class KycCreator extends CreateAsyncCommand<KycResponse> {
     private final String personId;
     private final String correlationId;
 
-    private final Kyc newKyc;
-
     @Override
-    protected KycResponse execute() {
+    protected GenericResponse<List<Kyc>> execute() {
         try {
-            return restClient.post()
+            List<Kyc> kyc = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonKyc()).build(this.customerId, this.personId))
                 .header(HEADER_CORRELATION_ID, this.correlationId)
-                .body(newKyc)
                 .retrieve()
-                .body(KycResponse.class);
+                .body(new ParameterizedTypeReference<>() {});
+
+            return new GenericResponse<>(kyc);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to create KYC details", e);
+            throw new RuntimeException("Failed to fetch kyc details",e);
         }
     }
 }

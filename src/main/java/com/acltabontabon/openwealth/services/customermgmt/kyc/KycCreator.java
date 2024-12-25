@@ -1,18 +1,16 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.kyc;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.dtos.KycResponse;
 import com.acltabontabon.openwealth.models.Kyc;
-import com.acltabontabon.openwealth.services.QueryAsyncCommand;
-import java.util.List;
+import com.acltabontabon.openwealth.services.CreateAsyncCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class KycQuery extends QueryAsyncCommand<GenericResponse<List<Kyc>>> {
+public class KycCreator extends CreateAsyncCommand<KycResponse> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -21,18 +19,19 @@ public class KycQuery extends QueryAsyncCommand<GenericResponse<List<Kyc>>> {
     private final String personId;
     private final String correlationId;
 
+    private final Kyc newKyc;
+
     @Override
-    protected GenericResponse<List<Kyc>> execute() {
+    protected KycResponse execute() {
         try {
-            List<Kyc> kyc = restClient.get()
+            return restClient.post()
                 .uri(builder -> builder.path(apiProperties.getPersonKyc()).build(this.customerId, this.personId))
                 .header(HEADER_CORRELATION_ID, this.correlationId)
+                .body(newKyc)
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
-
-            return new GenericResponse<>(kyc);
+                .body(KycResponse.class);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch person details",e);
+            throw new RuntimeException("Failed to create KYC details", e);
         }
     }
 }

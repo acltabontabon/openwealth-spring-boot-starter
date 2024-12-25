@@ -1,7 +1,7 @@
 package com.acltabontabon.openwealth.configs;
 
 import com.acltabontabon.openwealth.services.custody.CustodyService;
-import com.acltabontabon.openwealth.services.customer.CustomerService;
+import com.acltabontabon.openwealth.services.customermgmt.customer.CustomerService;
 import com.acltabontabon.openwealth.services.order.OrderPlacementService;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;

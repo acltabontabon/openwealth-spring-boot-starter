@@ -1,10 +1,9 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.contact;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.dtos.ApiResponse;
-import com.acltabontabon.openwealth.dtos.ContactResponse;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Contact;
 import com.acltabontabon.openwealth.services.CreateAsyncCommand;

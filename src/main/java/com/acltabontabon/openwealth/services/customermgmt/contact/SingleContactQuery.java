@@ -1,16 +1,16 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.contact;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.dtos.ApiResponse;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
-import com.acltabontabon.openwealth.services.CreateAsyncCommand;
+import com.acltabontabon.openwealth.models.Contact;
+import com.acltabontabon.openwealth.services.QueryAsyncCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class ContactDeleter extends CreateAsyncCommand<ApiResponse> {
+public class SingleContactQuery extends QueryAsyncCommand<GenericResponse<Contact>> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustomerManagement apiProperties;
@@ -21,17 +21,18 @@ public class ContactDeleter extends CreateAsyncCommand<ApiResponse> {
     private final String correlationId;
 
     @Override
-    protected ApiResponse execute() {
+    protected GenericResponse<Contact> execute() {
         try {
-            restClient.delete()
+            Contact contact = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonContact()).build(this.customerId, this.personId, this.contactId))
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
-                .toBodilessEntity();
+                .body(Contact.class);
 
-            return new GenericResponse<>();
+            return new GenericResponse<>(contact);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to update contact details", e);
+            throw new RuntimeException("Failed to fetch person contact details",e);
         }
     }
 }
+

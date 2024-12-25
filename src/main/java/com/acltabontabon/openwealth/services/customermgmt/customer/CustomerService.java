@@ -1,6 +1,8 @@
-package com.acltabontabon.openwealth.services.customer;
+package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckCreator;
+import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckStatusQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClient;
