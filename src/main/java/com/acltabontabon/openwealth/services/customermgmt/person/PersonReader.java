@@ -20,8 +20,8 @@ public class PersonReader extends ReadCommand<GenericResponse<List<Person>>> {
     private final String correlationId;
     private final String customerId;
 
-    public SinglePersonRead withPersonId(String personId) {
-        return new SinglePersonRead(restClient, apiProperties, this.correlationId, customerId, personId);
+    public SinglePersonReader withPersonId(String personId) {
+        return new SinglePersonReader(restClient, apiProperties, this.correlationId, customerId, personId);
     }
 
     @Override

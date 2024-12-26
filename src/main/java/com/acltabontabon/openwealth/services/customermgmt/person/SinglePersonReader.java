@@ -11,6 +11,7 @@ import com.acltabontabon.openwealth.models.Person;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import com.acltabontabon.openwealth.services.customermgmt.address.AddressCreator;
 import com.acltabontabon.openwealth.services.customermgmt.address.AddressReader;
+import com.acltabontabon.openwealth.services.customermgmt.address.AddressUpdater;
 import com.acltabontabon.openwealth.services.customermgmt.kyc.KycCreator;
 import com.acltabontabon.openwealth.services.customermgmt.kyc.KycReader;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactCreator;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SinglePersonRead extends ReadCommand<GenericResponse<Person>> {
+public class SinglePersonReader extends ReadCommand<GenericResponse<Person>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -32,7 +33,7 @@ public class SinglePersonRead extends ReadCommand<GenericResponse<Person>> {
 
     private boolean completeDetails;
 
-    public SinglePersonRead completeDetails() {
+    public SinglePersonReader completeDetails() {
         this.completeDetails = true;
         return this;
     }
@@ -67,6 +68,10 @@ public class SinglePersonRead extends ReadCommand<GenericResponse<Person>> {
 
     public AddressCreator addAddressDetails(Address newAddress) {
         return new AddressCreator(restClient, apiProperties, correlationId, customerId, personId, newAddress);
+    }
+
+    public AddressUpdater updateAddressDetails(String addressId, Address updatedAddress) {
+        return new AddressUpdater(restClient, apiProperties, correlationId, customerId, personId, addressId, updatedAddress);
     }
 
     @Override
