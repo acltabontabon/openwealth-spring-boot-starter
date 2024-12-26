@@ -25,7 +25,7 @@ public class CustomerCreator extends CreateAsyncCommand<CustomerResponse> {
     protected CustomerResponse execute() {
         try {
             return restClient.post()
-                .uri(apiProperties.getCreateCustomerDetails())
+                .uri(apiProperties.getNewCustomerDetails())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .body(this.customer)

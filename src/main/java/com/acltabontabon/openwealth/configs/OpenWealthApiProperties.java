@@ -13,18 +13,25 @@ public class OpenWealthApiProperties {
 
     @Data
     public static class CustomerManagement {
+        private String newCustomerDetails;
         private String customers;
         private String customer;
         private String customerDetails;
-        private String createCustomerDetails;
 
+        private String newCustomerDocument;
+        private String customerDocuments;
+        private String customerDocument;
+        private String customerDocumentDetails;
+
+        private String newPersonDetails;
         private String persons;
+        private String personDetails;
         private String person;
+
         private String personContacts;
         private String personContact;
+
         private String personKyc;
-        private String personDetails;
-        private String createPersonDetails;
 
         private String prospectPreCheck;
         private String prospectPreCheckStatus;
