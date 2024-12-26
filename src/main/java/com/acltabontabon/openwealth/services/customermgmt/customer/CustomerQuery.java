@@ -2,10 +2,10 @@ package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Customer;
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import com.acltabontabon.openwealth.services.QueryCommand;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +14,10 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerQuery extends QueryAsyncCommand<GenericResponse<List<Customer>>> {
+public class CustomerQuery extends QueryCommand<GenericResponse<List<Customer>>> {
 
     private final RestClient restClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
     private String correlationId;
 
@@ -31,7 +31,7 @@ public class CustomerQuery extends QueryAsyncCommand<GenericResponse<List<Custom
     }
 
     public CustomerCreator createNew(Customer customer) {
-        return new CustomerCreator(restClient, apiProperties, customer, this.correlationId);
+        return new CustomerCreator(restClient, apiProperties, this.correlationId, customer);
     }
 
     @Override

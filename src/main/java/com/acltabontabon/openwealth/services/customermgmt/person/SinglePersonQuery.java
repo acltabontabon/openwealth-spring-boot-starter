@@ -2,12 +2,12 @@ package com.acltabontabon.openwealth.services.customermgmt.person;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Contact;
 import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.models.Person;
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import com.acltabontabon.openwealth.services.QueryCommand;
 import com.acltabontabon.openwealth.services.customermgmt.kyc.KycCreator;
 import com.acltabontabon.openwealth.services.customermgmt.kyc.KycQuery;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactCreator;
@@ -18,14 +18,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SinglePersonQuery extends QueryAsyncCommand<GenericResponse<Person>> {
+public class SinglePersonQuery extends QueryCommand<GenericResponse<Person>> {
 
     private final RestClient restClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
+    private final String correlationId;
     private final String customerId;
     private final String personId;
-    private final String correlationId;
 
     private boolean completeDetails;
 
@@ -35,27 +35,27 @@ public class SinglePersonQuery extends QueryAsyncCommand<GenericResponse<Person>
     }
 
     public KycQuery kycDetails() {
-        return new KycQuery(restClient, apiProperties, customerId, personId, correlationId);
+        return new KycQuery(restClient, apiProperties, correlationId, customerId, personId);
     }
 
     public KycCreator addKycDetails(Kyc newKyc) {
-        return new KycCreator(restClient, apiProperties, customerId, personId, correlationId, newKyc);
+        return new KycCreator(restClient, apiProperties, correlationId, customerId, personId, newKyc);
     }
 
     public ContactQuery contactDetails() {
-        return new ContactQuery(restClient, apiProperties, customerId, personId, correlationId);
+        return new ContactQuery(restClient, apiProperties, correlationId, customerId, personId);
     }
 
     public ContactCreator addContactDetails(Contact newContact) {
-        return new ContactCreator(restClient, apiProperties, customerId, personId, correlationId, newContact);
+        return new ContactCreator(restClient, apiProperties, correlationId, customerId, personId, newContact);
     }
 
     public ContactUpdater updateContactDetails(String contactId, Contact updatedContact) {
-        return new ContactUpdater(restClient, apiProperties, customerId, personId, contactId, correlationId, updatedContact);
+        return new ContactUpdater(restClient, apiProperties, correlationId, customerId, personId, contactId, updatedContact);
     }
 
     public ContactDeleter deleteContactDetails(String contactId) {
-        return new ContactDeleter(restClient, apiProperties, customerId, personId, contactId, correlationId);
+        return new ContactDeleter(restClient, apiProperties, correlationId, customerId, personId, contactId);
     }
 
     @Override

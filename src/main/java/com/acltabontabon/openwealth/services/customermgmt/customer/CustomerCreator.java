@@ -2,10 +2,10 @@ package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.models.Customer;
-import com.acltabontabon.openwealth.services.CreateAsyncCommand;
+import com.acltabontabon.openwealth.services.CreateCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -13,13 +13,13 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerCreator extends CreateAsyncCommand<CustomerResponse> {
+public class CustomerCreator extends CreateCommand<CustomerResponse> {
 
     private final RestClient restClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
-    private final Customer customer;
     private final String correlationId;
+    private final Customer customer;
 
     @Override
     protected CustomerResponse execute() {
