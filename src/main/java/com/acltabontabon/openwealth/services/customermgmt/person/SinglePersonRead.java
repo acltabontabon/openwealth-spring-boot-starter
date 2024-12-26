@@ -4,21 +4,24 @@ import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.models.Address;
 import com.acltabontabon.openwealth.models.Contact;
 import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.models.Person;
-import com.acltabontabon.openwealth.services.QueryCommand;
+import com.acltabontabon.openwealth.services.ReadCommand;
+import com.acltabontabon.openwealth.services.customermgmt.address.AddressCreator;
+import com.acltabontabon.openwealth.services.customermgmt.address.AddressReader;
 import com.acltabontabon.openwealth.services.customermgmt.kyc.KycCreator;
-import com.acltabontabon.openwealth.services.customermgmt.kyc.KycQuery;
+import com.acltabontabon.openwealth.services.customermgmt.kyc.KycReader;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactCreator;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactDeleter;
-import com.acltabontabon.openwealth.services.customermgmt.contact.ContactQuery;
+import com.acltabontabon.openwealth.services.customermgmt.contact.ContactReader;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SinglePersonQuery extends QueryCommand<GenericResponse<Person>> {
+public class SinglePersonRead extends ReadCommand<GenericResponse<Person>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -29,21 +32,21 @@ public class SinglePersonQuery extends QueryCommand<GenericResponse<Person>> {
 
     private boolean completeDetails;
 
-    public SinglePersonQuery completeDetails() {
+    public SinglePersonRead completeDetails() {
         this.completeDetails = true;
         return this;
     }
 
-    public KycQuery kycDetails() {
-        return new KycQuery(restClient, apiProperties, correlationId, customerId, personId);
+    public KycReader kycDetails() {
+        return new KycReader(restClient, apiProperties, correlationId, customerId, personId);
     }
 
     public KycCreator addKycDetails(Kyc newKyc) {
         return new KycCreator(restClient, apiProperties, correlationId, customerId, personId, newKyc);
     }
 
-    public ContactQuery contactDetails() {
-        return new ContactQuery(restClient, apiProperties, correlationId, customerId, personId);
+    public ContactReader contactDetails() {
+        return new ContactReader(restClient, apiProperties, correlationId, customerId, personId);
     }
 
     public ContactCreator addContactDetails(Contact newContact) {
@@ -56,6 +59,14 @@ public class SinglePersonQuery extends QueryCommand<GenericResponse<Person>> {
 
     public ContactDeleter deleteContactDetails(String contactId) {
         return new ContactDeleter(restClient, apiProperties, correlationId, customerId, personId, contactId);
+    }
+
+    public AddressReader addressDetails() {
+        return new AddressReader(restClient, apiProperties, correlationId, customerId, personId);
+    }
+
+    public AddressCreator addAddressDetails(Address newAddress) {
+        return new AddressCreator(restClient, apiProperties, correlationId, customerId, personId, newAddress);
     }
 
     @Override

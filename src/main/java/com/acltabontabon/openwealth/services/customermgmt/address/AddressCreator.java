@@ -1,18 +1,17 @@
-package com.acltabontabon.openwealth.services.customermgmt.contact;
+package com.acltabontabon.openwealth.services.customermgmt.address;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.dtos.AddressResponse;
 import com.acltabontabon.openwealth.dtos.ApiResponse;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
-import com.acltabontabon.openwealth.models.Contact;
+import com.acltabontabon.openwealth.models.Address;
 import com.acltabontabon.openwealth.services.CreateCommand;
-import com.acltabontabon.openwealth.services.UpdateCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class ContactUpdater extends UpdateCommand {
+public class AddressCreator extends CreateCommand<ApiResponse> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -20,23 +19,20 @@ public class ContactUpdater extends UpdateCommand {
     private final String correlationId;
     private final String customerId;
     private final String personId;
-    private final String contactId;
 
-    private final Contact updatedContact;
+    private final Address newAddress;
 
     @Override
-    protected Void execute() {
+    protected ApiResponse execute() {
         try {
-            restClient.put()
-                .uri(builder -> builder.path(apiProperties.getPersonContact()).build(this.customerId, this.personId, this.contactId))
+            return restClient.post()
+                .uri(builder -> builder.path(apiProperties.getPersonAddresses()).build(this.customerId, this.personId))
                 .header(HEADER_CORRELATION_ID, this.correlationId)
-                .body(updatedContact)
+                .body(newAddress)
                 .retrieve()
-                .toBodilessEntity();
-
-            return null;
+                .body(AddressResponse.class);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to update contact details", e);
+            throw new RuntimeException("Failed to create address details", e);
         }
     }
 }

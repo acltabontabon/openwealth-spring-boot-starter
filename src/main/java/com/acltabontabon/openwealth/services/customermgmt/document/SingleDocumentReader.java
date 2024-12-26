@@ -5,12 +5,12 @@ import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Document;
-import com.acltabontabon.openwealth.services.QueryCommand;
+import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleDocumentQuery extends QueryCommand<GenericResponse<Document>> {
+public class SingleDocumentReader extends ReadCommand<GenericResponse<Document>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -21,7 +21,7 @@ public class SingleDocumentQuery extends QueryCommand<GenericResponse<Document>>
 
     private boolean completeDetails;
 
-    private SingleDocumentQuery completeDetails() {
+    private SingleDocumentReader completeDetails() {
         this.completeDetails = true;
         return this;
     }

@@ -7,16 +7,16 @@ import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.models.Document;
 import com.acltabontabon.openwealth.models.Person;
-import com.acltabontabon.openwealth.services.QueryCommand;
+import com.acltabontabon.openwealth.services.ReadCommand;
 import com.acltabontabon.openwealth.services.customermgmt.document.DocumentCreator;
-import com.acltabontabon.openwealth.services.customermgmt.document.DocumentQuery;
+import com.acltabontabon.openwealth.services.customermgmt.document.DocumentReader;
 import com.acltabontabon.openwealth.services.customermgmt.person.PersonCreator;
-import com.acltabontabon.openwealth.services.customermgmt.person.PersonQuery;
+import com.acltabontabon.openwealth.services.customermgmt.person.PersonReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleCustomerQuery extends QueryCommand<GenericResponse<Customer>> {
+public class SingleCustomerReader extends ReadCommand<GenericResponse<Customer>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -26,21 +26,21 @@ public class SingleCustomerQuery extends QueryCommand<GenericResponse<Customer>>
 
     private boolean completeDetails;
 
-    public SingleCustomerQuery completeDetails() {
+    public SingleCustomerReader completeDetails() {
         this.completeDetails = true;
         return this;
     }
 
-    public PersonQuery associatedPersons() {
-        return new PersonQuery(restClient, apiProperties, customerId, correlationId);
+    public PersonReader associatedPersons() {
+        return new PersonReader(restClient, apiProperties, customerId, correlationId);
     }
 
     public PersonCreator addPerson(Person personToAssociate) {
         return new PersonCreator(restClient, apiProperties, correlationId, customerId, personToAssociate);
     }
 
-    public DocumentQuery documents() {
-        return new DocumentQuery(restClient, apiProperties, correlationId, customerId);
+    public DocumentReader documents() {
+        return new DocumentReader(restClient, apiProperties, correlationId, customerId);
     }
 
     public DocumentCreator addDocument(Document document) {

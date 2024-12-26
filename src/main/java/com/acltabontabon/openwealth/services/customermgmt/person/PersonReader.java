@@ -5,14 +5,14 @@ import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Person;
-import com.acltabontabon.openwealth.services.QueryCommand;
+import com.acltabontabon.openwealth.services.ReadCommand;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class PersonQuery extends QueryCommand<GenericResponse<List<Person>>> {
+public class PersonReader extends ReadCommand<GenericResponse<List<Person>>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -20,8 +20,8 @@ public class PersonQuery extends QueryCommand<GenericResponse<List<Person>>> {
     private final String correlationId;
     private final String customerId;
 
-    public SinglePersonQuery withPersonId(String personId) {
-        return new SinglePersonQuery(restClient, apiProperties, this.correlationId, customerId, personId);
+    public SinglePersonRead withPersonId(String personId) {
+        return new SinglePersonRead(restClient, apiProperties, this.correlationId, customerId, personId);
     }
 
     @Override

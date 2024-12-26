@@ -5,7 +5,7 @@ import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Customer;
-import com.acltabontabon.openwealth.services.QueryCommand;
+import com.acltabontabon.openwealth.services.ReadCommand;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,20 +14,20 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerQuery extends QueryCommand<GenericResponse<List<Customer>>> {
+public class CustomerReader extends ReadCommand<GenericResponse<List<Customer>>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
 
     private String correlationId;
 
-    public CustomerQuery withCorrelationId(String correlationId) {
+    public CustomerReader withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
 
-    public SingleCustomerQuery withCustomerId(String customerId) {
-        return new SingleCustomerQuery(restClient, apiProperties, customerId, this.correlationId);
+    public SingleCustomerReader withCustomerId(String customerId) {
+        return new SingleCustomerReader(restClient, apiProperties, customerId, this.correlationId);
     }
 
     public CustomerCreator createNew(Customer customer) {

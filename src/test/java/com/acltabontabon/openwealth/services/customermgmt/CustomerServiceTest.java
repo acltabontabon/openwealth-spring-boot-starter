@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Customer;
-import com.acltabontabon.openwealth.services.customermgmt.customer.CustomerService;
 import java.util.List;
 import java.util.function.Function;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +39,6 @@ class CustomerServiceTest {
     @Test
     @SuppressWarnings("unchecked")
     void shouldReturnListOfCustomers() {
-        // Arrange
         List<Customer> customers = List.of(Customer.builder().build());
         GenericResponse<List<Customer>> expectedResponse = new GenericResponse<>(customers);
         String mockEndpoint = "http://mock-api/customers";
