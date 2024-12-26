@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customermgmt.contact;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.services.DeleteCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 public class ContactDeleter extends DeleteCommand {
 
     private final RestClient restClient;
-    private final CustomerManagementResourcePaths apiProperties;
+    private final CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;

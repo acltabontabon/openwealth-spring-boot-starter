@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customermgmt.kyc;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.KycResponse;
 import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.services.CreateCommand;
@@ -13,7 +13,7 @@ import org.springframework.web.client.RestClient;
 public class KycCreator extends CreateCommand<KycResponse> {
 
     private final RestClient restClient;
-    private final CustomerManagementResourcePaths apiProperties;
+    private final CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;

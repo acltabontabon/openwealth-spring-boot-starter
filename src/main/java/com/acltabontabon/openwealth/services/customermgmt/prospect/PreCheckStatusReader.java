@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customermgmt.prospect;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.ProspectResponse;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient;
 public class PreCheckStatusReader extends ReadCommand<ProspectResponse> {
 
     private final RestClient restClient;
-    private final CustomerManagementResourcePaths apiProperties;
+    private final CustomerManagement apiProperties;
 
     private String correlationId;
     private String temporaryId;

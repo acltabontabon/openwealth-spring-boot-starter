@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customermgmt.person;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Address;
 import com.acltabontabon.openwealth.models.Contact;
@@ -25,7 +25,7 @@ import org.springframework.web.client.RestClient;
 public class SinglePersonReader extends ReadCommand<GenericResponse<Person>> {
 
     private final RestClient restClient;
-    private final CustomerManagementResourcePaths apiProperties;
+    private final CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;

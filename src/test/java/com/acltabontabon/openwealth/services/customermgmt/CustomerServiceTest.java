@@ -7,7 +7,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import java.util.List;
@@ -27,7 +28,7 @@ class CustomerServiceTest {
     private RestClient restClient;
 
     @Mock
-    private CustomerManagementResourcePaths apiProperties;
+    private CustomerManagement apiProperties;
 
     private CustomerService customerService;
 
@@ -40,7 +41,7 @@ class CustomerServiceTest {
     @SuppressWarnings("unchecked")
     void shouldReturnListOfCustomers() {
         List<Customer> customers = List.of(Customer.builder().build());
-        GenericResponse<List<Customer>> expectedResponse = new GenericResponse<>(customers);
+        CustomerResponse expectedResponse = CustomerResponse.builder().customers(customers).build();
         String mockEndpoint = "http://mock-api/customers";
 
         RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
@@ -57,14 +58,14 @@ class CustomerServiceTest {
             .thenAnswer(invocation -> headersSpec);
         when(headersSpec.retrieve())
             .thenReturn(responseSpec);
-        when(responseSpec.body(any(ParameterizedTypeReference.class)))
-            .thenAnswer(invocation -> customers);
+        when(responseSpec.body(CustomerResponse.class))
+            .thenAnswer(invocation -> expectedResponse);
 
-        GenericResponse<List<Customer>> actualResponse = customerService.customers()
+        CustomerResponse actualResponse = customerService.customers()
             .withCorrelationId("1234")
             .fetch();
 
-        assertEquals(expectedResponse.getData().size(), actualResponse.getData().size());
+        assertEquals(expectedResponse.getCustomers().size(), actualResponse.getCustomers().size());
     }
 
     @Test
