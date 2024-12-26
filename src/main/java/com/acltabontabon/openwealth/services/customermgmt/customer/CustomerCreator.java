@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.services.CreateCommand;
@@ -16,7 +16,7 @@ import org.springframework.web.client.RestClient;
 public class CustomerCreator extends CreateCommand<CustomerResponse> {
 
     private final RestClient restClient;
-    private final CustomerManagementResourcePaths apiProperties;
+    private final CustomerManagement apiProperties;
 
     private final String correlationId;
     private final Customer customer;

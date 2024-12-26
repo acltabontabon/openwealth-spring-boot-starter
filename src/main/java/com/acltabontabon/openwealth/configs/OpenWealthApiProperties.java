@@ -9,10 +9,10 @@ public class OpenWealthApiProperties {
 
     private String baseUrl;
     private String accessToken;
-    private CustomerManagementResourcePaths customerManagementResourcePaths;
+    private CustomerManagement customerManagement;
 
     @Data
-    public static class CustomerManagementResourcePaths {
+    public static class CustomerManagement {
         private String newCustomerDetails;
         private String customers;
         private String customer;

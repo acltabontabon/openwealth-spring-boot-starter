@@ -2,22 +2,20 @@ package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.services.ReadCommand;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerReader extends ReadCommand<GenericResponse<List<Customer>>> {
+public class CustomerReader extends ReadCommand<CustomerResponse> {
 
     private final RestClient restClient;
-    private final CustomerManagementResourcePaths apiProperties;
+    private final CustomerManagement apiProperties;
 
     private String correlationId;
 
@@ -35,15 +33,13 @@ public class CustomerReader extends ReadCommand<GenericResponse<List<Customer>>>
     }
 
     @Override
-    protected GenericResponse<List<Customer>> execute() {
+    protected CustomerResponse execute() {
         try {
-            List<Customer> customers = restClient.get()
+            return restClient.get()
                 .uri(apiProperties.getCustomers())
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
-
-            return new GenericResponse<>(customers);
+                .body(CustomerResponse.class);
         } catch (Exception e) {
             log.error("Failed to fetch customers", e);
             throw new RuntimeException("Failed to fetch customers", e);
