@@ -2,10 +2,10 @@ package com.acltabontabon.openwealth.services.customermgmt.prospect;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.ProspectResponse;
 import com.acltabontabon.openwealth.models.Prospect;
-import com.acltabontabon.openwealth.services.CreateAsyncCommand;
+import com.acltabontabon.openwealth.services.CreateCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
@@ -15,10 +15,10 @@ import org.springframework.web.client.RestClient;
  * bank based on base parameters like domicile / nationality etc.
  */
 @RequiredArgsConstructor
-public class PreCheckCreator extends CreateAsyncCommand<ProspectResponse> {
+public class PreCheckCreator extends CreateCommand<ProspectResponse> {
 
     private final RestClient restClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
     private String correlationId;
     private Prospect prospect;

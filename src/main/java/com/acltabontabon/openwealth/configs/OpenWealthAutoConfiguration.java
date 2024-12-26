@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClient;
 @AutoConfiguration
 @PropertySource("classpath:openwealth.properties")
 @EnableConfigurationProperties(OpenWealthApiProperties.class)
-public class CustomerManagementConfig {
+public class OpenWealthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
@@ -38,7 +38,7 @@ public class CustomerManagementConfig {
     @Bean
     @ConditionalOnMissingBean
     public CustomerService customerService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties) {
-        return new CustomerService(openWealthRestClient, openWealthApiProperties.getCustomerManagement());
+        return new CustomerService(openWealthRestClient, openWealthApiProperties.getCustomerManagementResourcePaths());
     }
 
     @Bean

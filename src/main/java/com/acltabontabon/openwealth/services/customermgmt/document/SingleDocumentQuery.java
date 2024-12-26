@@ -2,22 +2,22 @@ package com.acltabontabon.openwealth.services.customermgmt.document;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Document;
-import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import com.acltabontabon.openwealth.services.QueryCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleDocumentQuery extends QueryAsyncCommand<GenericResponse<Document>> {
+public class SingleDocumentQuery extends QueryCommand<GenericResponse<Document>> {
 
     private final RestClient restClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
+    private final String correlationId;
     private final String customerId;
     private final String documentId;
-    private final String correlationId;
 
     private boolean completeDetails;
 

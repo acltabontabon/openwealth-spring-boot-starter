@@ -2,23 +2,23 @@ package com.acltabontabon.openwealth.services.customermgmt.document;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Contact;
-import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import com.acltabontabon.openwealth.services.QueryCommand;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class DocumentQuery extends QueryAsyncCommand<GenericResponse<List<Contact>>> {
+public class DocumentQuery extends QueryCommand<GenericResponse<List<Contact>>> {
 
     private final RestClient restClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
-    private final String customerId;
     private final String correlationId;
+    private final String customerId;
 
     @Override
     protected GenericResponse<List<Contact>> execute() {
@@ -36,6 +36,6 @@ public class DocumentQuery extends QueryAsyncCommand<GenericResponse<List<Contac
     }
 
     public SingleDocumentQuery withDocumentId(String documentId) {
-        return new SingleDocumentQuery(restClient, apiProperties, customerId, documentId, correlationId);
+        return new SingleDocumentQuery(restClient, apiProperties, correlationId, customerId, documentId);
     }
 }

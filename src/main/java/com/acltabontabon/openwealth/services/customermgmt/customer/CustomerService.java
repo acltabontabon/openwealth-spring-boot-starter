@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.services.customermgmt.customer;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckCreator;
 import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckStatusQuery;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.web.client.RestClient;
 public class CustomerService {
 
     private final RestClient openWealthRestClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
 
     /**

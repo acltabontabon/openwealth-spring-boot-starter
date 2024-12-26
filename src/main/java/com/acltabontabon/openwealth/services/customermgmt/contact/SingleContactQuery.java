@@ -2,23 +2,23 @@ package com.acltabontabon.openwealth.services.customermgmt.contact;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties;
+import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Contact;
-import com.acltabontabon.openwealth.services.QueryAsyncCommand;
+import com.acltabontabon.openwealth.services.QueryCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleContactQuery extends QueryAsyncCommand<GenericResponse<Contact>> {
+public class SingleContactQuery extends QueryCommand<GenericResponse<Contact>> {
 
     private final RestClient restClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final CustomerManagementResourcePaths apiProperties;
 
+    private final String correlationId;
     private final String customerId;
     private final String personId;
     private final String contactId;
-    private final String correlationId;
 
     @Override
     protected GenericResponse<Contact> execute() {

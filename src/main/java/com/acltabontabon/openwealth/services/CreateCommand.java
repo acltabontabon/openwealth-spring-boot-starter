@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services;
 
 import java.util.function.Consumer;
 
-public abstract class CreateAsyncCommand<T> extends AsyncCommand<T> {
+public abstract class CreateCommand<T> extends AsyncCommand<T> {
 
     public T submit() {
         return execute();
