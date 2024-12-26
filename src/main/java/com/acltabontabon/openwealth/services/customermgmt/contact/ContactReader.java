@@ -3,16 +3,16 @@ package com.acltabontabon.openwealth.services.customermgmt.contact;
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
-import com.acltabontabon.openwealth.dtos.ApiResponse;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Contact;
-import com.acltabontabon.openwealth.services.CreateCommand;
-import com.acltabontabon.openwealth.services.UpdateCommand;
+import com.acltabontabon.openwealth.services.ReadCommand;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class ContactUpdater extends UpdateCommand {
+public class ContactReader extends ReadCommand<GenericResponse<List<Contact>>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -20,23 +20,23 @@ public class ContactUpdater extends UpdateCommand {
     private final String correlationId;
     private final String customerId;
     private final String personId;
-    private final String contactId;
 
-    private final Contact updatedContact;
+    public SingleContactReader withContactId(String contactId) {
+        return new SingleContactReader(restClient, apiProperties, this.correlationId, customerId, personId, contactId);
+    }
 
     @Override
-    protected Void execute() {
+    protected GenericResponse<List<Contact>> execute() {
         try {
-            restClient.put()
-                .uri(builder -> builder.path(apiProperties.getPersonContact()).build(this.customerId, this.personId, this.contactId))
+            List<Contact> contacts = restClient.get()
+                .uri(builder -> builder.path(apiProperties.getPersonContacts()).build(this.customerId, this.personId))
                 .header(HEADER_CORRELATION_ID, this.correlationId)
-                .body(updatedContact)
                 .retrieve()
-                .toBodilessEntity();
+                .body(new ParameterizedTypeReference<>() {});
 
-            return null;
+            return new GenericResponse<>(contacts);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to update contact details", e);
+            throw new RuntimeException("Failed to fetch contact details",e);
         }
     }
 }

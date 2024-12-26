@@ -5,12 +5,12 @@ import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
 import com.acltabontabon.openwealth.models.Contact;
-import com.acltabontabon.openwealth.services.QueryCommand;
+import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleContactQuery extends QueryCommand<GenericResponse<Contact>> {
+public class SingleContactReader extends ReadCommand<GenericResponse<Contact>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;

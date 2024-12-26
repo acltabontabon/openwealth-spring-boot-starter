@@ -1,18 +1,16 @@
-package com.acltabontabon.openwealth.services.customermgmt.kyc;
+package com.acltabontabon.openwealth.services.customermgmt.address;
 
 import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
 import com.acltabontabon.openwealth.dtos.GenericResponse;
-import com.acltabontabon.openwealth.models.Kyc;
-import com.acltabontabon.openwealth.services.QueryCommand;
-import java.util.List;
+import com.acltabontabon.openwealth.models.Address;
+import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class KycQuery extends QueryCommand<GenericResponse<List<Kyc>>> {
+public class SingleAddressRead extends ReadCommand<GenericResponse<Address>> {
 
     private final RestClient restClient;
     private final CustomerManagementResourcePaths apiProperties;
@@ -20,19 +18,21 @@ public class KycQuery extends QueryCommand<GenericResponse<List<Kyc>>> {
     private final String correlationId;
     private final String customerId;
     private final String personId;
+    private final String addressId;
 
     @Override
-    protected GenericResponse<List<Kyc>> execute() {
+    protected GenericResponse<Address> execute() {
         try {
-            List<Kyc> kyc = restClient.get()
-                .uri(builder -> builder.path(apiProperties.getPersonKyc()).build(this.customerId, this.personId))
+            Address contact = restClient.get()
+                .uri(builder -> builder.path(apiProperties.getPersonAddress()).build(this.customerId, this.personId, this.addressId))
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
+                .body(Address.class);
 
-            return new GenericResponse<>(kyc);
+            return new GenericResponse<>(contact);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch kyc details",e);
+            throw new RuntimeException("Failed to fetch person address details",e);
         }
     }
 }
+

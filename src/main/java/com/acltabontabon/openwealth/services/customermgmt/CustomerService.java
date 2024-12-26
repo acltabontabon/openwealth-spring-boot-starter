@@ -1,8 +1,9 @@
-package com.acltabontabon.openwealth.services.customermgmt.customer;
+package com.acltabontabon.openwealth.services.customermgmt;
 
 import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagementResourcePaths;
+import com.acltabontabon.openwealth.services.customermgmt.customer.CustomerReader;
 import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckCreator;
-import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckStatusQuery;
+import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckStatusReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClient;
@@ -28,8 +29,8 @@ public class CustomerService {
      *
      * @return CustomerQuery object
      */
-    public CustomerQuery customers() {
-        return new CustomerQuery(openWealthRestClient, apiProperties);
+    public CustomerReader customers() {
+        return new CustomerReader(openWealthRestClient, apiProperties);
     }
 
     /**
@@ -46,7 +47,7 @@ public class CustomerService {
      *
      * @return PreCheckStatusQuery object
      */
-    public PreCheckStatusQuery preCheckStatus() {
-        return new PreCheckStatusQuery(openWealthRestClient, apiProperties);
+    public PreCheckStatusReader preCheckStatus() {
+        return new PreCheckStatusReader(openWealthRestClient, apiProperties);
     }
 }
