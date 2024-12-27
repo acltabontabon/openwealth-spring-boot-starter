@@ -5,7 +5,7 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.commons.OperationResult;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.Document;
+import com.acltabontabon.openwealth.models.customermgmt.Document;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;

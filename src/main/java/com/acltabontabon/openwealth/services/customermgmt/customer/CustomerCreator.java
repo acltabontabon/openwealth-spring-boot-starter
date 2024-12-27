@@ -6,7 +6,7 @@ import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.commons.OperationResult;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.Customer;
+import com.acltabontabon.openwealth.models.customermgmt.Customer;
 import com.acltabontabon.openwealth.services.CreateCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

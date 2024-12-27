@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.dtos;
 
-import com.acltabontabon.openwealth.models.Customer;
+import com.acltabontabon.openwealth.models.customermgmt.Customer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.List;

@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.commons.OperationResult;
-import com.acltabontabon.openwealth.models.Customer;
+import com.acltabontabon.openwealth.models.customermgmt.Customer;
 import java.util.List;
 import java.util.function.Function;
 import org.junit.jupiter.api.BeforeEach;
