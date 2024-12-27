@@ -9,6 +9,7 @@ public class ApiProperties {
 
     private String baseUrl;
     private String accessToken;
+    private CustodyServices custodyServices;
     private CustomerManagement customerManagement;
 
     @Data
@@ -38,5 +39,19 @@ public class ApiProperties {
 
         private String prospectPreCheck;
         private String prospectPreCheckStatus;
+    }
+
+    @Data
+    public static class CustodyServices {
+        private String customers;
+        private String customer;
+
+        private String customerPositionStatement;
+        private String customerTransactionStatement;
+
+        private String accountPositionStatement;
+        private String accountTransactionStatement;
+
+        private String positionTransactionStatement;
     }
 }

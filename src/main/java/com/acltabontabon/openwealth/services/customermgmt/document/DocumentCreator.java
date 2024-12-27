@@ -6,7 +6,7 @@ import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.dtos.DocumentResponse;
 import com.acltabontabon.openwealth.commons.OperationResult;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.Document;
+import com.acltabontabon.openwealth.models.customermgmt.Document;
 import com.acltabontabon.openwealth.services.CreateCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;

@@ -5,9 +5,9 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.commons.OperationResult;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.Customer;
-import com.acltabontabon.openwealth.models.Document;
-import com.acltabontabon.openwealth.models.Person;
+import com.acltabontabon.openwealth.models.customermgmt.Customer;
+import com.acltabontabon.openwealth.models.customermgmt.Document;
+import com.acltabontabon.openwealth.models.customermgmt.Person;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import com.acltabontabon.openwealth.services.customermgmt.document.DocumentCreator;
 import com.acltabontabon.openwealth.services.customermgmt.document.DocumentReader;

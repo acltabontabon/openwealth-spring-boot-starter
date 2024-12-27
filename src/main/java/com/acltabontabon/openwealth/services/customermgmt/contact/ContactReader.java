@@ -5,7 +5,7 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.commons.OperationResult;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.Contact;
+import com.acltabontabon.openwealth.models.customermgmt.Contact;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

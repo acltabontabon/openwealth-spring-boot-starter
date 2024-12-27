@@ -5,10 +5,10 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_
 import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.commons.OperationResult;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.Address;
-import com.acltabontabon.openwealth.models.Contact;
-import com.acltabontabon.openwealth.models.Kyc;
-import com.acltabontabon.openwealth.models.Person;
+import com.acltabontabon.openwealth.models.customermgmt.Address;
+import com.acltabontabon.openwealth.models.customermgmt.Contact;
+import com.acltabontabon.openwealth.models.customermgmt.Kyc;
+import com.acltabontabon.openwealth.models.customermgmt.Person;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import com.acltabontabon.openwealth.services.customermgmt.address.AddressCreator;
 import com.acltabontabon.openwealth.services.customermgmt.address.AddressReader;

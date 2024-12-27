@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.configs;
 
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.interceptors.CorrelationIdInterceptor;
-import com.acltabontabon.openwealth.services.custody.CustodyService;
+import com.acltabontabon.openwealth.services.custodyservices.CustodyService;
 import com.acltabontabon.openwealth.services.customermgmt.CustomerService;
 import com.acltabontabon.openwealth.services.order.OrderPlacementService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +43,8 @@ public class OpenWealthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CustodyService custodyService() {
-        return new CustodyService();
+    public CustodyService custodyService(RestClient openWealthRestClient, ApiProperties apiProperties) {
+        return new CustodyService(openWealthRestClient, apiProperties.getCustodyServices());
     }
 
     @Bean
