@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenericResponse<T> implements ApiResponse {
+public class DocumentResponse {
 
-    private T data;
+    private String documentId;
 
 }

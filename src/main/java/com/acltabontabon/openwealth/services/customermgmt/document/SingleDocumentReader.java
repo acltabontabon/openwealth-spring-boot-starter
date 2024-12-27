@@ -1,19 +1,20 @@
 package com.acltabontabon.openwealth.services.customermgmt.document;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Document;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleDocumentReader extends ReadCommand<GenericResponse<Document>> {
+public class SingleDocumentReader extends ReadCommand<OperationResult<Document>> {
 
     private final RestClient restClient;
-    private final CustomerManagement apiProperties;
+    private final ApiProperties.CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;
@@ -27,7 +28,7 @@ public class SingleDocumentReader extends ReadCommand<GenericResponse<Document>>
     }
 
     @Override
-    protected GenericResponse<Document> execute() {
+    protected OperationResult<Document> execute() {
         try {
             Document contact = restClient.get()
                 .uri(builder -> {
@@ -41,9 +42,9 @@ public class SingleDocumentReader extends ReadCommand<GenericResponse<Document>>
                 .retrieve()
                 .body(Document.class);
 
-            return new GenericResponse<>(contact);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch document",e);
+            return OperationResult.success(contact);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to fetch document details", e.getStatusMessage());
         }
     }
 }

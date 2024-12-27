@@ -12,9 +12,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class ProspectResponse implements ApiResponse {
+public class ProspectResponse {
 
+    /**
+     * Some kind of ID (Customer/Person/Prospect/Order/Task ID) so that a status update can be
+     * obtained (e.g. customer onboarding).
+     */
     private String temporaryId;
-    private String status;
+
+    /**
+     * Result of the conducted prospect pre-check. The result is in no way binding and may change
+     * during the process.
+     */
+    // FIXME: This should be an enum
+    private String response;
 
 }

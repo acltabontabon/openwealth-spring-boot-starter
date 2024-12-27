@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContactResponse implements ApiResponse {
+public class ContactResponse {
 
     private String contactId;
 

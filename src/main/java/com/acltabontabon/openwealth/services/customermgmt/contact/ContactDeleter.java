@@ -1,18 +1,19 @@
 package com.acltabontabon.openwealth.services.customermgmt.contact;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.services.DeleteCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
-@SuppressWarnings("rawtypes")
 @RequiredArgsConstructor
-public class ContactDeleter extends DeleteCommand {
+public class ContactDeleter extends DeleteCommand<OperationResult<Void>> {
 
     private final RestClient restClient;
-    private final CustomerManagement apiProperties;
+    private final ApiProperties.CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;
@@ -20,17 +21,17 @@ public class ContactDeleter extends DeleteCommand {
     private final String contactId;
 
     @Override
-    protected Void execute() {
+    protected OperationResult<Void> execute() {
         try {
             restClient.delete()
                 .uri(builder -> builder.path(apiProperties.getPersonContact()).build(this.customerId, this.personId, this.contactId))
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
                 .toBodilessEntity();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete contact details", e);
-        }
 
-        return null;
+            return OperationResult.success(null);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to delete contact details", e.getStatusMessage());
+        }
     }
 }

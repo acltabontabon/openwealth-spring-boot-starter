@@ -1,9 +1,11 @@
 package com.acltabontabon.openwealth.services.customermgmt.customer;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.services.CreateCommand;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerCreator extends CreateCommand<CustomerResponse> {
+public class CustomerCreator extends CreateCommand<OperationResult<CustomerResponse>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
@@ -22,18 +24,19 @@ public class CustomerCreator extends CreateCommand<CustomerResponse> {
     private final Customer customer;
 
     @Override
-    protected CustomerResponse execute() {
+    protected OperationResult<CustomerResponse> execute() {
         try {
-            return restClient.post()
+            CustomerResponse response = restClient.post()
                 .uri(apiProperties.getNewCustomerDetails())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .body(this.customer)
                 .retrieve()
                 .body(CustomerResponse.class);
-        } catch (Exception e) {
-            log.error("Failed to create customer", e);
-            throw new RuntimeException("Failed to create customer", e);
+
+            return OperationResult.success(response);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to create customer", e.getStatusMessage());
         }
     }
 }

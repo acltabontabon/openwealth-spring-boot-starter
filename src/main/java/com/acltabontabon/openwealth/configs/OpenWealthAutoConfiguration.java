@@ -1,40 +1,44 @@
 package com.acltabontabon.openwealth.configs;
 
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.interceptors.CorrelationIdInterceptor;
 import com.acltabontabon.openwealth.services.custody.CustodyService;
 import com.acltabontabon.openwealth.services.customermgmt.CustomerService;
 import com.acltabontabon.openwealth.services.order.OrderPlacementService;
-import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 @Slf4j
 @AutoConfiguration
 @PropertySource("classpath:openwealth.properties")
-@EnableConfigurationProperties(OpenWealthApiProperties.class)
+@EnableConfigurationProperties(ApiProperties.class)
 public class OpenWealthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RestClient openWealthRestClient(RestClient.Builder builder, OpenWealthApiProperties openWealthApiProperties) {
+    public RestClient openWealthRestClient(RestClient.Builder builder, ApiProperties apiProperties) {
         return builder
-            .baseUrl(openWealthApiProperties.getBaseUrl())
+            .baseUrl(apiProperties.getBaseUrl())
             .requestInterceptor(new CorrelationIdInterceptor())
-            .defaultHeaders(header -> header.add("Accept", MediaType.APPLICATION_JSON_VALUE))
-            .defaultHeader("Authorization", "Bearer " + openWealthApiProperties.getAccessToken())
+            .defaultStatusHandler(HttpStatusCode::is4xxClientError, (request, response) -> {
+                throw new FailedRequestException(response.getStatusText(), response.getStatusCode());
+            })
+            .defaultHeader("Authorization", "Bearer " + apiProperties.getAccessToken())
+            .defaultHeader("Accept", MediaType.APPLICATION_JSON_VALUE)
             .build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public CustomerService customerService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties) {
-        return new CustomerService(openWealthRestClient, openWealthApiProperties.getCustomerManagement());
+    public CustomerService customerService(RestClient openWealthRestClient, ApiProperties apiProperties) {
+        return new CustomerService(openWealthRestClient, apiProperties.getCustomerManagement());
     }
 
     @Bean

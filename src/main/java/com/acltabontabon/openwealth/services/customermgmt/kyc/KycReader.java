@@ -1,9 +1,10 @@
 package com.acltabontabon.openwealth.services.customermgmt.kyc;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Kyc;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.util.List;
@@ -12,17 +13,17 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class KycReader extends ReadCommand<GenericResponse<List<Kyc>>> {
+public class KycReader extends ReadCommand<OperationResult<List<Kyc>>> {
 
     private final RestClient restClient;
-    private final CustomerManagement apiProperties;
+    private final ApiProperties.CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;
     private final String personId;
 
     @Override
-    protected GenericResponse<List<Kyc>> execute() {
+    protected OperationResult<List<Kyc>> execute() {
         try {
             List<Kyc> kyc = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonKyc()).build(this.customerId, this.personId))
@@ -30,9 +31,9 @@ public class KycReader extends ReadCommand<GenericResponse<List<Kyc>>> {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
-            return new GenericResponse<>(kyc);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch kyc details",e);
+            return OperationResult.success(kyc);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to fetch kyc details", e.getStatusMessage());
         }
     }
 }

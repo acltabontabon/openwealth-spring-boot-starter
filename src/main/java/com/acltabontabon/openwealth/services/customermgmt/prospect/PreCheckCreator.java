@@ -1,9 +1,11 @@
 package com.acltabontabon.openwealth.services.customermgmt.prospect;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.ProspectResponse;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Prospect;
 import com.acltabontabon.openwealth.services.CreateCommand;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import org.springframework.web.client.RestClient;
  * bank based on base parameters like domicile / nationality etc.
  */
 @RequiredArgsConstructor
-public class PreCheckCreator extends CreateCommand<ProspectResponse> {
+public class PreCheckCreator extends CreateCommand<OperationResult<ProspectResponse>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
@@ -34,13 +36,19 @@ public class PreCheckCreator extends CreateCommand<ProspectResponse> {
     }
 
     @Override
-    protected ProspectResponse execute() {
-        return restClient.post()
-            .uri(apiProperties.getProspectPreCheck())
-            .contentType(MediaType.APPLICATION_JSON)
-            .header(HEADER_CORRELATION_ID, this.correlationId)
-            .body(prospect)
-            .retrieve()
-            .body(ProspectResponse.class);
+    protected OperationResult<ProspectResponse> execute() {
+        try {
+            ProspectResponse prospectResponse = restClient.post()
+                .uri(apiProperties.getProspectPreCheck())
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HEADER_CORRELATION_ID, this.correlationId)
+                .body(prospect)
+                .retrieve()
+                .body(ProspectResponse.class);
+
+            return OperationResult.success(prospectResponse);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure(e.getStatusMessage(), String.valueOf(e.getStatusCode()));
+        }
     }
 }

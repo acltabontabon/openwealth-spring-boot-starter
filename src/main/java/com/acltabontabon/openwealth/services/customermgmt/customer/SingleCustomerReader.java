@@ -1,9 +1,10 @@
 package com.acltabontabon.openwealth.services.customermgmt.customer;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.models.Document;
 import com.acltabontabon.openwealth.models.Person;
@@ -16,10 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleCustomerReader extends ReadCommand<GenericResponse<Customer>> {
+public class SingleCustomerReader extends ReadCommand<OperationResult<Customer>> {
 
     private final RestClient restClient;
-    private final CustomerManagement apiProperties;
+    private final ApiProperties.CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;
@@ -48,7 +49,7 @@ public class SingleCustomerReader extends ReadCommand<GenericResponse<Customer>>
     }
 
     @Override
-    protected GenericResponse<Customer> execute() {
+    protected OperationResult<Customer> execute() {
         try {
             Customer customer = restClient.get()
                 .uri(builder -> {
@@ -62,9 +63,9 @@ public class SingleCustomerReader extends ReadCommand<GenericResponse<Customer>>
                 .retrieve()
                 .body(Customer.class);
 
-            return new GenericResponse<>(customer);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch customer",e);
+            return OperationResult.success(customer);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to fetch customer details", e.getStatusMessage());
         }
     }
 }

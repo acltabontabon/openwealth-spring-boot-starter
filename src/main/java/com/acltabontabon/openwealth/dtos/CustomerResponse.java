@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class CustomerResponse implements ApiResponse {
+public class CustomerResponse {
 
     private String temporaryId;
 

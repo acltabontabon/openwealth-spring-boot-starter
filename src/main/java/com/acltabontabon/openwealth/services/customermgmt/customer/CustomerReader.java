@@ -1,9 +1,11 @@
 package com.acltabontabon.openwealth.services.customermgmt.customer;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Customer;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerReader extends ReadCommand<CustomerResponse> {
+public class CustomerReader extends ReadCommand<OperationResult<CustomerResponse>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
@@ -33,16 +35,17 @@ public class CustomerReader extends ReadCommand<CustomerResponse> {
     }
 
     @Override
-    protected CustomerResponse execute() {
+    protected OperationResult<CustomerResponse> execute() {
         try {
-            return restClient.get()
+            CustomerResponse response = restClient.get()
                 .uri(apiProperties.getCustomers())
                 .header(HEADER_CORRELATION_ID, this.correlationId)
                 .retrieve()
                 .body(CustomerResponse.class);
-        } catch (Exception e) {
-            log.error("Failed to fetch customers", e);
-            throw new RuntimeException("Failed to fetch customers", e);
+
+            return OperationResult.success(response);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to fetch list of customers", e.getStatusMessage());
         }
     }
 }
