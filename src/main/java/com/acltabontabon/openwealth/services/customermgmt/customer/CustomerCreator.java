@@ -4,7 +4,7 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_
 
 import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Customer;
 import com.acltabontabon.openwealth.services.CreateCommand;
@@ -15,7 +15,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerCreator extends CreateCommand<OperationResult<CustomerResponse>> {
+public class CustomerCreator extends CreateCommand<Result<CustomerResponse>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
@@ -24,7 +24,7 @@ public class CustomerCreator extends CreateCommand<OperationResult<CustomerRespo
     private final Customer customer;
 
     @Override
-    protected OperationResult<CustomerResponse> execute() {
+    protected Result<CustomerResponse> execute() {
         try {
             CustomerResponse response = restClient.post()
                 .uri(apiProperties.getNewCustomerDetails())
@@ -34,9 +34,9 @@ public class CustomerCreator extends CreateCommand<OperationResult<CustomerRespo
                 .retrieve()
                 .body(CustomerResponse.class);
 
-            return OperationResult.success(response);
+            return Result.success(response);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to create customer", e.getStatusMessage());
+            return Result.failure("Failed to create customer", e.getStatusMessage());
         }
     }
 }

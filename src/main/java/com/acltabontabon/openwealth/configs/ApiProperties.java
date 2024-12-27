@@ -11,6 +11,7 @@ public class ApiProperties {
     private String accessToken;
     private CustodyServices custodyServices;
     private CustomerManagement customerManagement;
+    private OrderPlacement orderPlacement;
 
     @Data
     public static class CustomerManagement {
@@ -53,5 +54,13 @@ public class ApiProperties {
         private String accountTransactionStatement;
 
         private String positionTransactionStatement;
+    }
+
+    @Data
+    public static class OrderPlacement {
+        private String orders;
+        private String order;
+
+        private String accountAccesses;
     }
 }

@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services.customermgmt.contact;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Contact;
 import com.acltabontabon.openwealth.services.ReadCommand;
@@ -13,7 +13,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class ContactReader extends ReadCommand<OperationResult<List<Contact>>> {
+public class ContactReader extends ReadCommand<Result<List<Contact>>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
@@ -27,7 +27,7 @@ public class ContactReader extends ReadCommand<OperationResult<List<Contact>>> {
     }
 
     @Override
-    protected OperationResult<List<Contact>> execute() {
+    protected Result<List<Contact>> execute() {
         try {
             List<Contact> contacts = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonContacts()).build(this.customerId, this.personId))
@@ -35,9 +35,9 @@ public class ContactReader extends ReadCommand<OperationResult<List<Contact>>> {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
-            return OperationResult.success(contacts);
+            return Result.success(contacts);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch contact details", e.getStatusMessage());
+            return Result.failure("Failed to fetch contact details", e.getStatusMessage());
         }
     }
 }

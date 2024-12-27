@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//TODO: Move to common package
 @Data
 @Builder
 @NoArgsConstructor

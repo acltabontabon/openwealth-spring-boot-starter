@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services.customermgmt.kyc;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.ApiProperties;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Kyc;
 import com.acltabontabon.openwealth.services.ReadCommand;
@@ -13,7 +13,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class KycReader extends ReadCommand<OperationResult<List<Kyc>>> {
+public class KycReader extends ReadCommand<Result<List<Kyc>>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustomerManagement apiProperties;
@@ -23,7 +23,7 @@ public class KycReader extends ReadCommand<OperationResult<List<Kyc>>> {
     private final String personId;
 
     @Override
-    protected OperationResult<List<Kyc>> execute() {
+    protected Result<List<Kyc>> execute() {
         try {
             List<Kyc> kyc = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonKyc()).build(this.customerId, this.personId))
@@ -31,9 +31,9 @@ public class KycReader extends ReadCommand<OperationResult<List<Kyc>>> {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
-            return OperationResult.success(kyc);
+            return Result.success(kyc);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch kyc details", e.getStatusMessage());
+            return Result.failure("Failed to fetch kyc details", e.getStatusMessage());
         }
     }
 }

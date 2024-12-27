@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customermgmt.prospect;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.ProspectResponse;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClient;
  * bank based on base parameters like domicile / nationality etc.
  */
 @RequiredArgsConstructor
-public class PreCheckCreator extends CreateCommand<OperationResult<ProspectResponse>> {
+public class PreCheckCreator extends CreateCommand<Result<ProspectResponse>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
@@ -36,7 +36,7 @@ public class PreCheckCreator extends CreateCommand<OperationResult<ProspectRespo
     }
 
     @Override
-    protected OperationResult<ProspectResponse> execute() {
+    protected Result<ProspectResponse> execute() {
         try {
             ProspectResponse prospectResponse = restClient.post()
                 .uri(apiProperties.getProspectPreCheck())
@@ -46,9 +46,9 @@ public class PreCheckCreator extends CreateCommand<OperationResult<ProspectRespo
                 .retrieve()
                 .body(ProspectResponse.class);
 
-            return OperationResult.success(prospectResponse);
+            return Result.success(prospectResponse);
         } catch (FailedRequestException e) {
-            return OperationResult.failure(e.getStatusMessage(), String.valueOf(e.getStatusCode()));
+            return Result.failure(e.getStatusMessage(), String.valueOf(e.getStatusCode()));
         }
     }
 }

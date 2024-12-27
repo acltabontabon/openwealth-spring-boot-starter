@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services.customermgmt.customer;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.ApiProperties;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Customer;
 import com.acltabontabon.openwealth.models.customermgmt.Document;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleCustomerReader extends ReadCommand<OperationResult<Customer>> {
+public class SingleCustomerReader extends ReadCommand<Result<Customer>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustomerManagement apiProperties;
@@ -49,7 +49,7 @@ public class SingleCustomerReader extends ReadCommand<OperationResult<Customer>>
     }
 
     @Override
-    protected OperationResult<Customer> execute() {
+    protected Result<Customer> execute() {
         try {
             Customer customer = restClient.get()
                 .uri(builder -> {
@@ -63,9 +63,9 @@ public class SingleCustomerReader extends ReadCommand<OperationResult<Customer>>
                 .retrieve()
                 .body(Customer.class);
 
-            return OperationResult.success(customer);
+            return Result.success(customer);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch customer details", e.getStatusMessage());
+            return Result.failure("Failed to fetch customer details", e.getStatusMessage());
         }
     }
 }

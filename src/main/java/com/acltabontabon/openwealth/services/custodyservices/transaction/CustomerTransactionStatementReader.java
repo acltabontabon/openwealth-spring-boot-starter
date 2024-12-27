@@ -2,10 +2,9 @@ package com.acltabontabon.openwealth.services.custodyservices.transaction;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
 import com.acltabontabon.openwealth.models.custodyservices.TransactionStatement;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.time.LocalDate;
@@ -15,7 +14,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerTransactionStatementReader extends ReadCommand<OperationResult<TransactionStatement>> {
+public class CustomerTransactionStatementReader extends ReadCommand<Result<TransactionStatement>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustodyServices apiProperties;
@@ -28,7 +27,7 @@ public class CustomerTransactionStatementReader extends ReadCommand<OperationRes
     private final String dateType;
 
     @Override
-    protected OperationResult<TransactionStatement> execute() {
+    protected Result<TransactionStatement> execute() {
         try {
             TransactionStatement response = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getCustomerTransactionStatement())
@@ -40,9 +39,9 @@ public class CustomerTransactionStatementReader extends ReadCommand<OperationRes
                 .retrieve()
                 .body(TransactionStatement.class);
 
-            return OperationResult.success(response);
+            return Result.success(response);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch customer transaction statement", e.getStatusMessage());
+            return Result.failure("Failed to fetch customer transaction statement", e.getStatusMessage());
         }
     }
 }

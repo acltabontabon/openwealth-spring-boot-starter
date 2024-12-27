@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services.customermgmt.person;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.ApiProperties;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Person;
 import com.acltabontabon.openwealth.services.ReadCommand;
@@ -13,7 +13,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class PersonReader extends ReadCommand<OperationResult<List<Person>>> {
+public class PersonReader extends ReadCommand<Result<List<Person>>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustomerManagement apiProperties;
@@ -26,7 +26,7 @@ public class PersonReader extends ReadCommand<OperationResult<List<Person>>> {
     }
 
     @Override
-    protected OperationResult<List<Person>> execute() {
+    protected Result<List<Person>> execute() {
         try {
             List<Person> personList = restClient.get()
                 .uri(apiProperties.getPersons(), this.customerId)
@@ -34,9 +34,9 @@ public class PersonReader extends ReadCommand<OperationResult<List<Person>>> {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
-            return OperationResult.success(personList);
+            return Result.success(personList);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch list of associated persons", e.getStatusMessage());
+            return Result.failure("Failed to fetch list of associated persons", e.getStatusMessage());
         }
     }
 }

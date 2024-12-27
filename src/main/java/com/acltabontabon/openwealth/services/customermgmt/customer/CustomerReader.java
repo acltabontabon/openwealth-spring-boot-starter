@@ -4,7 +4,7 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_
 
 import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Customer;
 import com.acltabontabon.openwealth.services.ReadCommand;
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerReader extends ReadCommand<OperationResult<CustomerResponse>> {
+public class CustomerReader extends ReadCommand<Result<CustomerResponse>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
@@ -35,7 +35,7 @@ public class CustomerReader extends ReadCommand<OperationResult<CustomerResponse
     }
 
     @Override
-    protected OperationResult<CustomerResponse> execute() {
+    protected Result<CustomerResponse> execute() {
         try {
             CustomerResponse response = restClient.get()
                 .uri(apiProperties.getCustomers())
@@ -43,9 +43,9 @@ public class CustomerReader extends ReadCommand<OperationResult<CustomerResponse
                 .retrieve()
                 .body(CustomerResponse.class);
 
-            return OperationResult.success(response);
+            return Result.success(response);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch list of customers", e.getStatusMessage());
+            return Result.failure("Failed to fetch list of customers", e.getStatusMessage());
         }
     }
 }

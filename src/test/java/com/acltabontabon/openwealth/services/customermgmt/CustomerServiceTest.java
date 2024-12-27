@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.models.customermgmt.Customer;
 import java.util.List;
 import java.util.function.Function;
@@ -41,7 +41,7 @@ class CustomerServiceTest {
     void shouldReturnListOfCustomers() {
         List<Customer> customers = List.of(Customer.builder().build());
         CustomerResponse customerResponse = CustomerResponse.builder().customers(customers).build();
-        OperationResult<CustomerResponse> expectedResponse = OperationResult.success(customerResponse);
+        Result<CustomerResponse> expectedResponse = Result.success(customerResponse);
         String mockEndpoint = "http://mock-api/customers";
 
         RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
@@ -61,7 +61,7 @@ class CustomerServiceTest {
         when(responseSpec.body(CustomerResponse.class))
             .thenAnswer(invocation -> customerResponse);
 
-        OperationResult<CustomerResponse> actualResponse = customerService.customers()
+        Result<CustomerResponse> actualResponse = customerService.customers()
             .withCorrelationId("1234")
             .fetch();
 
@@ -72,7 +72,7 @@ class CustomerServiceTest {
     @SuppressWarnings("unchecked")
     void shouldReturnOneCustomer() {
         Customer customer = Customer.builder().customerId("1").build();
-        OperationResult<Customer> expectedResponse = OperationResult.success(customer);
+        Result<Customer> expectedResponse = Result.success(customer);
 
         RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
         RestClient.RequestHeadersSpec<?> headersSpec = mock(RestClient.RequestHeadersSpec.class);
@@ -89,7 +89,7 @@ class CustomerServiceTest {
         when(responseSpec.body(Customer.class))
             .thenAnswer(invocation -> customer);
 
-        OperationResult<Customer> actualResponse = customerService.customers()
+        Result<Customer> actualResponse = customerService.customers()
             .withCorrelationId("1234")
             .withCustomerId("4321")
             .fetch();
