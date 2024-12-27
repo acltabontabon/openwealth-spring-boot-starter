@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonResponse implements ApiResponse {
+public class PersonResponse {
 
     private String temporaryId;
 

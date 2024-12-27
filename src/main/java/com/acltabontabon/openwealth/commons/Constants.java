@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.configs;
+package com.acltabontabon.openwealth.commons;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

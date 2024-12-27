@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties(prefix = "openwealth.api")
-public class OpenWealthApiProperties {
+public class ApiProperties {
 
     private String baseUrl;
     private String accessToken;

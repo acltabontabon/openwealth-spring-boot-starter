@@ -1,9 +1,10 @@
 package com.acltabontabon.openwealth.services.customermgmt.person;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Address;
 import com.acltabontabon.openwealth.models.Contact;
 import com.acltabontabon.openwealth.models.Kyc;
@@ -12,20 +13,20 @@ import com.acltabontabon.openwealth.services.ReadCommand;
 import com.acltabontabon.openwealth.services.customermgmt.address.AddressCreator;
 import com.acltabontabon.openwealth.services.customermgmt.address.AddressReader;
 import com.acltabontabon.openwealth.services.customermgmt.address.AddressUpdater;
-import com.acltabontabon.openwealth.services.customermgmt.kyc.KycCreator;
-import com.acltabontabon.openwealth.services.customermgmt.kyc.KycReader;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactCreator;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactDeleter;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactReader;
 import com.acltabontabon.openwealth.services.customermgmt.contact.ContactUpdater;
+import com.acltabontabon.openwealth.services.customermgmt.kyc.KycCreator;
+import com.acltabontabon.openwealth.services.customermgmt.kyc.KycReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SinglePersonReader extends ReadCommand<GenericResponse<Person>> {
+public class SinglePersonReader extends ReadCommand<OperationResult<Person>> {
 
     private final RestClient restClient;
-    private final CustomerManagement apiProperties;
+    private final ApiProperties.CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;
@@ -75,7 +76,7 @@ public class SinglePersonReader extends ReadCommand<GenericResponse<Person>> {
     }
 
     @Override
-    protected GenericResponse<Person> execute() {
+    protected OperationResult<Person> execute() {
         try {
             Person person = restClient.get()
                 .uri(builder -> {
@@ -89,9 +90,9 @@ public class SinglePersonReader extends ReadCommand<GenericResponse<Person>> {
                 .retrieve()
                 .body(Person.class);
 
-            return new GenericResponse<>(person);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch person details",e);
+            return OperationResult.success(person);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to fetch person details", e.getStatusMessage());
         }
     }
 }

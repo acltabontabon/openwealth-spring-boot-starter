@@ -1,9 +1,10 @@
 package com.acltabontabon.openwealth.services.customermgmt.document;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Contact;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.util.List;
@@ -12,16 +13,16 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class DocumentReader extends ReadCommand<GenericResponse<List<Contact>>> {
+public class DocumentReader extends ReadCommand<OperationResult<List<Contact>>> {
 
     private final RestClient restClient;
-    private final CustomerManagement apiProperties;
+    private final ApiProperties.CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;
 
     @Override
-    protected GenericResponse<List<Contact>> execute() {
+    protected OperationResult<List<Contact>> execute() {
         try {
             List<Contact> contacts = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getCustomerDocuments()).build(this.customerId))
@@ -29,9 +30,9 @@ public class DocumentReader extends ReadCommand<GenericResponse<List<Contact>>> 
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
-            return new GenericResponse<>(contacts);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch documents",e);
+            return OperationResult.success(contacts);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to fetch list of documents", e.getStatusMessage());
         }
     }
 

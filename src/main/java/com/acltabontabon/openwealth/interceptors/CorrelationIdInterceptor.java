@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.interceptors;
 
-import com.acltabontabon.openwealth.configs.Constants;
+import com.acltabontabon.openwealth.commons.Constants;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;

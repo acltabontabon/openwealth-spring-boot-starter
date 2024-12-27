@@ -1,9 +1,10 @@
 package com.acltabontabon.openwealth.services.customermgmt.address;
 
-import static com.acltabontabon.openwealth.configs.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.GenericResponse;
+import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.Address;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.util.List;
@@ -12,10 +13,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class AddressReader extends ReadCommand<GenericResponse<List<Address>>> {
+public class AddressReader extends ReadCommand<OperationResult<List<Address>>> {
 
     private final RestClient restClient;
-    private final CustomerManagement apiProperties;
+    private final ApiProperties.CustomerManagement apiProperties;
 
     private final String correlationId;
     private final String customerId;
@@ -26,7 +27,7 @@ public class AddressReader extends ReadCommand<GenericResponse<List<Address>>> {
     }
 
     @Override
-    protected GenericResponse<List<Address>> execute() {
+    protected OperationResult<List<Address>> execute() {
         try {
             List<Address> addresses = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonAddresses()).build(this.customerId, this.personId))
@@ -34,9 +35,9 @@ public class AddressReader extends ReadCommand<GenericResponse<List<Address>>> {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
-            return new GenericResponse<>(addresses);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch addresses",e);
+            return OperationResult.success(addresses);
+        } catch (FailedRequestException e) {
+            return OperationResult.failure("Failed to fetch addresses", e.getStatusMessage());
         }
     }
 }
