@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services.customermgmt.document;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.ApiProperties;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Document;
 import com.acltabontabon.openwealth.services.ReadCommand;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class SingleDocumentReader extends ReadCommand<OperationResult<Document>> {
+public class SingleDocumentReader extends ReadCommand<Result<Document>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustomerManagement apiProperties;
@@ -28,7 +28,7 @@ public class SingleDocumentReader extends ReadCommand<OperationResult<Document>>
     }
 
     @Override
-    protected OperationResult<Document> execute() {
+    protected Result<Document> execute() {
         try {
             Document contact = restClient.get()
                 .uri(builder -> {
@@ -42,9 +42,9 @@ public class SingleDocumentReader extends ReadCommand<OperationResult<Document>>
                 .retrieve()
                 .body(Document.class);
 
-            return OperationResult.success(contact);
+            return Result.success(contact);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch document details", e.getStatusMessage());
+            return Result.failure("Failed to fetch document details", e.getStatusMessage());
         }
     }
 }

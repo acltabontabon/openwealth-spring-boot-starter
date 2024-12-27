@@ -17,12 +17,12 @@
 
 ## Features
 
-- ✅ Compatible with OpenWealth APIs:
+- Compatible with OpenWealth APIs:
   - 🚀 **Order Placement API** `v2.0.8`
   - 👥 **Customer Management API** `v2.0.6`
   - 🔒 **Custody Services API** `v2.0.3`
-- ✨ Simplifies integration with OpenWealth backend services using a Fluent API design
-- 🔄 Supports both synchronous and asynchronous operations
+- Simplifies integration with OpenWealth backend services using a Fluent API design
+- Supports both synchronous and asynchronous operations
 
 ## Usage
 
@@ -51,7 +51,7 @@ public class Example {
     private CustomerService customerService;
 
     public void printCustomers() {
-        OperationResult<List<Customer>> result = customerService.customers().fetch();
+        Result<List<Customer>> result = customerService.customers().fetch();
 
         log.info("List of customers: {}", result.getData());
     }

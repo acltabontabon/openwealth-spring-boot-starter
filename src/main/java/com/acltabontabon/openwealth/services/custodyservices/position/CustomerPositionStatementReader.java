@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.custodyservices.position;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerPositionStatementReader extends ReadCommand<OperationResult<CustomerPositionStatement>> {
+public class CustomerPositionStatementReader extends ReadCommand<Result<CustomerPositionStatement>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustodyServices apiProperties;
@@ -27,7 +27,7 @@ public class CustomerPositionStatementReader extends ReadCommand<OperationResult
     private final String dateType;
 
     @Override
-    protected OperationResult<CustomerPositionStatement> execute() {
+    protected Result<CustomerPositionStatement> execute() {
         try {
             CustomerPositionStatement response = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getCustomerPositionStatement())
@@ -39,9 +39,9 @@ public class CustomerPositionStatementReader extends ReadCommand<OperationResult
                 .retrieve()
                 .body(CustomerPositionStatement.class);
 
-            return OperationResult.success(response);
+            return Result.success(response);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to fetch customer position statement", e.getStatusMessage());
+            return Result.failure("Failed to fetch customer position statement", e.getStatusMessage());
         }
     }
 }

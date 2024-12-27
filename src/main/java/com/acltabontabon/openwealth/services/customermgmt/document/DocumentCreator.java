@@ -4,7 +4,7 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_
 
 import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.dtos.DocumentResponse;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Document;
 import com.acltabontabon.openwealth.services.CreateCommand;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class DocumentCreator extends CreateCommand<OperationResult<DocumentResponse>> {
+public class DocumentCreator extends CreateCommand<Result<DocumentResponse>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustomerManagement apiProperties;
@@ -23,7 +23,7 @@ public class DocumentCreator extends CreateCommand<OperationResult<DocumentRespo
     private final Document newDocument;
 
     @Override
-    protected OperationResult<DocumentResponse> execute() {
+    protected Result<DocumentResponse> execute() {
         try {
             DocumentResponse response = restClient.post()
                 .uri(builder -> builder.path(apiProperties.getNewCustomerDocument()).build(this.customerId))
@@ -32,9 +32,9 @@ public class DocumentCreator extends CreateCommand<OperationResult<DocumentRespo
                 .retrieve()
                 .body(DocumentResponse.class);
 
-            return OperationResult.success(response);
+            return Result.success(response);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to add document", e.getStatusMessage());
+            return Result.failure("Failed to add document", e.getStatusMessage());
         }
     }
 }

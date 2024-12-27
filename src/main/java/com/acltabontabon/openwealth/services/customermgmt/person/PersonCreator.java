@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services.customermgmt.person;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.ApiProperties;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.dtos.PersonResponse;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Person;
@@ -15,7 +15,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class PersonCreator extends CreateCommand<OperationResult<PersonResponse>> {
+public class PersonCreator extends CreateCommand<Result<PersonResponse>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustomerManagement apiProperties;
@@ -25,7 +25,7 @@ public class PersonCreator extends CreateCommand<OperationResult<PersonResponse>
     private final Person personToAssociate;
 
     @Override
-    protected OperationResult<PersonResponse> execute() {
+    protected Result<PersonResponse> execute() {
         try {
             PersonResponse response = restClient.post()
                 .uri(apiProperties.getNewPersonDetails())
@@ -35,9 +35,9 @@ public class PersonCreator extends CreateCommand<OperationResult<PersonResponse>
                 .retrieve()
                 .body(PersonResponse.class);
 
-            return OperationResult.success(response);
+            return Result.success(response);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to create person details", e.getStatusMessage());
+            return Result.failure("Failed to create person details", e.getStatusMessage());
         }
     }
 }

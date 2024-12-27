@@ -3,14 +3,14 @@ package com.acltabontabon.openwealth.services.customermgmt.contact;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.configs.ApiProperties;
-import com.acltabontabon.openwealth.commons.OperationResult;
+import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.services.DeleteCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
-public class ContactDeleter extends DeleteCommand<OperationResult<Void>> {
+public class ContactDeleter extends DeleteCommand<Result<Void>> {
 
     private final RestClient restClient;
     private final ApiProperties.CustomerManagement apiProperties;
@@ -21,7 +21,7 @@ public class ContactDeleter extends DeleteCommand<OperationResult<Void>> {
     private final String contactId;
 
     @Override
-    protected OperationResult<Void> execute() {
+    protected Result<Void> execute() {
         try {
             restClient.delete()
                 .uri(builder -> builder.path(apiProperties.getPersonContact()).build(this.customerId, this.personId, this.contactId))
@@ -29,9 +29,9 @@ public class ContactDeleter extends DeleteCommand<OperationResult<Void>> {
                 .retrieve()
                 .toBodilessEntity();
 
-            return OperationResult.success(null);
+            return Result.success(null);
         } catch (FailedRequestException e) {
-            return OperationResult.failure("Failed to delete contact details", e.getStatusMessage());
+            return Result.failure("Failed to delete contact details", e.getStatusMessage());
         }
     }
 }
