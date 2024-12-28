@@ -4,6 +4,7 @@ import com.acltabontabon.openwealth.configs.ApiProperties;
 import com.acltabontabon.openwealth.services.customermgmt.customer.CustomerReader;
 import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckCreator;
 import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckStatusReader;
+import com.acltabontabon.openwealth.services.customermgmt.status.RequestStatusReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestClient;
@@ -47,7 +48,16 @@ public class CustomerService {
      *
      * @return PreCheckStatusQuery object
      */
-    public PreCheckStatusReader preCheckStatus() {
-        return new PreCheckStatusReader(openWealthRestClient, apiProperties);
+    public PreCheckStatusReader preCheckStatus(String temporaryId) {
+        return new PreCheckStatusReader(openWealthRestClient, apiProperties, temporaryId);
+    }
+
+    /**
+     * Return the status of a request.
+     *
+     * @return RequestStatusReader object
+     */
+    public RequestStatusReader requestStatus(String temporaryId) {
+        return new RequestStatusReader(openWealthRestClient, apiProperties, temporaryId);
     }
 }

@@ -18,13 +18,8 @@ public class PreCheckStatusReader extends ReadCommand<Result<ProspectResponse>> 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
 
+    private final String temporaryId;
     private String correlationId;
-    private String temporaryId;
-
-    public PreCheckStatusReader withTemporaryId(String temporaryId) {
-        this.temporaryId = temporaryId;
-        return this;
-    }
 
     public PreCheckStatusReader withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
