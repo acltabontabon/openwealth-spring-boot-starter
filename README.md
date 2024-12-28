@@ -58,7 +58,7 @@ public class Example {
 }
 ```
 
-For full documentation and examples: [Documentation (TBA)](https://acltabontabon.com/openwealth-spring-starter/)
+For full documentation and examples: [Documentation](https://acltabontabon.com/openwealth-spring-starter/)
 
 ## Support
 
