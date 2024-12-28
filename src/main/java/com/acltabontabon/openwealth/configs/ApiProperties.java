@@ -40,6 +40,8 @@ public class ApiProperties {
 
         private String prospectPreCheck;
         private String prospectPreCheckStatus;
+
+        private String requestStatus;
     }
 
     @Data
