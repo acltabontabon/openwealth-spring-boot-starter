@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.models.customermgmt;
 
-import com.acltabontabon.openwealth.types.CivilStatus;
+import com.acltabontabon.openwealth.types.CivilStatusType;
 import com.acltabontabon.openwealth.types.PersonType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -146,7 +146,7 @@ public class Person {
     /**
      * Civil status of the person.
      */
-    private CivilStatus civilStatus;
+    private CivilStatusType civilStatus;
 
     //--------------------------------- Legal Person --------------------------------- //
 

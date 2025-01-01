@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.CreditDebitType;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,10 +26,9 @@ public class Price {
     private String amountType;
 
     /**
-     * Specifies if a amount is positive or negative.
-     * FIXME: This should be an enum
+     * Specifies if an amount is positive or negative.
      */
-    private String creditDebitIndicator;
+    private CreditDebitType creditDebitIndicator;
 
     /**
      * Indicates the type of the price.

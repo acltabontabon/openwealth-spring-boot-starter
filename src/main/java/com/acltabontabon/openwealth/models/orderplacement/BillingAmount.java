@@ -1,6 +1,7 @@
 package com.acltabontabon.openwealth.models.orderplacement;
 
 import com.acltabontabon.openwealth.models.custodyservices.ForeignExchangeRate;
+import com.acltabontabon.openwealth.types.CreditDebitType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,9 +30,8 @@ public class BillingAmount {
 
     /**
      * Specifies if the amount is a debit (negative) or credit (positive) amount.
-     * FIXME: This should be an enum.
      */
-    private String creditDebitIndicator;
+    private CreditDebitType creditDebitIndicator;
 
     private ForeignExchangeRate foreignExchangeRate;
 

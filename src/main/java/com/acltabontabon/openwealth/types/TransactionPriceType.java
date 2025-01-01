@@ -3,27 +3,22 @@ package com.acltabontabon.openwealth.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Medium {
+public enum TransactionPriceType {
 
-    EMAIL("email"),
-    PHONE("phone"),
-    FAX("fax"),
-    MOBILE("mobile"),
-    WEBSITE("website"),
-    SOCIAL_MEDIA("socialMedia"),
-    OTHERS("others");
+    DEAL_PRICE("dealPrice"),
+    COST_PRICE("costPrice");
 
     private String value;
 
-    Medium(String value) {
+    TransactionPriceType(String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static Medium forValue(String value) {
-        for (Medium medium : Medium.values()) {
-            if (medium.value.equals(value)) {
-                return medium;
+    public static TransactionPriceType forValue(String value) {
+        for (TransactionPriceType transactionPrice : TransactionPriceType.values()) {
+            if (transactionPrice.value.equals(value)) {
+                return transactionPrice;
             }
         }
         throw new IllegalArgumentException("Invalid value: " + value);

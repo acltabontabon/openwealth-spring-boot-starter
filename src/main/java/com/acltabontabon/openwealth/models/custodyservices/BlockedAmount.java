@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.CreditDebitType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +18,7 @@ public class BlockedAmount {
     private String amount;
 
     /**
-     * Specifies if a amount is positive or negative.
-     * FIXME: This should be an enum
+     * Specifies if an amount is positive or negative.
      */
-    private String creditDebitIndicator;
+    private CreditDebitType creditDebitIndicator;
 }
