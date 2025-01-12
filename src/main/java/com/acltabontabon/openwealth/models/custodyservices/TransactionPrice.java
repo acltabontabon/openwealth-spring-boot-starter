@@ -1,5 +1,7 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.PriceRepresentation;
+import com.acltabontabon.openwealth.types.TransactionPriceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,15 +20,13 @@ public class TransactionPrice {
 
     /**
      * Specifies the type of price.
-     * FIXME: This should be an enum
      */
-    private String amountType;
+    private PriceRepresentation amountType;
 
     /**
      * Describes the type of price stated.
-     * FIXME: This should be an enum
      */
-    private String transactionPriceType;
+    private TransactionPriceType transactionPriceType;
 
     /**
      * ISO 4217 code of the currency

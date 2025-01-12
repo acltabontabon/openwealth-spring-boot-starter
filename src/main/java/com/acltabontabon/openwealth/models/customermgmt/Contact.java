@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.models.customermgmt;
 
-import com.acltabontabon.openwealth.types.Medium;
+import com.acltabontabon.openwealth.types.MediumType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class Contact {
     /**
      * Medium for contacting the customer.
      */
-    private Medium medium;
+    private MediumType medium;
 
     /**
      * Specifies the type of contact details.

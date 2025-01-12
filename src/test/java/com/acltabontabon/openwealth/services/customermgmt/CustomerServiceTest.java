@@ -37,7 +37,6 @@ class CustomerServiceTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void shouldReturnListOfCustomers() {
         List<Customer> customers = List.of(Customer.builder().build());
         CustomerResponse customerResponse = CustomerResponse.builder().customers(customers).build();

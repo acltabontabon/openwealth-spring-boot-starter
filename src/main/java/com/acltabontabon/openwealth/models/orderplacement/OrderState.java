@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.orderplacement;
 
+import com.acltabontabon.openwealth.types.OrderStatus;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +16,8 @@ public class OrderState {
 
     /**
      * Shows in which stage of its life cycle an order is.
-     * FIXME: This should be an enum.
      */
-    private String status;
+    private OrderStatus status;
 
     /**
      * Indicates the date and time at which the status has been updated into the status indicated

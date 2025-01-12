@@ -1,5 +1,8 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.CreditDebitType;
+import com.acltabontabon.openwealth.types.FinancialInstrumentPriceType;
+import com.acltabontabon.openwealth.types.PriceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,15 +25,13 @@ public class FinancialInstrumentPrice {
 
     /**
      * Indicates whether the price amount is depicted as unit price or percentage.
-     * FIXME: This should be an enum.
      */
-    private String amountType;
+    private PriceType amountType;
 
     /**
      * Specifies if a amount is positive or negative.
-     * FIXME: This should be an enum.
      */
-    private String creditDebitIndicator;
+    private CreditDebitType creditDebitIndicator;
 
     /**
      * ISO 4217 code of the currency.
@@ -39,7 +40,6 @@ public class FinancialInstrumentPrice {
 
     /**
      * Indicates the type of the price.
-     * FIXME: This should be an enum.
      */
-    private String type;
+    private FinancialInstrumentPriceType type;
 }

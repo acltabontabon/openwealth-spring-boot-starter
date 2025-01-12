@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.orderplacement;
 
+import com.acltabontabon.openwealth.types.AccessType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,7 @@ public class AccountAccess {
 
     /**
      * Indicates what type of access the requestor has for the specified account.
-     * FIXME: This should be an enum.
      */
-    private String accessType;
+    private AccessType accessType;
 
 }

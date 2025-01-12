@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.orderplacement;
 
+import com.acltabontabon.openwealth.types.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,7 @@ public class Account {
 
     /**
      * Indicates the type of the account.
-     * FIXME: This should be an enum.
      */
-    private String type;
+    private AccountType type;
 
 }

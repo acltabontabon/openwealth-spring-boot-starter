@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.SecurityIdentifierType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,9 +19,8 @@ public class TriggeringFinancialInstrument {
 
     /**
      * Type of the instrument ID. isin is preferred.
-     * FIXME: This should be an enum
      */
-    private String type;
+    private SecurityIdentifierType type;
 
     /**
      * Name of the financial instrument in free format text.

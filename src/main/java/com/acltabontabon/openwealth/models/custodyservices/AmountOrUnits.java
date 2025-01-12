@@ -1,5 +1,7 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.AmountType;
+import com.acltabontabon.openwealth.types.CreditDebitType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +15,7 @@ public class AmountOrUnits {
 
     private String amount;
 
-    //FIXME: This should be an enum
-    private String type;
+    private AmountType type;
 
-    //FIXME: This should be an enum
-    private String creditDebitIndicator;
+    private CreditDebitType creditDebitIndicator;
 }

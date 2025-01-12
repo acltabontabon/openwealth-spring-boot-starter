@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Medium {
+public enum MediumType {
 
     EMAIL("email"),
     PHONE("phone"),
@@ -13,15 +13,15 @@ public enum Medium {
     SOCIAL_MEDIA("socialMedia"),
     OTHERS("others");
 
-    private String value;
+    private final String value;
 
-    Medium(String value) {
+    MediumType(String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static Medium forValue(String value) {
-        for (Medium medium : Medium.values()) {
+    public static MediumType forValue(String value) {
+        for (MediumType medium : MediumType.values()) {
             if (medium.value.equals(value)) {
                 return medium;
             }

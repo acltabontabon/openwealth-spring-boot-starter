@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.dtos;
 
+import com.acltabontabon.openwealth.types.ProspectStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,6 @@ public class ProspectResponse {
      * Result of the conducted prospect pre-check. The result is in no way binding and may change
      * during the process.
      */
-    // FIXME: This should be an enum
-    private String response;
+    private ProspectStatus response;
 
 }

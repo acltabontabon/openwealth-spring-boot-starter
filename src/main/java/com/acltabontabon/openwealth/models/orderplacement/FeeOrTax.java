@@ -1,6 +1,8 @@
 package com.acltabontabon.openwealth.models.orderplacement;
 
 import com.acltabontabon.openwealth.models.custodyservices.ForeignExchangeRate;
+import com.acltabontabon.openwealth.types.CreditDebitType;
+import com.acltabontabon.openwealth.types.FeeOrTaxType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +16,8 @@ public class FeeOrTax {
 
     /**
      * Indicates the type of fee/tax.
-     * FIXME: This should be an enum.
      */
-    private String feeType;
+    private FeeOrTaxType feeType;
 
     /**
      * Absolute amount of the fee/tax.
@@ -30,9 +31,8 @@ public class FeeOrTax {
 
     /**
      * Specifies if the amount is a debit (negative) or credit (positive) amount.
-     * FIXME: This should be an enum.
      */
-    private String creditDebitIndicator;
+    private CreditDebitType creditDebitIndicator;
 
     private ForeignExchangeRate foreignExchangeRate;
 

@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.MovementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,9 +21,8 @@ public class Movement {
 
     /**
      * Describes which kind of movement is reported from a banks perspective.
-     * FIXME: This should be an enum
      */
-    private String movementType;
+    private MovementType movementType;
 
     /**
      * Provides further details on an informative level, which goes beyond the granularity of the

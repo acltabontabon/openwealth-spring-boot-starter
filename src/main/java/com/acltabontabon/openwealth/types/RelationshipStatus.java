@@ -15,8 +15,14 @@ public enum RelationshipStatus {
     }
 
     @JsonCreator
+
     public static RelationshipStatus forValue(String value) {
-        return RelationshipStatus.valueOf(value.toUpperCase());
+        for (RelationshipStatus relationshipStatus : RelationshipStatus.values()) {
+            if (relationshipStatus.value.equals(value)) {
+                return relationshipStatus;
+            }
+        }
+        throw new IllegalArgumentException("Invalid value: " + value);
     }
 
     @Override

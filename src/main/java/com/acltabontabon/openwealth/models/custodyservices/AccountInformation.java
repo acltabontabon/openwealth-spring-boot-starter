@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,8 +22,7 @@ public class AccountInformation {
      * Indicates the type of the account. If the account type is cashAccount, no information on the
      * financial instrument is provided in the respective position in the account.
      */
-    //FIXME: This should be an enum
-    private String accountType;
+    private AccountType accountType;
 
     /**
      * Contains the accounts Internatioinal Banking Account Number (IBAN) for a cashAccount if

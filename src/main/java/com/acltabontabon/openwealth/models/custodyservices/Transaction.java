@@ -1,5 +1,7 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.TransactionSubtype;
+import com.acltabontabon.openwealth.types.TransactionType;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,15 +45,13 @@ public class Transaction {
 
     /**
      * Type of the transaction.
-     * FIXME: This should be an enum
      */
-    private String transactionType;
+    private TransactionType transactionType;
 
     /**
      * Gives detailed information about the category of a transaction.
-     * FIXME: This should be an enum
      */
-    private String transactionSubType;
+    private TransactionSubtype transactionSubType;
 
     /**
      * Security triggering/causing the transaction.
