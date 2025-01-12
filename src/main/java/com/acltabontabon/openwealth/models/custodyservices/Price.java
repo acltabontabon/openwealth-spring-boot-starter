@@ -1,6 +1,8 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
 import com.acltabontabon.openwealth.types.CreditDebitType;
+import com.acltabontabon.openwealth.types.PriceRepresentation;
+import com.acltabontabon.openwealth.types.PriceType;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,9 +23,8 @@ public class Price {
 
     /**
      * Indicates whether the price amount is depicted as unit price or percentage.
-     * FIXME: This should be an enum
      */
-    private String amountType;
+    private PriceRepresentation amountType;
 
     /**
      * Specifies if an amount is positive or negative.
@@ -32,9 +33,8 @@ public class Price {
 
     /**
      * Indicates the type of the price.
-     * FIXME: This should be an enum
      */
-    private String positionPriceType;
+    private PriceType positionPriceType;
 
     /**
      * ISO 4217 code of the currency used by the price.

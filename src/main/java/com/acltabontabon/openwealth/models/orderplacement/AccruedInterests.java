@@ -30,7 +30,6 @@ public class AccruedInterests {
 
     /**
      * Specifies if the amount is a debit (negative) or credit (positive) amount.
-     * FIXME: This should be an enum.
      */
     private CreditDebitType creditDebitIndicator;
 

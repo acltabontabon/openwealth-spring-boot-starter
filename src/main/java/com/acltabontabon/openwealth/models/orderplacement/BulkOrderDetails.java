@@ -1,6 +1,9 @@
 package com.acltabontabon.openwealth.models.orderplacement;
 
 import com.acltabontabon.openwealth.models.custodyservices.PlaceOfTrade;
+import com.acltabontabon.openwealth.types.ExecutionType;
+import com.acltabontabon.openwealth.types.OrderSide;
+import com.acltabontabon.openwealth.types.TimeInForce;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +17,8 @@ public class BulkOrderDetails {
 
     /**
      * Side taken by a party on an order.
-     * FIXME: This should be an enum.
      */
-    private String side;
+    private OrderSide side;
 
     private OrderQuantity orderQuantity;
 
@@ -44,9 +46,8 @@ public class BulkOrderDetails {
 
     /**
      * Type of the execution of the order.
-     * FIXME: This should be an enum.
      */
-    private String executionType;
+    private ExecutionType executionType;
 
     /**
      * Limit price per unit of quantity (e.g. per share).
@@ -60,9 +61,8 @@ public class BulkOrderDetails {
 
     /**
      * Specifies how long the order remains in effect.
-     * FIXME: This should be an enum.
      */
-    private String timeInForce;
+    private TimeInForce timeInForce;
 
     /**
      * Date and time of the order expiration (UTC Timestamp). In accordance with ISO 8601.

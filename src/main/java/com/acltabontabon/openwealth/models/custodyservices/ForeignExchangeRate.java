@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.FxType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,12 +31,10 @@ public class ForeignExchangeRate {
 
     /**
      * Defines the type of the indicated fx rate, whether it’s a real (traded) price or a
-     * calculatory price. If currencies are effectively exchanged (real fx), than it should be
+     * calculatory price. If currencies are effectively exchanged (real fx), then it should be
      * indicated by either 'costPrice' (including fees, tax) or 'dealPrice'(plain fx without fees,
      * tax). If the foreignExchangeRate is provided for calculatory purposes, e.g. for position
      * valuations in another currency than the position itself, then 'calculatory' should be used.
-     *
-     * FIXME: This should be an enum
      */
-    private String fxType;
+    private FxType fxType;
 }

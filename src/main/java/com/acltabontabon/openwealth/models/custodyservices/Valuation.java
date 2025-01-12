@@ -24,7 +24,6 @@ public class Valuation {
 
     /**
      * Specifies if an amount is positive or negative.
-     * FIXME: This should be an enum
      */
     private CreditDebitType creditDebitIndicator;
 

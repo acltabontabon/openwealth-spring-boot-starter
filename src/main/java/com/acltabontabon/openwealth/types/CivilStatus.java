@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum CivilStatusType {
+public enum CivilStatus {
 
     DIVORCED("divorced"),
     LEGALLY_DIVORCED("legallyDivorced"),
@@ -15,13 +15,13 @@ public enum CivilStatusType {
 
     private final String value;
 
-    CivilStatusType(String value) {
+    CivilStatus(String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static CivilStatusType forValue(String value) {
-        for (CivilStatusType civilStatus : CivilStatusType.values()) {
+    public static CivilStatus forValue(String value) {
+        for (CivilStatus civilStatus : CivilStatus.values()) {
             if (civilStatus.value.equalsIgnoreCase(value)) {
                 return civilStatus;
             }

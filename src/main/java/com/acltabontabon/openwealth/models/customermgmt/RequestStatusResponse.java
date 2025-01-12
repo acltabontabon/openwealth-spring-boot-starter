@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.customermgmt;
 
+import com.acltabontabon.openwealth.types.CurrentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,9 +21,8 @@ public class RequestStatusResponse {
     /**
      * Current status of an order (e.g.customer onboarding to get an update if a customer object
      * already has been opened or not).
-     * FIXME: This should be an enum
      */
-    private String currentStatus;
+    private CurrentStatus currentStatus;
 
     /**
      * Some kind of permanent ID (Customer/Person/Prospect etc.) so that an object can be

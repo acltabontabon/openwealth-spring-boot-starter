@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.customermgmt;
 
+import com.acltabontabon.openwealth.types.Relation;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
@@ -16,9 +17,8 @@ public class PersonToPersonRelation {
 
     /**
      * Type of relation between two persons.
-     * FIXME: This should be an ENUM.
      */
-    private String relation;
+    private Relation relation;
 
     /**
      * Field indicates the person to person relation type. It shall only be used if the relation

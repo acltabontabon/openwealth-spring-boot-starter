@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.AccountIdentificationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,6 @@ public class AccountDetails {
 
     /**
      * Indicates the type of the account identification.
-     * FIXME: This should be an enum
      */
-    private String accountIdentificationType;
+    private AccountIdentificationType accountIdentificationType;
 }

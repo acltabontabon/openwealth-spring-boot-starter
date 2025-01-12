@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.PriceRepresentation;
 import com.acltabontabon.openwealth.types.TransactionPriceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +20,8 @@ public class TransactionPrice {
 
     /**
      * Specifies the type of price.
-     * FIXME: This should be an enum
      */
-    private String amountType;
+    private PriceRepresentation amountType;
 
     /**
      * Describes the type of price stated.

@@ -3,22 +3,22 @@ package com.acltabontabon.openwealth.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum TransactionPriceType {
+public enum AccountIdentificationType {
 
-    DEAL_PRICE("dealPrice"),
-    COST_PRICE("costPrice");
+    IBAN("iban"),
+    OTHER("other");
 
     private final String value;
 
-    TransactionPriceType(String value) {
+    AccountIdentificationType(String value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static TransactionPriceType forValue(String value) {
-        for (TransactionPriceType transactionPrice : TransactionPriceType.values()) {
-            if (transactionPrice.value.equals(value)) {
-                return transactionPrice;
+    public static AccountIdentificationType forValue(String value) {
+        for (AccountIdentificationType type : AccountIdentificationType.values()) {
+            if (type.value.equals(value)) {
+                return type;
             }
         }
         throw new IllegalArgumentException("Invalid value: " + value);

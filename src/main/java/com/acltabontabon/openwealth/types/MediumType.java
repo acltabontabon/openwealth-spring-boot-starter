@@ -13,7 +13,7 @@ public enum MediumType {
     SOCIAL_MEDIA("socialMedia"),
     OTHERS("others");
 
-    private String value;
+    private final String value;
 
     MediumType(String value) {
         this.value = value;

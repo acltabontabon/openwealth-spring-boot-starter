@@ -1,5 +1,6 @@
 package com.acltabontabon.openwealth.models.orderplacement;
 
+import com.acltabontabon.openwealth.types.AmountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,7 @@ public class OrderQuantity {
 
     /**
      * Type of the amount.
-     * FIXME: This should be an enum.
      */
-    private String type;
+    private AmountType type;
 
 }

@@ -1,5 +1,8 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
+import com.acltabontabon.openwealth.types.DayCountBasis;
+import com.acltabontabon.openwealth.types.InterestType;
+import com.acltabontabon.openwealth.types.PaymentFrequency;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,15 +26,13 @@ public class Interest {
 
     /**
      * Indicates the type of interest.
-     * FIXME: this should be an enum.
      */
-    private String type;
+    private InterestType type;
 
     /**
      * Interest method of the instrument.
-     * FIXME: this should be an enum.
      */
-    private String  dayCountBasis;
+    private DayCountBasis dayCountBasis;
 
     /**
      * Date of the next interest payment. Full-date according to ISO 8601 i.e. YYYY-MM-DD format.
@@ -40,8 +41,7 @@ public class Interest {
 
     /**
      * Specifies the frequency of an interest payment.
-     * FIXME: this should be an enum.
      */
-    private String paymentFrequency;
+    private PaymentFrequency paymentFrequency;
 
 }
