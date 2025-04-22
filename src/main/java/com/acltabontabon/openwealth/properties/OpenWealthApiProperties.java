@@ -1,11 +1,11 @@
-package com.acltabontabon.openwealth.configs;
+package com.acltabontabon.openwealth.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties(prefix = "openwealth.api")
-public class ApiProperties {
+public class OpenWealthApiProperties {
 
     private String baseUrl;
     private String accessToken;

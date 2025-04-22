@@ -3,13 +3,14 @@ package com.acltabontabon.openwealth.services.custodyservices.position;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.commons.Result;
-import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.client.RestClient;
 
 @Slf4j
@@ -17,7 +18,8 @@ import org.springframework.web.client.RestClient;
 public class CustomerPositionStatementReader extends ReadCommand<Result<CustomerPositionStatement>> {
 
     private final RestClient restClient;
-    private final ApiProperties.CustodyServices apiProperties;
+    private final OpenWealthApiProperties.CustodyServices apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     private final String correlationId;
     private final String customerId;
@@ -31,11 +33,11 @@ public class CustomerPositionStatementReader extends ReadCommand<Result<Customer
         try {
             CustomerPositionStatement response = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getCustomerPositionStatement())
-                    .queryParam("date", this.date.toString())
-                    .queryParam("eodIndicator", this.eodIndicator)
-                    .queryParam("dateType", this.dateType)
-                    .build(this.customerId))
-                .header(HEADER_CORRELATION_ID, this.correlationId)
+                    .queryParam("date", date.toString())
+                    .queryParam("eodIndicator", eodIndicator)
+                    .queryParam("dateType", dateType)
+                    .build(customerId))
+                .header(HEADER_CORRELATION_ID, correlationId)
                 .retrieve()
                 .body(CustomerPositionStatement.class);
 
@@ -43,5 +45,10 @@ public class CustomerPositionStatementReader extends ReadCommand<Result<Customer
         } catch (FailedRequestException e) {
             return Result.failure("Failed to fetch customer position statement", e.getStatusMessage());
         }
+    }
+
+    @Override
+    protected TaskExecutor asyncExecutor() {
+        return this.asyncExecutor;
     }
 }

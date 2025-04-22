@@ -3,13 +3,14 @@ package com.acltabontabon.openwealth.services.custodyservices.transaction;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.commons.Result;
-import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.TransactionStatement;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.client.RestClient;
 
 @Slf4j
@@ -17,7 +18,8 @@ import org.springframework.web.client.RestClient;
 public class CustomerTransactionStatementReader extends ReadCommand<Result<TransactionStatement>> {
 
     private final RestClient restClient;
-    private final ApiProperties.CustodyServices apiProperties;
+    private final OpenWealthApiProperties.CustodyServices apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     private final String correlationId;
     private final String customerId;
@@ -31,11 +33,11 @@ public class CustomerTransactionStatementReader extends ReadCommand<Result<Trans
         try {
             TransactionStatement response = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getCustomerTransactionStatement())
-                    .queryParam("date", this.date.toString())
-                    .queryParam("eodIndicator", this.eodIndicator)
-                    .queryParam("dateType", this.dateType)
-                    .build(this.customerId))
-                .header(HEADER_CORRELATION_ID, this.correlationId)
+                    .queryParam("date", date.toString())
+                    .queryParam("eodIndicator", eodIndicator)
+                    .queryParam("dateType", dateType)
+                    .build(customerId))
+                .header(HEADER_CORRELATION_ID, correlationId)
                 .retrieve()
                 .body(TransactionStatement.class);
 
@@ -43,5 +45,10 @@ public class CustomerTransactionStatementReader extends ReadCommand<Result<Trans
         } catch (FailedRequestException e) {
             return Result.failure("Failed to fetch customer transaction statement", e.getStatusMessage());
         }
+    }
+
+    @Override
+    protected TaskExecutor asyncExecutor() {
+        return this.asyncExecutor;
     }
 }
