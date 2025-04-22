@@ -1,9 +1,10 @@
 package com.acltabontabon.openwealth.services.custodyservices;
 
-import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.custodyservices.customer.CustomerReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.client.RestClient;
 
 @Slf4j
@@ -11,10 +12,11 @@ import org.springframework.web.client.RestClient;
 public class CustodyService {
 
     private final RestClient openWealthRestClient;
-    private final ApiProperties.CustodyServices apiProperties;
+    private final OpenWealthApiProperties.CustodyServices apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     public CustomerReader customers() {
-        return new CustomerReader(openWealthRestClient, apiProperties);
+        return new CustomerReader(openWealthRestClient, apiProperties, asyncExecutor);
     }
 
 }

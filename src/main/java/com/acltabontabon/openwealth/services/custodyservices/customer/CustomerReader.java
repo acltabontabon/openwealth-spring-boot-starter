@@ -3,7 +3,7 @@ package com.acltabontabon.openwealth.services.custodyservices.customer;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.commons.Result;
-import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
 import com.acltabontabon.openwealth.services.ReadCommand;
@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.client.RestClient;
 
 @Slf4j
@@ -18,7 +19,8 @@ import org.springframework.web.client.RestClient;
 public class CustomerReader extends ReadCommand<Result<List<Customer>>> {
 
     private final RestClient restClient;
-    private final ApiProperties.CustodyServices apiProperties;
+    private final OpenWealthApiProperties.CustodyServices apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     private String correlationId;
 
@@ -28,17 +30,16 @@ public class CustomerReader extends ReadCommand<Result<List<Customer>>> {
     }
 
     public SingleCustomerReader withCustomerId(String customerId) {
-        return new SingleCustomerReader(restClient, apiProperties, this.correlationId, customerId);
+        return new SingleCustomerReader(restClient, apiProperties, asyncExecutor, correlationId, customerId);
     }
 
     public SingleAccountReader withAccountId(String accountId) {
-        return new SingleAccountReader(restClient, apiProperties, correlationId, accountId);
+        return new SingleAccountReader(restClient, apiProperties, asyncExecutor, correlationId, accountId);
     }
 
     public SinglePositionReader withPositionId(String positionId) {
-        return new SinglePositionReader(restClient, apiProperties, correlationId, positionId);
+        return new SinglePositionReader(restClient, apiProperties, asyncExecutor, correlationId, positionId);
     }
-
 
     @Override
     protected Result<List<Customer>> execute() {
@@ -53,5 +54,10 @@ public class CustomerReader extends ReadCommand<Result<List<Customer>>> {
         } catch (FailedRequestException e) {
             return Result.failure("Failed to fetch list of customers", e.getStatusMessage());
         }
+    }
+
+    @Override
+    protected TaskExecutor asyncExecutor() {
+        return this.asyncExecutor;
     }
 }

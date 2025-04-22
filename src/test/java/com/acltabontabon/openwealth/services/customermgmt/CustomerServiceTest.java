@@ -7,15 +7,16 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.models.customermgmt.Customer;
+import com.acltabontabon.openwealth.services.TestFixtures;
 import java.util.List;
 import java.util.function.Function;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestClient;
@@ -29,26 +30,21 @@ class CustomerServiceTest {
     @Mock
     private CustomerManagement apiProperties;
 
+    @InjectMocks
     private CustomerService customerService;
-
-    @BeforeEach
-    void setUp() {
-        customerService = new CustomerService(restClient, apiProperties);
-    }
 
     @Test
     void shouldReturnListOfCustomers() {
         List<Customer> customers = List.of(Customer.builder().build());
         CustomerResponse customerResponse = CustomerResponse.builder().customers(customers).build();
         Result<CustomerResponse> expectedResponse = Result.success(customerResponse);
-        String mockEndpoint = "http://mock-api/customers";
 
         RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
         RestClient.RequestHeadersSpec<?> headersSpec = mock(RestClient.RequestHeadersSpec.class);
         RestClient.ResponseSpec responseSpec = mock(RestClient.ResponseSpec.class);
 
         when(apiProperties.getCustomers())
-            .thenReturn(mockEndpoint);
+            .thenReturn(TestFixtures.MOCK_URL);
         when(restClient.get())
             .thenAnswer(invocation -> uriSpec);
         when(uriSpec.uri(anyString()))

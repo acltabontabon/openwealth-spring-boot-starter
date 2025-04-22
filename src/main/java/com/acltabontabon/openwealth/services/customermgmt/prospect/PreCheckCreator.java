@@ -3,12 +3,13 @@ package com.acltabontabon.openwealth.services.customermgmt.prospect;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.commons.Result;
-import com.acltabontabon.openwealth.configs.ApiProperties.CustomerManagement;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.ProspectResponse;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Prospect;
 import com.acltabontabon.openwealth.services.CreateCommand;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
@@ -21,6 +22,7 @@ public class PreCheckCreator extends CreateCommand<Result<ProspectResponse>> {
 
     private final RestClient restClient;
     private final CustomerManagement apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     private String correlationId;
     private Prospect prospect;
@@ -50,5 +52,10 @@ public class PreCheckCreator extends CreateCommand<Result<ProspectResponse>> {
         } catch (FailedRequestException e) {
             return Result.failure(e.getStatusMessage(), String.valueOf(e.getStatusCode()));
         }
+    }
+
+    @Override
+    protected TaskExecutor asyncExecutor() {
+        return this.asyncExecutor;
     }
 }

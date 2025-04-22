@@ -1,23 +1,24 @@
 package com.acltabontabon.openwealth.services.custodyservices.customer;
 
-import com.acltabontabon.openwealth.configs.ApiProperties;
-import com.acltabontabon.openwealth.services.custodyservices.transaction.AccountTransactionStatementReader;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.custodyservices.transaction.PositionTransactionStatementReader;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
 public class SinglePositionReader {
 
     private final RestClient restClient;
-    private final ApiProperties.CustodyServices apiProperties;
+    private final OpenWealthApiProperties.CustodyServices apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     private final String correlationId;
     private final String positionId;
 
     public PositionTransactionStatementReader transactionStatement(LocalDate date, boolean eodIndicator, String dateType) {
-        return new PositionTransactionStatementReader(restClient, apiProperties, correlationId, positionId, date, eodIndicator, dateType);
+        return new PositionTransactionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, positionId, date, eodIndicator, dateType);
     }
 }
 

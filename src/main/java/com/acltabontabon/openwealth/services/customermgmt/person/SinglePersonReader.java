@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.services.customermgmt.person;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Address;
@@ -20,13 +20,15 @@ import com.acltabontabon.openwealth.services.customermgmt.contact.ContactUpdater
 import com.acltabontabon.openwealth.services.customermgmt.kyc.KycCreator;
 import com.acltabontabon.openwealth.services.customermgmt.kyc.KycReader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
 public class SinglePersonReader extends ReadCommand<Result<Person>> {
 
     private final RestClient restClient;
-    private final ApiProperties.CustomerManagement apiProperties;
+    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     private final String correlationId;
     private final String customerId;
@@ -40,39 +42,39 @@ public class SinglePersonReader extends ReadCommand<Result<Person>> {
     }
 
     public KycReader kycDetails() {
-        return new KycReader(restClient, apiProperties, correlationId, customerId, personId);
+        return new KycReader(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId);
     }
 
     public KycCreator addKycDetails(Kyc newKyc) {
-        return new KycCreator(restClient, apiProperties, correlationId, customerId, personId, newKyc);
+        return new KycCreator(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId, newKyc);
     }
 
     public ContactReader contactDetails() {
-        return new ContactReader(restClient, apiProperties, correlationId, customerId, personId);
+        return new ContactReader(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId);
     }
 
     public ContactCreator addContactDetails(Contact newContact) {
-        return new ContactCreator(restClient, apiProperties, correlationId, customerId, personId, newContact);
+        return new ContactCreator(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId, newContact);
     }
 
     public ContactUpdater updateContactDetails(String contactId, Contact updatedContact) {
-        return new ContactUpdater(restClient, apiProperties, correlationId, customerId, personId, contactId, updatedContact);
+        return new ContactUpdater(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId, contactId, updatedContact);
     }
 
     public ContactDeleter deleteContactDetails(String contactId) {
-        return new ContactDeleter(restClient, apiProperties, correlationId, customerId, personId, contactId);
+        return new ContactDeleter(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId, contactId);
     }
 
     public AddressReader addressDetails() {
-        return new AddressReader(restClient, apiProperties, correlationId, customerId, personId);
+        return new AddressReader(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId);
     }
 
     public AddressCreator addAddressDetails(Address newAddress) {
-        return new AddressCreator(restClient, apiProperties, correlationId, customerId, personId, newAddress);
+        return new AddressCreator(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId, newAddress);
     }
 
     public AddressUpdater updateAddressDetails(String addressId, Address updatedAddress) {
-        return new AddressUpdater(restClient, apiProperties, correlationId, customerId, personId, addressId, updatedAddress);
+        return new AddressUpdater(restClient, apiProperties, asyncExecutor, correlationId, customerId, personId, addressId, updatedAddress);
     }
 
     @Override
@@ -94,6 +96,11 @@ public class SinglePersonReader extends ReadCommand<Result<Person>> {
         } catch (FailedRequestException e) {
             return Result.failure("Failed to fetch person details", e.getStatusMessage());
         }
+    }
+
+    @Override
+    protected TaskExecutor asyncExecutor() {
+        return this.asyncExecutor;
     }
 }
 

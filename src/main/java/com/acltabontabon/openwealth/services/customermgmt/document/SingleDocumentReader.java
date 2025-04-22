@@ -2,19 +2,21 @@ package com.acltabontabon.openwealth.services.customermgmt.document;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
-import com.acltabontabon.openwealth.configs.ApiProperties;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Document;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.client.RestClient;
 
 @RequiredArgsConstructor
 public class SingleDocumentReader extends ReadCommand<Result<Document>> {
 
     private final RestClient restClient;
-    private final ApiProperties.CustomerManagement apiProperties;
+    private final OpenWealthApiProperties.CustomerManagement apiProperties;
+    private final TaskExecutor asyncExecutor;
 
     private final String correlationId;
     private final String customerId;
@@ -23,7 +25,7 @@ public class SingleDocumentReader extends ReadCommand<Result<Document>> {
     private boolean completeDetails;
 
     private SingleDocumentReader completeDetails() {
-        this.completeDetails = true;
+        completeDetails = true;
         return this;
     }
 
@@ -32,13 +34,13 @@ public class SingleDocumentReader extends ReadCommand<Result<Document>> {
         try {
             Document contact = restClient.get()
                 .uri(builder -> {
-                    if (this.completeDetails) {
-                        return builder.path(apiProperties.getCustomerDocumentDetails()).build(this.customerId, this.documentId);
+                    if (completeDetails) {
+                        return builder.path(apiProperties.getCustomerDocumentDetails()).build(customerId, documentId);
                     } else {
-                        return builder.path(apiProperties.getCustomerDocument()).build(this.customerId, this.documentId);
+                        return builder.path(apiProperties.getCustomerDocument()).build(customerId, documentId);
                     }
                 })
-                .header(HEADER_CORRELATION_ID, this.correlationId)
+                .header(HEADER_CORRELATION_ID, correlationId)
                 .retrieve()
                 .body(Document.class);
 
@@ -46,6 +48,11 @@ public class SingleDocumentReader extends ReadCommand<Result<Document>> {
         } catch (FailedRequestException e) {
             return Result.failure("Failed to fetch document details", e.getStatusMessage());
         }
+    }
+
+    @Override
+    protected TaskExecutor asyncExecutor() {
+        return this.asyncExecutor;
     }
 }
 
