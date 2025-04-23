@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add support for custom token resolution via `TokenProvider` interface
 - Enables users to customize the executor for asynchronous operations
 ### Changed
 - Upgrade `org.springframework.boot` plugin version from `3.3.5` to `3.4.4`
