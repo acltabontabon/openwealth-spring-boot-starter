@@ -4,6 +4,8 @@ import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.interceptors.CorrelationIdInterceptor;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.properties.OpenWealthAsyncProperties;
+import com.acltabontabon.openwealth.security.StaticTokenProvider;
+import com.acltabontabon.openwealth.security.TokenProvider;
 import com.acltabontabon.openwealth.services.custodyservices.CustodyService;
 import com.acltabontabon.openwealth.services.customermgmt.CustomerService;
 import com.acltabontabon.openwealth.services.orderplacement.OrderPlacementService;
@@ -30,7 +32,14 @@ public class OpenWealthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RestClient openWealthRestClient(RestClient.Builder builder, OpenWealthApiProperties openWealthApiProperties) {
+    public TokenProvider tokenProvider(OpenWealthApiProperties openWealthApiProperties) {
+        log.debug("Initializing tokenProvider bean");
+        return new StaticTokenProvider(openWealthApiProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RestClient openWealthRestClient(RestClient.Builder builder, OpenWealthApiProperties openWealthApiProperties, TokenProvider tokenProvider) {
         log.debug("Initializing openWealthRestClient bean");
         return builder
             .baseUrl(openWealthApiProperties.getBaseUrl())
@@ -38,7 +47,7 @@ public class OpenWealthAutoConfiguration {
             .defaultStatusHandler(HttpStatusCode::is4xxClientError, (request, response) -> {
                 throw new FailedRequestException(response.getStatusText(), response.getStatusCode());
             })
-            .defaultHeader("Authorization", "Bearer " + openWealthApiProperties.getAccessToken())
+            .defaultHeader("Authorization", "Bearer " + tokenProvider.getAccessToken())
             .defaultHeader("Accept", MediaType.APPLICATION_JSON_VALUE)
             .build();
     }
