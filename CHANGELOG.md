@@ -8,16 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+### Changed
+### Fixed
+### Removed
+
+## [1.0.0-Alpha.4] - 2025-04-23
+### Added
 - Add support for custom token resolution via `TokenProvider` interface
 - Enables users to customize the executor for asynchronous operations
 ### Changed
 - Upgrade `org.springframework.boot` plugin version from `3.3.5` to `3.4.4`
 - Upgrade `io.spring.dependency-management` plugin version from `1.1.6` to `1.1.7`
-- Upgrade `org.jreleaser` plugin version from `1.15.0` to `1.16.0`
 - Upgrade `org.junit:junit-bom` version from `5.10.0` to `5.12.1`
 - Upgrade `org.mockito:mockito-core` version from `5.5.0` to `5.16.1`
 - Upgrade `org.mockito:mockito-junit-jupiter` version from `5.5.0` to `5.16.1`
 - Upgrade `Java` version from `17` to `21`
 - Replace references to `ApiProperties` with `OpenWealthApiProperties`
-### Fixed
-### Removed

@@ -1,9 +1,9 @@
 
 # OpenWealth Spring Starter
 
-![version](https://img.shields.io/badge/version-1.0.0--Alpha.3-blue)
+![version](https://img.shields.io/badge/version-1.0.0--Alpha.4-blue)
 ![java](https://img.shields.io/badge/java-17%2B-blue)
-![spring-boot](https://img.shields.io/badge/spring--boot-3.3.x-blue)
+![spring-boot](https://img.shields.io/badge/spring--boot-3.4.x-blue)
 ![license](https://img.shields.io/github/license/acltabontabon/openwealth-spring-starter)
 [![CodeQL](https://github.com/acltabontabon/openwealth-spring-starter/actions/workflows/codeql.yml/badge.svg)](https://github.com/acltabontabon/openwealth-spring-starter/actions/workflows/codeql.yml)
 
@@ -31,13 +31,13 @@
 <dependency>
     <groupId>com.acltabontabon</groupId>
     <artifactId>openwealth-spring-starter</artifactId>
-    <version>1.0.0-Alpha.3</version>
+    <version>1.0.0-Alpha.4</version>
 </dependency>
 ```
 
 ### Gradle
 ```gradle
-implementation 'com.acltabontabon:openwealth-spring-starter:1.0.0-Alpha.3'
+implementation 'com.acltabontabon:openwealth-spring-starter:1.0.0-Alpha.4'
 ```
 
 ### Example
