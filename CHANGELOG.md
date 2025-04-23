@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+### Changed
+### Fixed
+### Removed
+
+## [1.0.0-Alpha.4] - 2025-04-23
+### Added
 - Add support for custom token resolution via `TokenProvider` interface
 - Enables users to customize the executor for asynchronous operations
 ### Changed
@@ -19,5 +25,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade `org.mockito:mockito-junit-jupiter` version from `5.5.0` to `5.16.1`
 - Upgrade `Java` version from `17` to `21`
 - Replace references to `ApiProperties` with `OpenWealthApiProperties`
-### Fixed
-### Removed
