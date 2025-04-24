@@ -37,7 +37,11 @@ public class SingleCustomerReader extends ReadCommand<Result<Customer>> {
         try {
             Customer customer = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getCustomer()).build(customerId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(Customer.class);
 

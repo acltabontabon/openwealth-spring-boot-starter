@@ -1,6 +1,7 @@
 package com.acltabontabon.openwealth.services.custodyservices.customer;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
 
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
@@ -23,9 +24,15 @@ public class CustomerReader extends ReadCommand<Result<List<Customer>>> {
     private final TaskExecutor asyncExecutor;
 
     private String correlationId;
+    private Integer limit;
 
     public CustomerReader withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
+        return this;
+    }
+
+    public CustomerReader withLimit(Integer limit) {
+        this.limit = limit;
         return this;
     }
 
@@ -46,13 +53,20 @@ public class CustomerReader extends ReadCommand<Result<List<Customer>>> {
         try {
             List<Customer> response = restClient.get()
                 .uri(apiProperties.getCustomers())
-                .header(HEADER_CORRELATION_ID, this.correlationId)
+                .headers((headers) -> {
+                    if (limit != null && limit > 0) {
+                        headers.set(HEADER_LIMIT, String.valueOf(limit));
+                    }
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
             return Result.success(response);
         } catch (FailedRequestException e) {
-            return Result.failure("Failed to fetch list of customers", e.getStatusMessage());
+            return Result.failure("Failed to fetch list of customers", e.getStatusCode().toString());
         }
     }
 

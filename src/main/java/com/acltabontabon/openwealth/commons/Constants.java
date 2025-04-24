@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 public class Constants {
 
     public static final String HEADER_CORRELATION_ID = "X-Correlation-ID";
+    public static final String HEADER_LIMIT = "limit";
 }

@@ -8,7 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Custody Service
+  - Add support for limiting the number of customers returned via a new header parameter
 ### Changed
+- Custody Service
+  - Improve error handling in `CustomerReader` to use status codes instead of status messages
 ### Fixed
 - Fix incorrect assignment of auto-generated correlation ID in RestClient headers
 ### Removed
