@@ -65,7 +65,7 @@ publishing {
             pom {
                 name = project.name
                 description = project.description.toString()
-                url = 'https://github.com/acltabontabon/openwealth-spring-starter'
+                url = 'https://github.com/acltabontabon/openwealth-spring-boot-starter'
                 inceptionYear = '2024'
 
                 licenses {
@@ -82,12 +82,12 @@ publishing {
                     }
                 }
                 scm {
-                    url = 'https://github.com/acltabontabon/openwealth-spring-starter.git'
-                    connection = 'scm:git:git://github.com/acltabontabon/openwealth-spring-starter.git'
-                    developerConnection = 'scm:git:git://github.com/acltabontabon/openwealth-spring-starter.git'
+                    url = 'https://github.com/acltabontabon/openwealth-spring-boot-starter.git'
+                    connection = 'scm:git:git://github.com/acltabontabon/openwealth-spring-boot-starter.git'
+                    developerConnection = 'scm:git:git://github.com/acltabontabon/openwealth-spring-boot-starter.git'
                 }
                 issueManagement {
-                    url = 'https://github.com/acltabontabon/openwealth-spring-starter/issues'
+                    url = 'https://github.com/acltabontabon/openwealth-spring-boot-starter/issues'
                 }
             }
         }

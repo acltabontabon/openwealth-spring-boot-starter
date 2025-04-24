@@ -4,8 +4,8 @@
 ![version](https://img.shields.io/badge/version-1.0.0--Alpha.4-blue)
 ![java](https://img.shields.io/badge/java-17%2B-blue)
 ![spring-boot](https://img.shields.io/badge/spring--boot-3.4.x-blue)
-![license](https://img.shields.io/github/license/acltabontabon/openwealth-spring-starter)
-[![CodeQL](https://github.com/acltabontabon/openwealth-spring-starter/actions/workflows/codeql.yml/badge.svg)](https://github.com/acltabontabon/openwealth-spring-starter/actions/workflows/codeql.yml)
+![license](https://img.shields.io/github/license/acltabontabon/openwealth-spring-boot-starter)
+[![CodeQL](https://github.com/acltabontabon/openwealth-spring-boot-starter/actions/workflows/codeql.yml/badge.svg)](https://github.com/acltabontabon/openwealth-spring-boot-starter/actions/workflows/codeql.yml)
 
 **A lightweight and developer-friendly Spring Boot library that simplifies integration with [OpenWealth API](https://openwealth.ch).**
 
@@ -30,14 +30,14 @@
 ```xml
 <dependency>
     <groupId>com.acltabontabon</groupId>
-    <artifactId>openwealth-spring-starter</artifactId>
+    <artifactId>openwealth-spring-boot-starter</artifactId>
     <version>1.0.0-Alpha.4</version>
 </dependency>
 ```
 
 ### Gradle
 ```gradle
-implementation 'com.acltabontabon:openwealth-spring-starter:1.0.0-Alpha.4'
+implementation 'com.acltabontabon:openwealth-spring-boot-starter:1.0.0-Alpha.4'
 ```
 
 ### Example
@@ -58,7 +58,7 @@ public class Example {
 }
 ```
 
-For full documentation and examples: [Documentation](https://acltabontabon.com/openwealth-spring-starter/)
+For full documentation and examples: [Documentation](https://acltabontabon.com/openwealth-spring-boot-starter/)
 
 ## Support
 
