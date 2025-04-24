@@ -18,8 +18,9 @@ public class CorrelationIdInterceptor implements ClientHttpRequestInterceptor {
         String correlationId = request.getHeaders().getFirst(Constants.HEADER_CORRELATION_ID);
 
         if (correlationId == null || correlationId.isEmpty()) {
+            log.debug("No correlation ID found in request headers. Assigning new one.");
             correlationId = UUID.randomUUID().toString();
-            request.getHeaders().add(Constants.HEADER_CORRELATION_ID, correlationId);
+            request.getHeaders().set(Constants.HEADER_CORRELATION_ID, correlationId);
         }
 
         log.debug("Request URI: {}", request.getURI());

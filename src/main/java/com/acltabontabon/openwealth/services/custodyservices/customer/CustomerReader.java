@@ -3,9 +3,9 @@ package com.acltabontabon.openwealth.services.custodyservices.customer;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 
 import com.acltabontabon.openwealth.commons.Result;
-import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

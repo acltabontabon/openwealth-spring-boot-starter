@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 ### Changed
 ### Fixed
+- Fix incorrect assignment of auto-generated correlation ID in RestClient headers
 ### Removed
 
 ## [1.0.0-Alpha.4] - 2025-04-23
