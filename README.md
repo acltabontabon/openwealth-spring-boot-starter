@@ -2,7 +2,7 @@
 # OpenWealth Spring Starter
 
 ![version](https://img.shields.io/badge/version-1.0.0--Alpha.4-blue)
-![java](https://img.shields.io/badge/java-17%2B-blue)
+![java](https://img.shields.io/badge/java-21%2B-blue)
 ![spring-boot](https://img.shields.io/badge/spring--boot-3.4.x-blue)
 ![license](https://img.shields.io/github/license/acltabontabon/openwealth-spring-boot-starter)
 [![CodeQL](https://github.com/acltabontabon/openwealth-spring-boot-starter/actions/workflows/codeql.yml/badge.svg)](https://github.com/acltabontabon/openwealth-spring-boot-starter/actions/workflows/codeql.yml)
@@ -63,8 +63,6 @@ For full documentation and examples: [Documentation](https://acltabontabon.com/o
 ## Support
 
 Love this project? Support its development by [buying me a coffee](https://ko-fi.com/acltabontabon)! ☕
-
-<span><a href='https://ko-fi.com/acltabontabon' target='_blank'><img style='height:30px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=1' border='0' alt='Buy Me a Coffee at ko-fi.com'></a></span>
 
 
 ## License
