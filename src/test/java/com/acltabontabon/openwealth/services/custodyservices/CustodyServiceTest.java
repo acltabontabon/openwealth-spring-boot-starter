@@ -14,10 +14,15 @@ import com.acltabontabon.openwealth.commons.Constants;
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
+import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustodyServices;
 import com.acltabontabon.openwealth.services.TestFixtures;
+import com.acltabontabon.openwealth.types.DateType;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -43,6 +48,15 @@ class CustodyServiceTest {
     @Mock
     private TaskExecutor asyncExecutor;
 
+    @Mock
+    private RestClient.RequestHeadersUriSpec uriSpec;
+
+    @Mock
+    private RestClient.RequestHeadersSpec headersSpec;
+
+    @Mock
+    private RestClient.ResponseSpec responseSpec;
+
     @Captor
     private ArgumentCaptor<Consumer<HttpHeaders>> headersConsumerCaptor;
 
@@ -54,10 +68,6 @@ class CustodyServiceTest {
     void shouldReturnListOfCustomers() {
         var customers = List.of(Customer.builder().build());
         var expectedResponse = Result.success(customers);
-
-        var uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        var headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        var responseSpec = mock(RestClient.ResponseSpec.class);
 
         when(apiProperties.getCustomers())
             .thenReturn(TestFixtures.MOCK_URL);
@@ -84,10 +94,6 @@ class CustodyServiceTest {
     void shouldSetLimitHeaderWhenFetchingCustomersWithLimit() {
         int limit = 10;
         var customers = List.of(Customer.builder().build());
-
-        var uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        var headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        var responseSpec = mock(RestClient.ResponseSpec.class);
 
         when(apiProperties.getCustomers())
             .thenReturn(TestFixtures.MOCK_URL);
@@ -116,10 +122,6 @@ class CustodyServiceTest {
     @SuppressWarnings("unchecked")
     void shouldSetCorrelationIdHeaderWhenFetchingCustomersWithCorrelationId() {
         var customers = List.of(Customer.builder().build());
-
-        var uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        var headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        var responseSpec = mock(RestClient.ResponseSpec.class);
 
         when(apiProperties.getCustomers())
             .thenReturn(TestFixtures.MOCK_URL);
@@ -153,13 +155,9 @@ class CustodyServiceTest {
             .customerReferenceCurrency("CHF")
             .build();
 
-        var uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        var headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        var responseSpec = mock(RestClient.ResponseSpec.class);
-
         when(restClient.get())
             .thenReturn(uriSpec);
-        when(uriSpec.uri(any(java.util.function.Function.class)))
+        when(uriSpec.uri(any(Function.class)))
             .thenReturn(headersSpec);
         when(headersSpec.headers(any(Consumer.class)))
             .thenReturn(headersSpec);
@@ -180,9 +178,6 @@ class CustodyServiceTest {
     @Test
     @SuppressWarnings("unchecked")
     void shouldHandleErrorWhenFetchingCustomers() {
-        var uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        var headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        var responseSpec = mock(RestClient.ResponseSpec.class);
         var statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
 
         when(apiProperties.getCustomers())
@@ -215,5 +210,83 @@ class CustodyServiceTest {
             .fetchAsync(successConsumer, errorConsumer);
 
         verify(asyncExecutor).execute(any());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldFetchCustomerPositionStatement() {
+        CustomerPositionStatement positionStatement = CustomerPositionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(CustomerPositionStatement.class))
+            .thenReturn(positionStatement);
+
+        Result<CustomerPositionStatement> result = custodyService.customers()
+            .withCustomerId("customer_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals(positionStatement, result.getData());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleNotFoundErrorWhenFetchingPositionStatement() {
+        var statusCode = HttpStatus.NOT_FOUND;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(CustomerPositionStatement.class))
+            .thenThrow(new FailedRequestException("Failed to fetch position statement", statusCode));
+
+        Result<CustomerPositionStatement> result = custodyService.customers()
+            .withCustomerId("customer_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch customer's position statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleServerErrorWhenFetchingPositionStatement() {
+        var statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(CustomerPositionStatement.class))
+            .thenThrow(new FailedRequestException("Internal server error", statusCode));
+
+        Result<CustomerPositionStatement> result = custodyService.customers()
+            .withCustomerId("customer_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch customer's position statement", result.getMessage());
     }
 }

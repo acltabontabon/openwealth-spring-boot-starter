@@ -7,6 +7,7 @@ import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
 import com.acltabontabon.openwealth.services.ReadCommand;
+import com.acltabontabon.openwealth.types.DateType;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class CustomerPositionStatementReader extends ReadCommand<Result<Customer
 
     private final LocalDate date;
     private final boolean eodIndicator;
-    private final String dateType;
+    private final DateType dateType;
 
     @Override
     protected Result<CustomerPositionStatement> execute() {
@@ -35,15 +36,19 @@ public class CustomerPositionStatementReader extends ReadCommand<Result<Customer
                 .uri(builder -> builder.path(apiProperties.getCustomerPositionStatement())
                     .queryParam("date", date.toString())
                     .queryParam("eodIndicator", eodIndicator)
-                    .queryParam("dateType", dateType)
+                    .queryParam("dateType", dateType.toString())
                     .build(customerId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(CustomerPositionStatement.class);
 
             return Result.success(response);
         } catch (FailedRequestException e) {
-            return Result.failure("Failed to fetch customer position statement", e.getStatusMessage());
+            return Result.failure("Failed to fetch customer's position statement", e.getStatusMessage());
         }
     }
 

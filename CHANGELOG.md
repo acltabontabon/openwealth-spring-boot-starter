@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custody Service
   - Improve error handling in `CustomerReader` to use status codes instead of status messages
   - Change `amountType` field in `FinancialInstrumentPrice` from `PriceType` to `PriceRepresentation`
+  - Change `dateType` parameter in `positionStatement` method from `String` to `DateType` enum
 ### Fixed
 - Fix incorrect assignment of auto-generated correlation ID in RestClient headers
 ### Removed
