@@ -13,7 +13,7 @@ dependencyManagement {
 }
 
 group = 'com.acltabontabon'
-version = '1.0.0-Alpha.5'
+version = '1.0.0-Alpha.5-SNAPSHOT'
 description = 'A lightweight and developer-friendly Spring Boot library that simplifies integration with OpenWealth APIs.'
 
 java {
