@@ -7,17 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+### Changed
+### Fixed
+### Removed
+
+
+## [1.0.0-Alpha.5] - 2025-05-04
+### Added
 - Custody Service
   - Add support for limiting the number of customers returned via a new header parameter
 ### Changed
-- Change project name from `openwealth-spring-starter` to `openwealth-spring-boot-starter` 
+- Change project name from `openwealth-spring-starter` to `openwealth-spring-boot-starter`
 - Custody Service
   - Improve error handling in `CustomerReader` to use status codes instead of status messages
   - Change `amountType` field in `FinancialInstrumentPrice` from `PriceType` to `PriceRepresentation`
   - Change `dateType` parameter in `positionStatement` method from `String` to `DateType` enum
 ### Fixed
 - Fix incorrect assignment of auto-generated correlation ID in RestClient headers
-### Removed
 
 ## [1.0.0-Alpha.4] - 2025-04-23
 ### Added
