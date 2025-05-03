@@ -6,7 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
 ### Added
 - Custody Service
   - Add support for limiting the number of customers returned via a new header parameter
@@ -14,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change project name from `openwealth-spring-starter` to `openwealth-spring-boot-starter` 
 - Custody Service
   - Improve error handling in `CustomerReader` to use status codes instead of status messages
+  - Change `amountType` field in `FinancialInstrumentPrice` from `PriceType` to `PriceRepresentation`
 ### Fixed
 - Fix incorrect assignment of auto-generated correlation ID in RestClient headers
 ### Removed

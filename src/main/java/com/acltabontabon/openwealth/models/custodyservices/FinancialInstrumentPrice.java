@@ -2,7 +2,7 @@ package com.acltabontabon.openwealth.models.custodyservices;
 
 import com.acltabontabon.openwealth.types.CreditDebitType;
 import com.acltabontabon.openwealth.types.FinancialInstrumentPriceType;
-import com.acltabontabon.openwealth.types.PriceType;
+import com.acltabontabon.openwealth.types.PriceRepresentation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class FinancialInstrumentPrice {
     /**
      * Indicates whether the price amount is depicted as unit price or percentage.
      */
-    private PriceType amountType;
+    private PriceRepresentation amountType;
 
     /**
      * Specifies if a amount is positive or negative.
