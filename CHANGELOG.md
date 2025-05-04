@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add support for limiting the number of position statements returned for both accounts and customers
   - Add support for limiting the number of transaction statements returned
 ### Changed
+- Upgrade `org.springframework.boot` plugin version from `3.4.4` to `3.4.5`
+- Upgrade `org.junit:junit-bom` version from `5.12.1` to `5.12.2`
+- Upgrade `org.mockito:mockito-core` version from `5.16.1` to `5.17.0`
+- Upgrade `org.mockito:mockito-junit-jupiter` version from `5.16.1` to `5.17.0`
 - Custody Service
   - Account: change `dateType` parameter in `positionStatement` method from `String` to `DateType` enum
   - Account: change `dateType` parameter in `transactionStatement` method from `String` to `DateType` enum
