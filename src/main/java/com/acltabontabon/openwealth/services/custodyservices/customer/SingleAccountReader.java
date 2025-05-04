@@ -23,7 +23,7 @@ public class SingleAccountReader {
         return new AccountPositionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, accountId, date, eodIndicator, dateType);
     }
 
-    public AccountTransactionStatementReader transactionStatement(LocalDate date, boolean eodIndicator, String dateType) {
+    public AccountTransactionStatementReader transactionStatement(LocalDate date, boolean eodIndicator, DateType dateType) {
         return new AccountTransactionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, accountId, date, eodIndicator, dateType);
     }
 }

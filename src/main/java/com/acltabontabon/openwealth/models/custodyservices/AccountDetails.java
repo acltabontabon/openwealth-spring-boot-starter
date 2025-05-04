@@ -1,6 +1,6 @@
 package com.acltabontabon.openwealth.models.custodyservices;
 
-import com.acltabontabon.openwealth.types.AccountIdentificationType;
+import com.acltabontabon.openwealth.types.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +19,9 @@ public class AccountDetails {
 
     /**
      * Indicates the type of the account identification.
+     * TODO: Revisit this. This is initially set as AccountIdentificationType (patterned after
+     *  the enum in the OpenWealth API) however, the sandbox response uses AccountType - so I'm
+     *  not sure what is 'correct'.
      */
-    private AccountIdentificationType accountIdentificationType;
+    private AccountType accountIdentificationType;
 }

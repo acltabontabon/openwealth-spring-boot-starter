@@ -16,6 +16,7 @@ import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.AccountPositionStatement;
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
 import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
+import com.acltabontabon.openwealth.models.custodyservices.TransactionStatement;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustodyServices;
 import com.acltabontabon.openwealth.services.TestFixtures;
 import com.acltabontabon.openwealth.types.DateType;
@@ -425,5 +426,326 @@ class CustodyServiceTest {
         assertNotNull(result);
         assertFalse(result.isSuccess());
         assertEquals("Failed to fetch account position statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldFetchCustomerTransactionStatement() {
+        TransactionStatement transactionStatement = TransactionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenReturn(transactionStatement);
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withCustomerId("customer_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals(transactionStatement, result.getData());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleNotFoundErrorWhenFetchingTransactionStatement() {
+        var statusCode = HttpStatus.NOT_FOUND;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenThrow(new FailedRequestException("Failed to fetch transaction statement", statusCode));
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withCustomerId("customer_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch customer transaction statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleServerErrorWhenFetchingTransactionStatement() {
+        var statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenThrow(new FailedRequestException("Internal server error", statusCode));
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withCustomerId("customer_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch customer transaction statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldSetLimitHeaderWhenFetchingTransactionStatementWithLimit() {
+        int limit = 10;
+        TransactionStatement transactionStatement = TransactionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(headersConsumerCaptor.capture()))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenReturn(transactionStatement);
+
+        custodyService.customers()
+            .withCustomerId("customer_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .withLimit(limit)
+            .fetch();
+
+        HttpHeaders headers = new HttpHeaders();
+        headersConsumerCaptor.getValue().accept(headers);
+
+        assertEquals(String.valueOf(limit), headers.getFirst(Constants.HEADER_LIMIT));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldFetchAccountTransactionStatement() {
+        TransactionStatement transactionStatement = TransactionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenReturn(transactionStatement);
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withAccountId("account_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals(transactionStatement, result.getData());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleNotFoundErrorWhenFetchingAccountTransactionStatement() {
+        var statusCode = HttpStatus.NOT_FOUND;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenThrow(new FailedRequestException("Failed to fetch account transaction statement", statusCode));
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withAccountId("account_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch account transaction statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleServerErrorWhenFetchingAccountTransactionStatement() {
+        var statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenThrow(new FailedRequestException("Internal server error", statusCode));
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withAccountId("account_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch account transaction statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldSetLimitHeaderWhenFetchingAccountTransactionStatementWithLimit() {
+        int limit = 10;
+        TransactionStatement transactionStatement = TransactionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(headersConsumerCaptor.capture()))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenReturn(transactionStatement);
+
+        custodyService.customers()
+            .withAccountId("account_001")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .withLimit(limit)
+            .fetch();
+
+        HttpHeaders headers = new HttpHeaders();
+        headersConsumerCaptor.getValue().accept(headers);
+
+        assertEquals(String.valueOf(limit), headers.getFirst(Constants.HEADER_LIMIT));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldFetchPositionTransactionStatement() {
+        TransactionStatement transactionStatement = TransactionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenReturn(transactionStatement);
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withPositionId("159447")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals(transactionStatement, result.getData());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleNotFoundErrorWhenFetchingPositionTransactionStatement() {
+        var statusCode = HttpStatus.NOT_FOUND;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenThrow(new FailedRequestException("Failed to fetch position transaction statement", statusCode));
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withPositionId("159447")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch account transaction statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleServerErrorWhenFetchingPositionTransactionStatement() {
+        var statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenThrow(new FailedRequestException("Internal server error", statusCode));
+
+        Result<TransactionStatement> result = custodyService.customers()
+            .withPositionId("159447")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch account transaction statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldSetLimitHeaderWhenFetchingPositionTransactionStatementWithLimit() {
+        int limit = 10;
+        TransactionStatement transactionStatement = TransactionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(headersConsumerCaptor.capture()))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(TransactionStatement.class))
+            .thenReturn(transactionStatement);
+
+        custodyService.customers()
+            .withPositionId("159447")
+            .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .withLimit(limit)
+            .fetch();
+
+        HttpHeaders headers = new HttpHeaders();
+        headersConsumerCaptor.getValue().accept(headers);
+
+        assertEquals(String.valueOf(limit), headers.getFirst(Constants.HEADER_LIMIT));
     }
 }
