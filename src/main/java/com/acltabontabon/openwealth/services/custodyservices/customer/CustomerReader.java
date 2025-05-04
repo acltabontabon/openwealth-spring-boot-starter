@@ -40,14 +40,6 @@ public class CustomerReader extends ReadCommand<Result<List<Customer>>> {
         return new SingleCustomerReader(restClient, apiProperties, asyncExecutor, correlationId, customerId);
     }
 
-    public SingleAccountReader withAccountId(String accountId) {
-        return new SingleAccountReader(restClient, apiProperties, asyncExecutor, correlationId, accountId);
-    }
-
-    public SinglePositionReader withPositionId(String positionId) {
-        return new SinglePositionReader(restClient, apiProperties, asyncExecutor, correlationId, positionId);
-    }
-
     @Override
     protected Result<List<Customer>> execute() {
         try {

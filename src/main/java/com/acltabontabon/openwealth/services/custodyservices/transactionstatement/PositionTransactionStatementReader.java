@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.custodyservices.transaction;
+package com.acltabontabon.openwealth.services.custodyservices.transactionstatement;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;

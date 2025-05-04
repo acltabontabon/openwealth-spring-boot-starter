@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.custodyservices.transaction;
+package com.acltabontabon.openwealth.services.custodyservices.transactionstatement;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
@@ -17,14 +17,14 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerTransactionStatementReader extends ReadCommand<Result<TransactionStatement>> {
+public class AccountTransactionStatementReader extends ReadCommand<Result<TransactionStatement>> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustodyServices apiProperties;
     private final TaskExecutor asyncExecutor;
 
     private final String correlationId;
-    private final String customerId;
+    private final String accountId;
 
     private final LocalDate date;
     private final boolean eodIndicator;
@@ -32,7 +32,7 @@ public class CustomerTransactionStatementReader extends ReadCommand<Result<Trans
 
     private Integer limit;
 
-    public CustomerTransactionStatementReader withLimit(Integer limit) {
+    public AccountTransactionStatementReader withLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
@@ -41,11 +41,11 @@ public class CustomerTransactionStatementReader extends ReadCommand<Result<Trans
     protected Result<TransactionStatement> execute() {
         try {
             TransactionStatement response = restClient.get()
-                .uri(builder -> builder.path(apiProperties.getCustomerTransactionStatement())
+                .uri(builder -> builder.path(apiProperties.getAccountTransactionStatement())
                     .queryParam("date", date.toString())
                     .queryParam("eodIndicator", eodIndicator)
                     .queryParam("dateType", dateType)
-                    .build(customerId))
+                    .build(accountId))
                 .headers(headers -> {
                     if (correlationId != null) {
                         headers.set(HEADER_CORRELATION_ID, correlationId);
@@ -60,7 +60,7 @@ public class CustomerTransactionStatementReader extends ReadCommand<Result<Trans
 
             return Result.success(response);
         } catch (FailedRequestException e) {
-            return Result.failure("Failed to fetch customer transaction statement", e.getStatusMessage());
+            return Result.failure("Failed to fetch account transaction statement", e.getStatusMessage());
         }
     }
 
