@@ -289,4 +289,33 @@ class CustodyServiceTest {
         assertFalse(result.isSuccess());
         assertEquals("Failed to fetch customer's position statement", result.getMessage());
     }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldSetLimitHeaderWhenFetchingPositionStatementWithLimit() {
+        int limit = 10;
+        CustomerPositionStatement positionStatement = CustomerPositionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(headersConsumerCaptor.capture()))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(CustomerPositionStatement.class))
+            .thenReturn(positionStatement);
+
+        custodyService.customers()
+            .withCustomerId("customer_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .withLimit(limit)
+            .fetch();
+
+        HttpHeaders headers = new HttpHeaders();
+        headersConsumerCaptor.getValue().accept(headers);
+
+        assertEquals(String.valueOf(limit), headers.getFirst(Constants.HEADER_LIMIT));
+    }
 }
