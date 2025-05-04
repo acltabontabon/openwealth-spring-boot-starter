@@ -60,7 +60,7 @@ public class PositionTransactionStatementReader extends ReadCommand<Result<Trans
 
             return Result.success(response);
         } catch (FailedRequestException e) {
-            return Result.failure("Failed to fetch account transaction statement", e.getStatusMessage());
+            return Result.failure("Failed to fetch position transaction statement", e.getStatusMessage());
         }
     }
 

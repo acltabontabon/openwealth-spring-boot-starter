@@ -691,7 +691,7 @@ class CustodyServiceTest {
 
         assertNotNull(result);
         assertFalse(result.isSuccess());
-        assertEquals("Failed to fetch account transaction statement", result.getMessage());
+        assertEquals("Failed to fetch position transaction statement", result.getMessage());
     }
 
     @Test
@@ -717,7 +717,7 @@ class CustodyServiceTest {
 
         assertNotNull(result);
         assertFalse(result.isSuccess());
-        assertEquals("Failed to fetch account transaction statement", result.getMessage());
+        assertEquals("Failed to fetch position transaction statement", result.getMessage());
     }
 
     @Test
