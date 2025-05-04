@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import com.acltabontabon.openwealth.commons.Constants;
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
+import com.acltabontabon.openwealth.models.custodyservices.AccountPositionStatement;
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
 import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustodyServices;
@@ -317,5 +318,112 @@ class CustodyServiceTest {
         headersConsumerCaptor.getValue().accept(headers);
 
         assertEquals(String.valueOf(limit), headers.getFirst(Constants.HEADER_LIMIT));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldSetLimitHeaderWhenFetchingAccountPositionStatementWithLimit() {
+        int limit = 10;
+        AccountPositionStatement positionStatement = AccountPositionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(headersConsumerCaptor.capture()))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(AccountPositionStatement.class))
+            .thenReturn(positionStatement);
+
+        custodyService.customers()
+            .withAccountId("account_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .withLimit(limit)
+            .fetch();
+
+        HttpHeaders headers = new HttpHeaders();
+        headersConsumerCaptor.getValue().accept(headers);
+
+        assertEquals(String.valueOf(limit), headers.getFirst(Constants.HEADER_LIMIT));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldFetchAccountPositionStatement() {
+        AccountPositionStatement positionStatement = AccountPositionStatement.builder().build();
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(AccountPositionStatement.class))
+            .thenReturn(positionStatement);
+
+        Result<AccountPositionStatement> result = custodyService.customers()
+            .withAccountId("account_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals(positionStatement, result.getData());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleNotFoundErrorWhenFetchingAccountPositionStatement() {
+        var statusCode = HttpStatus.NOT_FOUND;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(AccountPositionStatement.class))
+            .thenThrow(new FailedRequestException("Failed to fetch account position statement", statusCode));
+
+        Result<AccountPositionStatement> result = custodyService.customers()
+            .withAccountId("account_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch account position statement", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleServerErrorWhenFetchingAccountPositionStatement() {
+        var statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.headers(any(Consumer.class)))
+            .thenReturn(headersSpec);
+        when(headersSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(AccountPositionStatement.class))
+            .thenThrow(new FailedRequestException("Internal server error", statusCode));
+
+        Result<AccountPositionStatement> result = custodyService.customers()
+            .withAccountId("account_001")
+            .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
+            .fetch();
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Failed to fetch account position statement", result.getMessage());
     }
 }

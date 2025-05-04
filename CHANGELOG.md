@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Custody Service
-  - Add support for limiting the number of position statements returned
+  - Add support for limiting the number of position statements returned for both accounts and customers
 ### Changed
+- Custody Service
+  - Account: change `dateType` parameter in `positionStatement` method from `String` to `DateType` enum
 ### Fixed
 ### Removed
 

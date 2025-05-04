@@ -1,12 +1,14 @@
 package com.acltabontabon.openwealth.services.custodyservices.position;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
 
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.custodyservices.AccountPositionStatement;
 import com.acltabontabon.openwealth.services.ReadCommand;
+import com.acltabontabon.openwealth.types.DateType;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,14 @@ public class AccountPositionStatementReader extends ReadCommand<Result<AccountPo
 
     private final LocalDate date;
     private final boolean eodIndicator;
-    private final String dateType;
+    private final DateType dateType;
+
+    private Integer limit;
+
+    public AccountPositionStatementReader withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
 
     @Override
     protected Result<AccountPositionStatement> execute() {
@@ -37,7 +46,15 @@ public class AccountPositionStatementReader extends ReadCommand<Result<AccountPo
                     .queryParam("eodIndicator", eodIndicator)
                     .queryParam("dateType", dateType)
                     .build(customerId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+
+                    if (limit != null && limit > 0) {
+                        headers.set(HEADER_LIMIT, String.valueOf(limit));
+                    }
+                })
                 .retrieve()
                 .body(AccountPositionStatement.class);
 
