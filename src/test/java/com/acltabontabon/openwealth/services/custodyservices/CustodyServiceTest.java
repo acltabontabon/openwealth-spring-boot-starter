@@ -338,7 +338,7 @@ class CustodyServiceTest {
         when(responseSpec.body(AccountPositionStatement.class))
             .thenReturn(positionStatement);
 
-        custodyService.customers()
+        custodyService.accounts()
             .withAccountId("account_001")
             .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .withLimit(limit)
@@ -366,7 +366,7 @@ class CustodyServiceTest {
         when(responseSpec.body(AccountPositionStatement.class))
             .thenReturn(positionStatement);
 
-        Result<AccountPositionStatement> result = custodyService.customers()
+        Result<AccountPositionStatement> result = custodyService.accounts()
             .withAccountId("account_001")
             .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -392,7 +392,7 @@ class CustodyServiceTest {
         when(responseSpec.body(AccountPositionStatement.class))
             .thenThrow(new FailedRequestException("Failed to fetch account position statement", statusCode));
 
-        Result<AccountPositionStatement> result = custodyService.customers()
+        Result<AccountPositionStatement> result = custodyService.accounts()
             .withAccountId("account_001")
             .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -418,7 +418,7 @@ class CustodyServiceTest {
         when(responseSpec.body(AccountPositionStatement.class))
             .thenThrow(new FailedRequestException("Internal server error", statusCode));
 
-        Result<AccountPositionStatement> result = custodyService.customers()
+        Result<AccountPositionStatement> result = custodyService.accounts()
             .withAccountId("account_001")
             .positionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -551,7 +551,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenReturn(transactionStatement);
 
-        Result<TransactionStatement> result = custodyService.customers()
+        Result<TransactionStatement> result = custodyService.accounts()
             .withAccountId("account_001")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -577,7 +577,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenThrow(new FailedRequestException("Failed to fetch account transaction statement", statusCode));
 
-        Result<TransactionStatement> result = custodyService.customers()
+        Result<TransactionStatement> result = custodyService.accounts()
             .withAccountId("account_001")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -603,7 +603,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenThrow(new FailedRequestException("Internal server error", statusCode));
 
-        Result<TransactionStatement> result = custodyService.customers()
+        Result<TransactionStatement> result = custodyService.accounts()
             .withAccountId("account_001")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -630,7 +630,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenReturn(transactionStatement);
 
-        custodyService.customers()
+        custodyService.accounts()
             .withAccountId("account_001")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .withLimit(limit)
@@ -658,7 +658,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenReturn(transactionStatement);
 
-        Result<TransactionStatement> result = custodyService.customers()
+        Result<TransactionStatement> result = custodyService.positions()
             .withPositionId("159447")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -684,7 +684,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenThrow(new FailedRequestException("Failed to fetch position transaction statement", statusCode));
 
-        Result<TransactionStatement> result = custodyService.customers()
+        Result<TransactionStatement> result = custodyService.positions()
             .withPositionId("159447")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -710,7 +710,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenThrow(new FailedRequestException("Internal server error", statusCode));
 
-        Result<TransactionStatement> result = custodyService.customers()
+        Result<TransactionStatement> result = custodyService.positions()
             .withPositionId("159447")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .fetch();
@@ -737,7 +737,7 @@ class CustodyServiceTest {
         when(responseSpec.body(TransactionStatement.class))
             .thenReturn(transactionStatement);
 
-        custodyService.customers()
+        custodyService.positions()
             .withPositionId("159447")
             .transactionStatement(LocalDate.of(2023, Month.MAY, 1), true, DateType.TRANSACTION_DATE)
             .withLimit(limit)

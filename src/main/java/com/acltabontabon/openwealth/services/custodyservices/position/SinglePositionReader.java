@@ -1,7 +1,7 @@
-package com.acltabontabon.openwealth.services.custodyservices.customer;
+package com.acltabontabon.openwealth.services.custodyservices.position;
 
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
-import com.acltabontabon.openwealth.services.custodyservices.transaction.PositionTransactionStatementReader;
+import com.acltabontabon.openwealth.services.custodyservices.transactionstatement.PositionTransactionStatementReader;
 import com.acltabontabon.openwealth.types.DateType;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;

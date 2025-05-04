@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.custodyservices.transaction;
+package com.acltabontabon.openwealth.services.custodyservices.positionstatement;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
@@ -6,7 +6,7 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.custodyservices.TransactionStatement;
+import com.acltabontabon.openwealth.models.custodyservices.AccountPositionStatement;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import com.acltabontabon.openwealth.types.DateType;
 import java.time.LocalDate;
@@ -17,14 +17,14 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AccountTransactionStatementReader extends ReadCommand<Result<TransactionStatement>> {
+public class AccountPositionStatementReader extends ReadCommand<Result<AccountPositionStatement>> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustodyServices apiProperties;
     private final TaskExecutor asyncExecutor;
 
     private final String correlationId;
-    private final String accountId;
+    private final String customerId;
 
     private final LocalDate date;
     private final boolean eodIndicator;
@@ -32,20 +32,20 @@ public class AccountTransactionStatementReader extends ReadCommand<Result<Transa
 
     private Integer limit;
 
-    public AccountTransactionStatementReader withLimit(Integer limit) {
+    public AccountPositionStatementReader withLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
 
     @Override
-    protected Result<TransactionStatement> execute() {
+    protected Result<AccountPositionStatement> execute() {
         try {
-            TransactionStatement response = restClient.get()
-                .uri(builder -> builder.path(apiProperties.getAccountTransactionStatement())
+            AccountPositionStatement response = restClient.get()
+                .uri(builder -> builder.path(apiProperties.getAccountPositionStatement())
                     .queryParam("date", date.toString())
                     .queryParam("eodIndicator", eodIndicator)
                     .queryParam("dateType", dateType)
-                    .build(accountId))
+                    .build(customerId))
                 .headers(headers -> {
                     if (correlationId != null) {
                         headers.set(HEADER_CORRELATION_ID, correlationId);
@@ -56,11 +56,11 @@ public class AccountTransactionStatementReader extends ReadCommand<Result<Transa
                     }
                 })
                 .retrieve()
-                .body(TransactionStatement.class);
+                .body(AccountPositionStatement.class);
 
             return Result.success(response);
         } catch (FailedRequestException e) {
-            return Result.failure("Failed to fetch account transaction statement", e.getStatusMessage());
+            return Result.failure("Failed to fetch account position statement", e.getStatusMessage());
         }
     }
 

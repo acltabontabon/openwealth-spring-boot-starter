@@ -1,4 +1,4 @@
-package com.acltabontabon.openwealth.services.custodyservices.position;
+package com.acltabontabon.openwealth.services.custodyservices.positionstatement;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
@@ -6,7 +6,7 @@ import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.models.custodyservices.AccountPositionStatement;
+import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
 import com.acltabontabon.openwealth.services.ReadCommand;
 import com.acltabontabon.openwealth.types.DateType;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClient;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AccountPositionStatementReader extends ReadCommand<Result<AccountPositionStatement>> {
+public class CustomerPositionStatementReader extends ReadCommand<Result<CustomerPositionStatement>> {
 
     private final RestClient restClient;
     private final OpenWealthApiProperties.CustodyServices apiProperties;
@@ -32,19 +32,19 @@ public class AccountPositionStatementReader extends ReadCommand<Result<AccountPo
 
     private Integer limit;
 
-    public AccountPositionStatementReader withLimit(Integer limit) {
+    public CustomerPositionStatementReader withLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
 
     @Override
-    protected Result<AccountPositionStatement> execute() {
+    protected Result<CustomerPositionStatement> execute() {
         try {
-            AccountPositionStatement response = restClient.get()
-                .uri(builder -> builder.path(apiProperties.getAccountPositionStatement())
+            CustomerPositionStatement response = restClient.get()
+                .uri(builder -> builder.path(apiProperties.getCustomerPositionStatement())
                     .queryParam("date", date.toString())
                     .queryParam("eodIndicator", eodIndicator)
-                    .queryParam("dateType", dateType)
+                    .queryParam("dateType", dateType.toString())
                     .build(customerId))
                 .headers(headers -> {
                     if (correlationId != null) {
@@ -56,11 +56,11 @@ public class AccountPositionStatementReader extends ReadCommand<Result<AccountPo
                     }
                 })
                 .retrieve()
-                .body(AccountPositionStatement.class);
+                .body(CustomerPositionStatement.class);
 
             return Result.success(response);
         } catch (FailedRequestException e) {
-            return Result.failure("Failed to fetch account position statement", e.getStatusMessage());
+            return Result.failure("Failed to fetch customer's position statement", e.getStatusMessage());
         }
     }
 

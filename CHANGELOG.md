@@ -16,6 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade `org.mockito:mockito-core` version from `5.16.1` to `5.17.0`
 - Upgrade `org.mockito:mockito-junit-jupiter` version from `5.16.1` to `5.17.0`
 - Custody Service
+  - Refactored package structure to improve organization and make syntax more intuitive:
+    - Moved position-related classes from `customer` package to `position` package
+    - Moved account-related classes from `customer` package to `account` package
+    - Renamed `transaction` package to `transactionstatement` for clarity
+    - Created `positionstatement` package for position statement related classes
   - Account: change `dateType` parameter in `positionStatement` method from `String` to `DateType` enum
   - Account: change `dateType` parameter in `transactionStatement` method from `String` to `DateType` enum
   - Customer: change `dateType` parameter in `transactionStatement` method from `String` to `DateType` enum
