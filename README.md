@@ -1,5 +1,5 @@
 
-# OpenWealth Spring Starter
+# OpenWealth Spring Boot Starter
 
 ![version](https://img.shields.io/badge/version-1.0.0--Alpha.5-blue)
 ![java](https://img.shields.io/badge/java-21%2B-blue)

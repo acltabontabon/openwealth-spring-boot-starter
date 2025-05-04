@@ -1,6 +1,7 @@
 package com.acltabontabon.openwealth.services.custodyservices.position;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
 
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
@@ -29,6 +30,13 @@ public class CustomerPositionStatementReader extends ReadCommand<Result<Customer
     private final boolean eodIndicator;
     private final DateType dateType;
 
+    private Integer limit;
+
+    public CustomerPositionStatementReader withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
+
     @Override
     protected Result<CustomerPositionStatement> execute() {
         try {
@@ -41,6 +49,10 @@ public class CustomerPositionStatementReader extends ReadCommand<Result<Customer
                 .headers(headers -> {
                     if (correlationId != null) {
                         headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+
+                    if (limit != null && limit > 0) {
+                        headers.set(HEADER_LIMIT, String.valueOf(limit));
                     }
                 })
                 .retrieve()
