@@ -12,11 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add support for limiting the number of transaction statements returned
 - Add `CorrelationIdRequestInterceptor` for handling correlation IDs in outgoing HTTP requests
 - Add `MDC_CORRELATION_ID` constant for consistent MDC key usage
-- Order Placement
+- Order Placement Service
   - Add `@JsonInclude(JsonInclude.Include.NON_NULL)` annotation to model classes:
     - `PlaceOfTrade`
     - `BulkOrderDetails`
     - `RequestedOrder`
+  - Add support for limiting the number of orders returned in the response
 ### Changed
 - Upgrade `org.springframework.boot` plugin version from `3.4.4` to `3.4.5`
 - Upgrade `org.junit:junit-bom` version from `5.12.1` to `5.12.2`
@@ -24,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade `org.mockito:mockito-junit-jupiter` version from `5.16.1` to `5.17.0`
 - Refactor correlation ID handling in HTTP requests
 - Change `OrderSide` enum values from uppercase ("BUY", "SELL") to lowercase ("buy", "sell")
+- Order Placement Service
+  - Improve header handling in REST client requests
+  - Rename `cancelOrder` method to `cancel` in SingleOrderReader for more concise API
 - Custody Service
   - Refactored package structure to improve organization and make syntax more intuitive:
     - Moved position-related classes from `customer` package to `position` package

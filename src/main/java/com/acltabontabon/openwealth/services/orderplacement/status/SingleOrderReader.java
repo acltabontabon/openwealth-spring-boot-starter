@@ -22,7 +22,7 @@ public class SingleOrderReader extends ReadCommand<Result<Order>> {
     private final String correlationId;
     private final String clientOrderId;
 
-    public OrderDeleter cancelOrder() {
+    public OrderDeleter cancel() {
         return new OrderDeleter(restClient, apiProperties, asyncExecutor, correlationId, clientOrderId);
     }
 
@@ -31,7 +31,11 @@ public class SingleOrderReader extends ReadCommand<Result<Order>> {
         try {
             Order order = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getOrder()).build(clientOrderId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(Order.class);
 

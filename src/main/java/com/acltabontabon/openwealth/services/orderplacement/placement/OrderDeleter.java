@@ -26,7 +26,11 @@ public class OrderDeleter extends DeleteCommand<Result<Order>> {
         try {
             Order order = restClient.delete()
                 .uri(builder -> builder.path(apiProperties.getOrder()).build(clientOrderId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(header -> {
+                    if (correlationId != null) {
+                        header.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(Order.class);
 

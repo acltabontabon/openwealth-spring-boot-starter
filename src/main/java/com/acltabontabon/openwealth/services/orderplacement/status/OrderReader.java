@@ -1,6 +1,7 @@
 package com.acltabontabon.openwealth.services.orderplacement.status;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
 
 import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
@@ -25,9 +26,15 @@ public class OrderReader extends ReadCommand<Result<List<Order>>> {
     private final TaskExecutor asyncExecutor;
 
     private String correlationId;
+    private Integer limit;
 
     public OrderReader withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
+        return this;
+    }
+
+    public OrderReader withLimit(Integer limit) {
+        this.limit = limit;
         return this;
     }
 
@@ -44,7 +51,14 @@ public class OrderReader extends ReadCommand<Result<List<Order>>> {
         try {
             List<Order> response = restClient.get()
                 .uri(apiProperties.getOrders())
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                    if (limit != null && limit > 0) {
+                        headers.set(HEADER_LIMIT, String.valueOf(limit));
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
