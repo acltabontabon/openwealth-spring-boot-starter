@@ -1,7 +1,7 @@
 package com.acltabontabon.openwealth.configs;
 
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
-import com.acltabontabon.openwealth.interceptors.CorrelationIdInterceptor;
+import com.acltabontabon.openwealth.interceptors.CorrelationIdRequestInterceptor;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.properties.OpenWealthAsyncProperties;
 import com.acltabontabon.openwealth.security.StaticTokenProvider;
@@ -43,7 +43,7 @@ public class OpenWealthAutoConfiguration {
         log.debug("Initializing openWealthRestClient bean");
         return builder
             .baseUrl(openWealthApiProperties.getBaseUrl())
-            .requestInterceptor(new CorrelationIdInterceptor())
+            .requestInterceptor(new CorrelationIdRequestInterceptor())
             .defaultStatusHandler(HttpStatusCode::is4xxClientError, (request, response) -> {
                 throw new FailedRequestException(response.getStatusText(), response.getStatusCode());
             })

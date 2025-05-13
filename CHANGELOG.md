@@ -10,11 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Custody Service
   - Add support for limiting the number of position statements returned for both accounts and customers
   - Add support for limiting the number of transaction statements returned
+- Add `CorrelationIdRequestInterceptor` for handling correlation IDs in outgoing HTTP requests
+- Add `MDC_CORRELATION_ID` constant for consistent MDC key usage
 ### Changed
 - Upgrade `org.springframework.boot` plugin version from `3.4.4` to `3.4.5`
 - Upgrade `org.junit:junit-bom` version from `5.12.1` to `5.12.2`
 - Upgrade `org.mockito:mockito-core` version from `5.16.1` to `5.17.0`
 - Upgrade `org.mockito:mockito-junit-jupiter` version from `5.16.1` to `5.17.0`
+- Refactor correlation ID handling in HTTP requests
 - Custody Service
   - Refactored package structure to improve organization and make syntax more intuitive:
     - Moved position-related classes from `customer` package to `position` package
