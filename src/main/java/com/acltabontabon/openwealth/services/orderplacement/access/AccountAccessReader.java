@@ -34,7 +34,11 @@ public class AccountAccessReader extends ReadCommand<Result<List<AccountAccess>>
         try {
             List<AccountAccess> response = restClient.get()
                 .uri(apiProperties.getAccountAccesses())
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
