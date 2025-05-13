@@ -28,7 +28,11 @@ public class OrderCreator extends CreateCommand<Result<Order>> {
         try {
             Order response = restClient.post()
                 .uri(apiProperties.getOrders())
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(requestedOrder)
                 .retrieve()
                 .body(Order.class);
