@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum OrderSide {
 
-    BUY("BUY"),
-    SELL("SELL");
+    BUY("buy"),
+    SELL("sell");
 
     private final String value;
 

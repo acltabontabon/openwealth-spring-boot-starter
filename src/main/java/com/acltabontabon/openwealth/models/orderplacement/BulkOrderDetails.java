@@ -4,6 +4,7 @@ import com.acltabontabon.openwealth.models.custodyservices.PlaceOfTrade;
 import com.acltabontabon.openwealth.types.ExecutionType;
 import com.acltabontabon.openwealth.types.OrderSide;
 import com.acltabontabon.openwealth.types.TimeInForce;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BulkOrderDetails {
 
     /**
