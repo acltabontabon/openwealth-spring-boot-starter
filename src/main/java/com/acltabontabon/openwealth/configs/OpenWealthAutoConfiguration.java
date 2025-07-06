@@ -12,6 +12,7 @@ import com.acltabontabon.openwealth.services.orderplacement.OrderPlacementServic
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
@@ -67,6 +68,7 @@ public class OpenWealthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "openwealth.customer", name = "enabled", havingValue = "true")
     public CustomerService customerService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
         log.debug("Initializing customerService bean");
         return new CustomerService(openWealthRestClient, openWealthApiProperties.getCustomerManagement(), openwealthTaskExecutor);
@@ -74,6 +76,7 @@ public class OpenWealthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "openwealth.custody", name = "enabled", havingValue = "true")
     public CustodyService custodyService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
         log.debug("Initializing custodyService bean");
         return new CustodyService(openWealthRestClient, openWealthApiProperties.getCustodyServices(), openwealthTaskExecutor);
@@ -81,6 +84,7 @@ public class OpenWealthAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "openwealth.order", name = "enabled", havingValue = "true")
     public OrderPlacementService orderPlacementService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
         log.debug("Initializing orderPlacementService bean");
         return new OrderPlacementService(openWealthRestClient, openWealthApiProperties.getOrderPlacement(), openwealthTaskExecutor);
