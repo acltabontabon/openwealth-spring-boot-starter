@@ -30,7 +30,11 @@ public class AddressCreator extends CreateCommand<Result<AddressResponse>> {
         try {
             AddressResponse response = restClient.post()
                 .uri(builder -> builder.path(apiProperties.getPersonAddresses()).build(customerId, personId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(newAddress)
                 .retrieve()
                 .body(AddressResponse.class);

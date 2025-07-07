@@ -33,7 +33,11 @@ public class AddressReader extends ReadCommand<Result<List<Address>>> {
         try {
             List<Address> addresses = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonAddresses()).build(customerId, personId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 

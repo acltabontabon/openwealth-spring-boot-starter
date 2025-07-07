@@ -28,7 +28,11 @@ public class SingleAddressRead extends ReadCommand<Result<Address>> {
         try {
             Address response = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonAddress()).build(customerId, personId, addressId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(Address.class);
 

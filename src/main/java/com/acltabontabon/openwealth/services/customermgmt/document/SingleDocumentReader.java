@@ -40,7 +40,11 @@ public class SingleDocumentReader extends ReadCommand<Result<Document>> {
                         return builder.path(apiProperties.getCustomerDocument()).build(customerId, documentId);
                     }
                 })
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(Document.class);
 

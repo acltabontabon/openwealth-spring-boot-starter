@@ -30,7 +30,11 @@ public class AddressUpdater extends UpdateCommand<Result<Void>> {
         try {
             restClient.put()
                 .uri(builder -> builder.path(apiProperties.getPersonAddress()).build(customerId, personId, addressId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(updatedAddress)
                 .retrieve()
                 .toBodilessEntity();

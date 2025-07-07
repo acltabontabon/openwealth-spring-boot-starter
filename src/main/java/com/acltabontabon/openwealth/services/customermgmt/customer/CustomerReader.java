@@ -1,6 +1,7 @@
 package com.acltabontabon.openwealth.services.customermgmt.customer;
 
 import static com.acltabontabon.openwealth.commons.Constants.HEADER_CORRELATION_ID;
+import static com.acltabontabon.openwealth.commons.Constants.HEADER_LIMIT;
 
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.dtos.CustomerResponse;
@@ -22,14 +23,20 @@ public class CustomerReader extends ReadCommand<Result<CustomerResponse>> {
     private final TaskExecutor asyncExecutor;
 
     private String correlationId;
+    private Integer limit;
 
     public CustomerReader withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
 
+    public CustomerReader withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
+
     public SingleCustomerReader withCustomerId(String customerId) {
-        return new SingleCustomerReader(restClient, apiProperties, asyncExecutor, customerId, correlationId);
+        return new SingleCustomerReader(restClient, apiProperties, asyncExecutor, correlationId, customerId);
     }
 
     public CustomerCreator createNew(Customer customer) {
@@ -41,7 +48,14 @@ public class CustomerReader extends ReadCommand<Result<CustomerResponse>> {
         try {
             CustomerResponse response = restClient.get()
                 .uri(apiProperties.getCustomers())
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (limit != null && limit > 0) {
+                        headers.set(HEADER_LIMIT, String.valueOf(limit));
+                    }
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(CustomerResponse.class);
 

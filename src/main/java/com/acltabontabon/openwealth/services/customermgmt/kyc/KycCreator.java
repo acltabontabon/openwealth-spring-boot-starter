@@ -30,7 +30,11 @@ public class KycCreator extends CreateCommand<Result<KycResponse>> {
         try {
             KycResponse response = restClient.post()
                 .uri(builder -> builder.path(apiProperties.getPersonKyc()).build(customerId, personId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(newKyc)
                 .retrieve()
                 .body(KycResponse.class);

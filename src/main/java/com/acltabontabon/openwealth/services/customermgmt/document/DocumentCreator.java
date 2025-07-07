@@ -29,7 +29,11 @@ public class DocumentCreator extends CreateCommand<Result<DocumentResponse>> {
         try {
             DocumentResponse response = restClient.post()
                 .uri(builder -> builder.path(apiProperties.getNewCustomerDocument()).build(customerId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(newDocument)
                 .retrieve()
                 .body(DocumentResponse.class);

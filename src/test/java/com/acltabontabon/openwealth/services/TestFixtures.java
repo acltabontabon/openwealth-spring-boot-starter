@@ -18,6 +18,8 @@ import com.acltabontabon.openwealth.types.TimeInForce;
 public final class TestFixtures {
 
     public static final String MOCK_URL = "http://mock-api/customers";
+    public static final String TEST_CORRELATION_ID = "test-correlation-id";
+    public static final int TEST_LIMIT = 10;
 
     public static RequestedOrder createTestRequestedOrder() {
         return RequestedOrder.builder()

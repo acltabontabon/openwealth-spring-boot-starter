@@ -29,7 +29,11 @@ public class KycReader extends ReadCommand<Result<List<Kyc>>> {
         try {
             List<Kyc> kyc = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonKyc()).build(customerId, personId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 

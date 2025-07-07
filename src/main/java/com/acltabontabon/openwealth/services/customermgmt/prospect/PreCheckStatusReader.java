@@ -33,7 +33,11 @@ public class PreCheckStatusReader extends ReadCommand<Result<ProspectResponse>> 
         try {
             ProspectResponse prospectResponse = restClient.get()
                 .uri(apiProperties.getProspectPreCheckStatus(), this.temporaryId)
-                .header(HEADER_CORRELATION_ID, this.correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(ProspectResponse.class);
 

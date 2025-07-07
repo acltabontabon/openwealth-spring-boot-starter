@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 ### Changed
+- Customer Management Service
+  - Improved type safety across all reader and creator classes
+  - Enhanced header handling in REST client requests
+  - Standardized correlation ID handling across all service components
+  - Aligned implementation with OpenWealth API specifications
 ### Fixed
 ### Removed
 

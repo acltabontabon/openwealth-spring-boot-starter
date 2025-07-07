@@ -31,7 +31,11 @@ public class CustomerCreator extends CreateCommand<Result<CustomerResponse>> {
             CustomerResponse response = restClient.post()
                 .uri(apiProperties.getNewCustomerDetails())
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(customer)
                 .retrieve()
                 .body(CustomerResponse.class);

@@ -30,7 +30,11 @@ public class ContactCreator extends CreateCommand<Result<ContactResponse>> {
         try {
             ContactResponse response = restClient.post()
                 .uri(builder -> builder.path(apiProperties.getPersonContacts()).build(customerId, personId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(newContact)
                 .retrieve()
                 .body(ContactResponse.class);

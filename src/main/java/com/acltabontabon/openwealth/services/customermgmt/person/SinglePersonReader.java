@@ -88,7 +88,11 @@ public class SinglePersonReader extends ReadCommand<Result<Person>> {
                         return builder.path(apiProperties.getPerson()).build(this.customerId, this.personId);
                     }
                 })
-                .header(HEADER_CORRELATION_ID, this.correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(Person.class);
 

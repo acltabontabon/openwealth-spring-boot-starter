@@ -30,7 +30,11 @@ public class ContactUpdater extends UpdateCommand<Result<Void>> {
         try {
             restClient.put()
                 .uri(builder -> builder.path(apiProperties.getPersonContact()).build(customerId, personId, contactId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(updatedContact)
                 .retrieve()
                 .toBodilessEntity();

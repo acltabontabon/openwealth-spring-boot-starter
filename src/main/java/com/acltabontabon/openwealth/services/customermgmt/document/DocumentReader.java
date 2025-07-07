@@ -32,7 +32,11 @@ public class DocumentReader extends ReadCommand<Result<List<Contact>>> {
         try {
             List<Contact> contacts = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getCustomerDocuments()).build(customerId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 

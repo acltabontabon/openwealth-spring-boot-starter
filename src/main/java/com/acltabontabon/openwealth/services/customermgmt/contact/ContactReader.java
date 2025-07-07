@@ -33,7 +33,11 @@ public class ContactReader extends ReadCommand<Result<List<Contact>>> {
         try {
             List<Contact> contacts = restClient.get()
                 .uri(builder -> builder.path(apiProperties.getPersonContacts()).build(customerId, personId))
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 

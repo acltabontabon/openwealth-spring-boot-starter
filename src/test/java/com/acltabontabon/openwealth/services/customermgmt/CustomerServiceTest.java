@@ -1,24 +1,32 @@
 package com.acltabontabon.openwealth.services.customermgmt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
-import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.CustomerResponse;
+import com.acltabontabon.openwealth.commons.Constants;
 import com.acltabontabon.openwealth.commons.Result;
+import com.acltabontabon.openwealth.dtos.CustomerResponse;
+import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.customermgmt.Customer;
+import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustomerManagement;
 import com.acltabontabon.openwealth.services.TestFixtures;
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestClient;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,68 +36,164 @@ class CustomerServiceTest {
     private RestClient restClient;
 
     @Mock
+    private RestClient.RequestHeadersUriSpec uriSpec;
+
+    @Mock
+    private RestClient.ResponseSpec responseSpec;
+
+    @Mock
     private CustomerManagement apiProperties;
+
+    @Mock
+    private TaskExecutor asyncExecutor;
+
+    @Captor
+    private ArgumentCaptor<Consumer<HttpHeaders>> headersConsumerCaptor;
 
     @InjectMocks
     private CustomerService customerService;
 
     @Test
-    void shouldReturnListOfCustomers() {
-        List<Customer> customers = List.of(Customer.builder().build());
-        CustomerResponse customerResponse = CustomerResponse.builder().customers(customers).build();
-        Result<CustomerResponse> expectedResponse = Result.success(customerResponse);
-
-        RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        RestClient.RequestHeadersSpec<?> headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        RestClient.ResponseSpec responseSpec = mock(RestClient.ResponseSpec.class);
+    @SuppressWarnings("unchecked")
+    void shouldSetCorrelationIdAndLimitInHeaders() {
+        CustomerResponse expectedResponse = new CustomerResponse();
 
         when(apiProperties.getCustomers())
             .thenReturn(TestFixtures.MOCK_URL);
         when(restClient.get())
-            .thenAnswer(invocation -> uriSpec);
-        when(uriSpec.uri(anyString()))
-            .thenAnswer(invocation -> headersSpec);
-        when(headersSpec.header(anyString(), anyString()))
-            .thenAnswer(invocation -> headersSpec);
-        when(headersSpec.retrieve())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(String.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.headers(headersConsumerCaptor.capture()))
+            .thenReturn(uriSpec);
+        when(uriSpec.retrieve())
             .thenReturn(responseSpec);
         when(responseSpec.body(CustomerResponse.class))
-            .thenAnswer(invocation -> customerResponse);
+            .thenReturn(expectedResponse);
 
-        Result<CustomerResponse> actualResponse = customerService.customers()
-            .withCorrelationId("1234")
+        customerService.customers()
+            .withCorrelationId(TestFixtures.TEST_CORRELATION_ID)
+            .withLimit(TestFixtures.TEST_LIMIT)
             .fetch();
 
-        assertEquals(expectedResponse.getData().getCustomers().size(), actualResponse.getData().getCustomers().size());
+        HttpHeaders headers = new HttpHeaders();
+        headersConsumerCaptor.getValue().accept(headers);
+
+        assertEquals(TestFixtures.TEST_CORRELATION_ID, headers.getFirst(Constants.HEADER_CORRELATION_ID));
+        assertEquals(String.valueOf(TestFixtures.TEST_LIMIT), headers.getFirst(Constants.HEADER_LIMIT));
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    void shouldReturnOneCustomer() {
-        Customer customer = Customer.builder().customerId("1").build();
-        Result<Customer> expectedResponse = Result.success(customer);
+    void shouldFetchCustomersSuccessfully() {
+        CustomerResponse expectedResponse = new CustomerResponse();
 
-        RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        RestClient.RequestHeadersSpec<?> headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        RestClient.ResponseSpec responseSpec = mock(RestClient.ResponseSpec.class);
-
+        when(apiProperties.getCustomers())
+            .thenReturn(TestFixtures.MOCK_URL);
         when(restClient.get())
-            .thenAnswer(invocation -> uriSpec);
-        when(uriSpec.uri(any(Function.class)))
-            .thenReturn(headersSpec);
-        when(headersSpec.header(anyString(), anyString()))
-            .thenAnswer(invocation -> headersSpec);
-        when(headersSpec.retrieve())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(String.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.headers(any(Consumer.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.retrieve())
             .thenReturn(responseSpec);
-        when(responseSpec.body(Customer.class))
-            .thenAnswer(invocation -> customer);
+        when(responseSpec.body(CustomerResponse.class))
+            .thenReturn(expectedResponse);
 
-        Result<Customer> actualResponse = customerService.customers()
-            .withCorrelationId("1234")
-            .withCustomerId("4321")
+        Result<CustomerResponse> result = customerService.customers()
             .fetch();
 
-        assertNotNull(actualResponse.getData());
-        assertEquals(expectedResponse.getData().getCustomerId(), actualResponse.getData().getCustomerId());
+        assertTrue(result.isSuccess());
+        assertEquals(expectedResponse, result.getData());
+        assertEquals("Operation successful", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleFailedRequest() {
+        String errorMessage = "Failed to fetch list of customers";
+
+        when(apiProperties.getCustomers())
+            .thenReturn(TestFixtures.MOCK_URL);
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(String.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.headers(any(Consumer.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(CustomerResponse.class))
+            .thenThrow(new FailedRequestException("Error message", HttpStatus.INTERNAL_SERVER_ERROR));
+
+        Result<CustomerResponse> result = customerService.customers()
+            .fetch();
+
+        assertFalse(result.isSuccess());
+        assertNull(result.getData());
+        assertEquals(errorMessage, result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldHandleNullResponse() {
+        when(apiProperties.getCustomers())
+            .thenReturn(TestFixtures.MOCK_URL);
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(String.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.headers(any(Consumer.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(CustomerResponse.class))
+            .thenReturn(null);
+
+        Result<CustomerResponse> result = customerService.customers()
+            .fetch();
+
+        assertTrue(result.isSuccess());
+        assertNull(result.getData());
+        assertEquals("Operation successful", result.getMessage());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldFetchCustomerWithCompleteDetails() {
+        Customer expectedCustomer = Customer.builder()
+            .customerId("customer_002")
+            .name("Test Customer")
+            .build();
+
+        String customerDetailsUrl = "/customers/{customerId}/details";
+
+        lenient().when(apiProperties.getCustomerDetails())
+            .thenReturn(customerDetailsUrl);
+        when(restClient.get())
+            .thenReturn(uriSpec);
+        when(uriSpec.uri(any(Function.class)))
+            .thenReturn(uriSpec);
+        when(uriSpec.headers(headersConsumerCaptor.capture()))
+            .thenReturn(uriSpec);
+        when(uriSpec.retrieve())
+            .thenReturn(responseSpec);
+        when(responseSpec.body(Customer.class))
+            .thenReturn(expectedCustomer);
+
+        Result<Customer> result = customerService.customers()
+            .withCorrelationId(TestFixtures.TEST_CORRELATION_ID)
+            .withCustomerId("customer_002")
+            .completeDetails()
+            .fetch();
+
+        assertTrue(result.isSuccess());
+        assertEquals(expectedCustomer, result.getData());
+        assertEquals("Operation successful", result.getMessage());
+
+        HttpHeaders headers = new HttpHeaders();
+        headersConsumerCaptor.getValue().accept(headers);
+        assertEquals(TestFixtures.TEST_CORRELATION_ID, headers.getFirst(Constants.HEADER_CORRELATION_ID));
     }
 }

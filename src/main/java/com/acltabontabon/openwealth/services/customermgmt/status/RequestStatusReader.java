@@ -34,7 +34,11 @@ public class RequestStatusReader extends ReadCommand<Result<RequestStatusRespons
         try {
             RequestStatusResponse response = restClient.get()
                 .uri(apiProperties.getRequestStatus(), temporaryId)
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(RequestStatusResponse.class);
 

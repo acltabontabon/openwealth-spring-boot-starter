@@ -32,7 +32,11 @@ public class PersonReader extends ReadCommand<Result<List<Person>>> {
         try {
             List<Person> personList = restClient.get()
                 .uri(apiProperties.getPersons(), customerId)
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 

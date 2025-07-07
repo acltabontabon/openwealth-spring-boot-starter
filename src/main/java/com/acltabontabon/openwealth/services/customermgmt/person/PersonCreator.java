@@ -32,7 +32,11 @@ public class PersonCreator extends CreateCommand<Result<PersonResponse>> {
             PersonResponse response = restClient.post()
                 .uri(apiProperties.getNewPersonDetails())
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HEADER_CORRELATION_ID, correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(personToAssociate)
                 .retrieve()
                 .body(PersonResponse.class);

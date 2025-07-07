@@ -43,7 +43,11 @@ public class PreCheckCreator extends CreateCommand<Result<ProspectResponse>> {
             ProspectResponse prospectResponse = restClient.post()
                 .uri(apiProperties.getProspectPreCheck())
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HEADER_CORRELATION_ID, this.correlationId)
+                .headers(headers -> {
+                    if (correlationId != null) {
+                        headers.set(HEADER_CORRELATION_ID, correlationId);
+                    }
+                })
                 .body(prospect)
                 .retrieve()
                 .body(ProspectResponse.class);
