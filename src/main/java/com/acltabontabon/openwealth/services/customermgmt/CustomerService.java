@@ -1,14 +1,11 @@
 package com.acltabontabon.openwealth.services.customermgmt;
 
-import com.acltabontabon.openwealth.properties.OpenWealthApiProperties;
 import com.acltabontabon.openwealth.services.customermgmt.customer.CustomerReader;
 import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckCreator;
 import com.acltabontabon.openwealth.services.customermgmt.prospect.PreCheckStatusReader;
 import com.acltabontabon.openwealth.services.customermgmt.status.RequestStatusReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.web.client.RestClient;
 
 /**
  * CustomerService represents the Customer Management API within the OpenWealth API, enabling
@@ -22,9 +19,7 @@ import org.springframework.web.client.RestClient;
 @RequiredArgsConstructor
 public class CustomerService {
 
-    private final RestClient openWealthRestClient;
-    private final OpenWealthApiProperties.CustomerManagement apiProperties;
-    private final TaskExecutor asyncExecutor;
+    private final CustomerManagementComponentFactory componentFactory;
 
     /**
      * Return the list of customers.
@@ -32,7 +27,7 @@ public class CustomerService {
      * @return CustomerQuery object
      */
     public CustomerReader customers() {
-        return new CustomerReader(openWealthRestClient, apiProperties, asyncExecutor);
+        return componentFactory.createCustomerReader();
     }
 
     /**
@@ -41,7 +36,7 @@ public class CustomerService {
      * @return PreCheckRequest object
      */
     public PreCheckCreator preCheck() {
-        return new PreCheckCreator(openWealthRestClient, apiProperties, asyncExecutor);
+        return componentFactory.createPreCheckCreator();
     }
 
     /**
@@ -50,7 +45,7 @@ public class CustomerService {
      * @return PreCheckStatusQuery object
      */
     public PreCheckStatusReader preCheckStatus(String temporaryId) {
-        return new PreCheckStatusReader(openWealthRestClient, apiProperties, asyncExecutor, temporaryId);
+        return componentFactory.createPreCheckStatusReader(temporaryId);
     }
 
     /**
@@ -59,6 +54,6 @@ public class CustomerService {
      * @return RequestStatusReader object
      */
     public RequestStatusReader requestStatus(String temporaryId) {
-        return new RequestStatusReader(openWealthRestClient, apiProperties, asyncExecutor, temporaryId);
+        return componentFactory.createRequestStatusReader(temporaryId);
     }
 }

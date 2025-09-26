@@ -2,93 +2,77 @@ package com.acltabontabon.openwealth.services.customermgmt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustomerManagement;
-import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.commons.Result;
+import com.acltabontabon.openwealth.dtos.CustomerResponse;
 import com.acltabontabon.openwealth.models.customermgmt.Customer;
-import com.acltabontabon.openwealth.services.TestFixtures;
+import com.acltabontabon.openwealth.services.customermgmt.customer.CustomerReader;
+import com.acltabontabon.openwealth.services.customermgmt.customer.SingleCustomerReader;
 import java.util.List;
-import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestClient;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
 
     @Mock
-    private RestClient restClient;
-
-    @Mock
-    private CustomerManagement apiProperties;
+    private CustomerManagementComponentFactory componentFactory;
 
     @InjectMocks
     private CustomerService customerService;
 
     @Test
     void shouldReturnListOfCustomers() {
+        // Arrange
         List<Customer> customers = List.of(Customer.builder().build());
         CustomerResponse customerResponse = CustomerResponse.builder().customers(customers).build();
         Result<CustomerResponse> expectedResponse = Result.success(customerResponse);
 
-        RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        RestClient.RequestHeadersSpec<?> headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        RestClient.ResponseSpec responseSpec = mock(RestClient.ResponseSpec.class);
+        CustomerReader mockCustomerReader = mock(CustomerReader.class);
+        CustomerReader mockCustomerReaderWithCorrelation = mock(CustomerReader.class);
 
-        when(apiProperties.getCustomers())
-            .thenReturn(TestFixtures.MOCK_URL);
-        when(restClient.get())
-            .thenAnswer(invocation -> uriSpec);
-        when(uriSpec.uri(anyString()))
-            .thenAnswer(invocation -> headersSpec);
-        when(headersSpec.header(anyString(), anyString()))
-            .thenAnswer(invocation -> headersSpec);
-        when(headersSpec.retrieve())
-            .thenReturn(responseSpec);
-        when(responseSpec.body(CustomerResponse.class))
-            .thenAnswer(invocation -> customerResponse);
+        when(componentFactory.createCustomerReader()).thenReturn(mockCustomerReader);
+        when(mockCustomerReader.withCorrelationId("1234")).thenReturn(mockCustomerReaderWithCorrelation);
+        when(mockCustomerReaderWithCorrelation.fetch()).thenReturn(expectedResponse);
 
+        // Act
         Result<CustomerResponse> actualResponse = customerService.customers()
             .withCorrelationId("1234")
             .fetch();
 
+        // Assert
+        assertNotNull(actualResponse);
         assertEquals(expectedResponse.getData().getCustomers().size(), actualResponse.getData().getCustomers().size());
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void shouldReturnOneCustomer() {
+        // Arrange
         Customer customer = Customer.builder().customerId("1").build();
         Result<Customer> expectedResponse = Result.success(customer);
 
-        RestClient.RequestHeadersUriSpec<?> uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
-        RestClient.RequestHeadersSpec<?> headersSpec = mock(RestClient.RequestHeadersSpec.class);
-        RestClient.ResponseSpec responseSpec = mock(RestClient.ResponseSpec.class);
+        CustomerReader mockCustomerReader = mock(CustomerReader.class);
+        CustomerReader mockCustomerReaderWithCorrelation = mock(CustomerReader.class);
+        SingleCustomerReader mockSingleCustomerReader = mock(SingleCustomerReader.class);
 
-        when(restClient.get())
-            .thenAnswer(invocation -> uriSpec);
-        when(uriSpec.uri(any(Function.class)))
-            .thenReturn(headersSpec);
-        when(headersSpec.header(anyString(), anyString()))
-            .thenAnswer(invocation -> headersSpec);
-        when(headersSpec.retrieve())
-            .thenReturn(responseSpec);
-        when(responseSpec.body(Customer.class))
-            .thenAnswer(invocation -> customer);
+        when(componentFactory.createCustomerReader()).thenReturn(mockCustomerReader);
+        when(mockCustomerReader.withCorrelationId("1234")).thenReturn(mockCustomerReaderWithCorrelation);
+        when(mockCustomerReaderWithCorrelation.withCustomerId("4321")).thenReturn(mockSingleCustomerReader);
+        when(mockSingleCustomerReader.fetch()).thenReturn(expectedResponse);
 
+        // Act
         Result<Customer> actualResponse = customerService.customers()
             .withCorrelationId("1234")
             .withCustomerId("4321")
             .fetch();
 
+        // Assert
+        assertNotNull(actualResponse);
         assertNotNull(actualResponse.getData());
         assertEquals(expectedResponse.getData().getCustomerId(), actualResponse.getData().getCustomerId());
     }

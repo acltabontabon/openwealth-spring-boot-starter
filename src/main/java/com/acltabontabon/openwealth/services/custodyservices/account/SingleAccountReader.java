@@ -19,11 +19,11 @@ public class SingleAccountReader {
     private final String correlationId;
     private final String accountId;
 
-    public AccountPositionStatementReader positionStatement(LocalDate date, boolean eodIndicator, DateType dateType) {
+    public AccountPositionStatementReader positionStatement(LocalDate date, Boolean eodIndicator, DateType dateType) {
         return new AccountPositionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, accountId, date, eodIndicator, dateType);
     }
 
-    public AccountTransactionStatementReader transactionStatement(LocalDate date, boolean eodIndicator, DateType dateType) {
+    public AccountTransactionStatementReader transactionStatement(LocalDate date, Boolean eodIndicator, DateType dateType) {
         return new AccountTransactionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, accountId, date, eodIndicator, dateType);
     }
 }
