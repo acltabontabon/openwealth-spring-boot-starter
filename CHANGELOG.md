@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 ### Changed
+- Upgrade `org.springframework.boot` plugin version from `3.4.5` to `3.5.6`
 ### Fixed
 ### Removed
 
