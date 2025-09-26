@@ -18,7 +18,7 @@ public class SinglePositionReader {
     private final String correlationId;
     private final String positionId;
 
-    public PositionTransactionStatementReader transactionStatement(LocalDate date, boolean eodIndicator, DateType dateType) {
+    public PositionTransactionStatementReader transactionStatement(LocalDate date, Boolean eodIndicator, DateType dateType) {
         return new PositionTransactionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, positionId, date, eodIndicator, dateType);
     }
 }

@@ -7,7 +7,13 @@ import com.acltabontabon.openwealth.properties.OpenWealthAsyncProperties;
 import com.acltabontabon.openwealth.security.StaticTokenProvider;
 import com.acltabontabon.openwealth.security.TokenProvider;
 import com.acltabontabon.openwealth.services.custodyservices.CustodyService;
+import com.acltabontabon.openwealth.services.custodyservices.CustodyServicesComponentFactory;
+import com.acltabontabon.openwealth.services.custodyservices.CustodyServicesComponentFactoryImpl;
+import com.acltabontabon.openwealth.services.customermgmt.CustomerManagementComponentFactory;
+import com.acltabontabon.openwealth.services.customermgmt.CustomerManagementComponentFactoryImpl;
 import com.acltabontabon.openwealth.services.customermgmt.CustomerService;
+import com.acltabontabon.openwealth.services.orderplacement.OrderPlacementComponentFactory;
+import com.acltabontabon.openwealth.services.orderplacement.OrderPlacementComponentFactoryImpl;
 import com.acltabontabon.openwealth.services.orderplacement.OrderPlacementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -66,27 +72,50 @@ public class OpenWealthAutoConfiguration {
         return executor;
     }
 
+    // Factory beans
+    @Bean
+    @ConditionalOnMissingBean
+    public CustomerManagementComponentFactory customerManagementComponentFactory(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
+        log.debug("Initializing customerManagementComponentFactory bean");
+        return new CustomerManagementComponentFactoryImpl(openWealthRestClient, openWealthApiProperties.getCustomerManagement(), openwealthTaskExecutor);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public CustodyServicesComponentFactory custodyServicesComponentFactory(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
+        log.debug("Initializing custodyServicesComponentFactory bean");
+        return new CustodyServicesComponentFactoryImpl(openWealthRestClient, openWealthApiProperties.getCustodyServices(), openwealthTaskExecutor);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OrderPlacementComponentFactory orderPlacementComponentFactory(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
+        log.debug("Initializing orderPlacementComponentFactory bean");
+        return new OrderPlacementComponentFactoryImpl(openWealthRestClient, openWealthApiProperties.getOrderPlacement(), openwealthTaskExecutor);
+    }
+
+    // Service beans
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "openwealth.customer", name = "enabled", havingValue = "true")
-    public CustomerService customerService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
+    public CustomerService customerService(CustomerManagementComponentFactory componentFactory) {
         log.debug("Initializing customerService bean");
-        return new CustomerService(openWealthRestClient, openWealthApiProperties.getCustomerManagement(), openwealthTaskExecutor);
+        return new CustomerService(componentFactory);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "openwealth.custody", name = "enabled", havingValue = "true")
-    public CustodyService custodyService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
+    public CustodyService custodyService(CustodyServicesComponentFactory componentFactory) {
         log.debug("Initializing custodyService bean");
-        return new CustodyService(openWealthRestClient, openWealthApiProperties.getCustodyServices(), openwealthTaskExecutor);
+        return new CustodyService(componentFactory);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "openwealth.order", name = "enabled", havingValue = "true")
-    public OrderPlacementService orderPlacementService(RestClient openWealthRestClient, OpenWealthApiProperties openWealthApiProperties, TaskExecutor openwealthTaskExecutor) {
+    public OrderPlacementService orderPlacementService(OrderPlacementComponentFactory componentFactory) {
         log.debug("Initializing orderPlacementService bean");
-        return new OrderPlacementService(openWealthRestClient, openWealthApiProperties.getOrderPlacement(), openwealthTaskExecutor);
+        return new OrderPlacementService(componentFactory);
     }
 }

@@ -25,11 +25,11 @@ public class SingleCustomerReader extends ReadCommand<Result<Customer>> {
     private final String correlationId;
     private final String customerId;
 
-    public CustomerPositionStatementReader positionStatement(LocalDate date, boolean eodIndicator, DateType dateType) {
+    public CustomerPositionStatementReader positionStatement(LocalDate date, Boolean eodIndicator, DateType dateType) {
         return new CustomerPositionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, customerId, date, eodIndicator, dateType);
     }
 
-    public CustomerTransactionStatementReader transactionStatement(LocalDate date, boolean eodIndicator, DateType dateType) {
+    public CustomerTransactionStatementReader transactionStatement(LocalDate date, Boolean eodIndicator, DateType dateType) {
         return new CustomerTransactionStatementReader(restClient, apiProperties, asyncExecutor, correlationId, customerId, date, eodIndicator, dateType);
     }
 

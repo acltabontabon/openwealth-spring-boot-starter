@@ -17,6 +17,12 @@ import com.acltabontabon.openwealth.models.custodyservices.AccountPositionStatem
 import com.acltabontabon.openwealth.models.custodyservices.Customer;
 import com.acltabontabon.openwealth.models.custodyservices.CustomerPositionStatement;
 import com.acltabontabon.openwealth.models.custodyservices.TransactionStatement;
+import com.acltabontabon.openwealth.services.custodyservices.account.AccountReader;
+import com.acltabontabon.openwealth.services.custodyservices.account.SingleAccountReader;
+import com.acltabontabon.openwealth.services.custodyservices.customer.CustomerReader;
+import com.acltabontabon.openwealth.services.custodyservices.customer.SingleCustomerReader;
+import com.acltabontabon.openwealth.services.custodyservices.position.PositionReader;
+import com.acltabontabon.openwealth.services.custodyservices.position.SinglePositionReader;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.CustodyServices;
 import com.acltabontabon.openwealth.services.TestFixtures;
 import com.acltabontabon.openwealth.types.DateType;
@@ -25,6 +31,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -51,6 +58,27 @@ class CustodyServiceTest {
     private TaskExecutor asyncExecutor;
 
     @Mock
+    private CustodyServicesComponentFactory componentFactory;
+
+    @Mock
+    private CustomerReader customerReader;
+
+    @Mock
+    private AccountReader accountReader;
+
+    @Mock
+    private PositionReader positionReader;
+
+    @Mock
+    private SingleCustomerReader singleCustomerReader;
+
+    @Mock
+    private SingleAccountReader singleAccountReader;
+
+    @Mock
+    private SinglePositionReader singlePositionReader;
+
+    @Mock
     private RestClient.RequestHeadersUriSpec uriSpec;
 
     @Mock
@@ -64,6 +92,12 @@ class CustodyServiceTest {
 
     @InjectMocks
     private CustodyService custodyService;
+
+    @BeforeEach
+    void setUp() {
+        // Use the real component factory wired with mocked dependencies to avoid deep stubbing and unnecessary stubs
+        custodyService = new CustodyService(new CustodyServicesComponentFactoryImpl(restClient, apiProperties, asyncExecutor));
+    }
 
     @Test
     @SuppressWarnings("unchecked")

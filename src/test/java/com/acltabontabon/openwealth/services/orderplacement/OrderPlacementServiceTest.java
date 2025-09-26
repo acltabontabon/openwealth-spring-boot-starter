@@ -14,10 +14,15 @@ import com.acltabontabon.openwealth.commons.Result;
 import com.acltabontabon.openwealth.exceptions.FailedRequestException;
 import com.acltabontabon.openwealth.models.orderplacement.Order;
 import com.acltabontabon.openwealth.models.orderplacement.RequestedOrder;
+import com.acltabontabon.openwealth.services.orderplacement.access.AccountAccessReader;
+import com.acltabontabon.openwealth.services.orderplacement.placement.OrderCreator;
+import com.acltabontabon.openwealth.services.orderplacement.status.OrderReader;
+import com.acltabontabon.openwealth.services.orderplacement.status.SingleOrderReader;
 import com.acltabontabon.openwealth.properties.OpenWealthApiProperties.OrderPlacement;
 import com.acltabontabon.openwealth.services.TestFixtures;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -43,6 +48,21 @@ class OrderPlacementServiceTest {
     private TaskExecutor asyncExecutor;
 
     @Mock
+    private OrderPlacementComponentFactory componentFactory;
+
+    @Mock
+    private OrderReader orderReader;
+
+    @Mock
+    private AccountAccessReader accountAccessReader;
+
+    @Mock
+    private OrderCreator orderCreator;
+
+    @Mock
+    private SingleOrderReader singleOrderReader;
+
+    @Mock
     private RestClient.RequestHeadersUriSpec uriSpec;
 
     @Mock
@@ -62,6 +82,11 @@ class OrderPlacementServiceTest {
 
     @InjectMocks
     private OrderPlacementService orderPlacementService;
+
+    @BeforeEach
+    void setUp() {
+        when(componentFactory.createOrderReader()).thenAnswer(invocation -> new OrderReader(restClient, apiProperties, asyncExecutor));
+    }
 
     @Test
     void shouldCreateNewOrder() {
